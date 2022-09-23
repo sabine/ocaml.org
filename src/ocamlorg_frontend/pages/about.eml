@@ -78,10 +78,10 @@ Layout.render
   <div class="py-10 lg:py-28">
     <div class="container-fluid">
       <div class="prose lg:prose-lg mx-auto max-w-5xl">
-        <h2 id="strength">Why OCaml?</h2>
+        <h2 id="strength">Your Choice of Programming Language Matters</h2>
         <div class="space-y-10">
           <p>
-            Programming languages matter. They affect the reliability, security, and efficiency of the code you write,
+            The programming language you work with affects the reliability, security, and efficiency of the code you write,
             as well as how easy it is to read, refactor, and extend. The languages you know can also change how you
             think, influencing the way you design software even when you’re not using them.
           </p>
