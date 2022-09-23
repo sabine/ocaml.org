@@ -69,10 +69,10 @@ let render () =
 
       <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-12 lg:gap-y-0">
         <ul>
-          <li class="text-lg font-semibold pb-3">About Us</li>
+          <li class="text-lg font-semibold pb-3">About OCaml</li>
+          <li class="py-3"><a href="<%s Url.about %>">Why OCaml?</a></li>
           <li class="py-3"><a href="<%s Url.industrial_users %>">Industrial Users</a></li>
           <li class="py-3"><a href="<%s Url.academic_users %>">Academic Users</a></li>
-          <li class="py-3"><a href="<%s Url.about %>">Why OCaml</a></li>
         </ul>
 
         <ul>
