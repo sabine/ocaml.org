@@ -67,14 +67,24 @@ end
 module Documentation : sig
   type toc = { title : string; href : string; children : toc list }
 
-  type item =
-    [ `Module of string
-    | `ModuleType of string
-    | `Parameter of int * string
-    | `Class of string
-    | `ClassType of string ]
+  type breadcrumb_kind = 
+    | Page
+    | LeafPage
+    | Module
+    | ModuleType
+    | Parameter of int
+    | Class
+    | ClassType
+    | File
 
-  type t = { toc : toc list; module_path : item list; content : string }
+  type breadcrumb = { name : string ; href : string ; kind: breadcrumb_kind }
+
+  type t =  {
+    uses_katex: bool;
+    toc : toc list;
+    breadcrumbs : breadcrumb list;
+    content : string
+  }
 end
 
 module Module_map = Module_map

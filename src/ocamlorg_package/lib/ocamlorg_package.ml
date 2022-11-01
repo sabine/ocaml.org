@@ -202,14 +202,41 @@ let featured_packages t = t.featured_packages
 module Documentation = struct
   type toc = { title : string; href : string; children : toc list }
 
-  type item =
-    [ `Module of string
-    | `ModuleType of string
-    | `Parameter of int * string
-    | `Class of string
-    | `ClassType of string ]
+  type breadcrumb_kind = 
+    | Page
+    | LeafPage
+    | Module
+    | ModuleType
+    | Parameter of int
+    | Class
+    | ClassType
+    | File
 
-  type t = { toc : toc list; module_path : item list; content : string }
+  let breadcrumb_kind_from_string s = match s with
+    | "page" -> Page
+    | "leaf-page" -> LeafPage
+    | "module" -> Module
+    | "module-type" -> ModuleType
+    | "class" -> Class
+    | "class-type" -> ClassType
+    | "file" -> File
+    | _ ->
+      if String.starts_with ~prefix:"argument-" s then
+        let i =
+          List.hd (List.tl (String.split_on_char '-' s))
+        in
+        Parameter (int_of_string i)
+      else
+        raise (Invalid_argument ("kind not recognized: " ^ s))
+
+  type breadcrumb = { name : string ; href : string ; kind: breadcrumb_kind }
+
+  type t = {
+    uses_katex : bool;
+    toc : toc list;
+    breadcrumbs : breadcrumb list;
+    content : string
+  }
 
   let rec toc_of_json = function
     | `Assoc
@@ -219,27 +246,30 @@ module Documentation = struct
           ("children", `List children);
         ] ->
         { title; href; children = List.map toc_of_json children }
-    | _ -> raise (Invalid_argument "malformed toc file")
+    | _ -> raise (Invalid_argument "malformed toc field")
 
-  let toc_from_string s =
+  let breadcrumb_from_json = function
+    | `Assoc
+        [
+          ("name", `String name);
+          ("href", `String href);
+          ("kind", `String kind);
+        ] ->
+        { name ; href ; kind = breadcrumb_kind_from_string kind }
+    | _ -> raise (Invalid_argument "malformed breadcrumb field")
+
+  let doc_from_string s =
     match Yojson.Safe.from_string s with
-    | `List xs -> List.map toc_of_json xs
-    | _ -> raise (Invalid_argument "the toplevel json is not a list")
-
-  let module_path_from_path s =
-    let parse_item i =
-      match String.split_on_char '-' i with
-      | [ "index.html" ] | [ "" ] -> None
-      | [ module_name ] -> Some (`Module module_name)
-      | [ "module"; "type"; module_name ] -> Some (`ModuleType module_name)
-      | [ "argument"; arg_number; arg_name ] -> (
-          try Some (`Parameter (int_of_string arg_number, arg_name))
-          with Failure _ -> None)
-      | [ "class"; class_name ] -> Some (`Class class_name)
-      | [ "class"; "type"; class_name ] -> Some (`ClassType class_name)
-      | _ -> None
-    in
-    String.split_on_char '/' s |> List.filter_map parse_item
+      | `Assoc
+        [
+          ("uses_katex", `Bool uses_katex);
+          ("breadcrumbs", `List json_breadcrumbs);
+          ("toc", `List json_toc);
+          ("preamble", `String preamble);
+          ("content", `String content);
+        ] ->
+          {uses_katex; breadcrumbs = List.map breadcrumb_from_json json_breadcrumbs; toc = List.map toc_of_json json_toc; content = preamble ^ content}
+      | _ -> raise (Invalid_argument "malformed .html.json file")
 end
 
 module Module_map = Module_map
@@ -285,24 +315,14 @@ let documentation_page ~kind t path =
     documentation_path ~kind (Name.to_string t.name)
       (Version.to_string t.version)
   in
-  let module_path = Documentation.module_path_from_path path in
-  let path = root ^ path in
+  (*let module_path = Documentation.module_path_from_path path in*)
+  let path = root ^ path ^ ".json" in
   let* content = http_get path in
   match content with
   | Ok content ->
-      let+ toc =
-        let toc_path = Filename.remove_extension path ^ ".toc.json" in
-        let+ toc_content = http_get toc_path in
-        match toc_content with
-        | Ok toc_content -> (
-            try Documentation.toc_from_string toc_content
-            with Invalid_argument err ->
-              Logs.err (fun m -> m "Invalid toc: %s" err);
-              [])
-        | Error _ -> []
-      in
+      let doc = Documentation.doc_from_string content in
       Logs.info (fun m -> m "Found documentation page for %s" path);
-      Some Documentation.{ content; toc; module_path }
+      Lwt.return (Some doc )
   | Error _ -> Lwt.return None
 
 let maybe_file ~kind t filename =

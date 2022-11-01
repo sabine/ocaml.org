@@ -14,7 +14,7 @@ type kind =
   | Page
   | Leaf_page
   | Module_type
-  | Parameter
+  | Parameter of int
   | Class
   | Class_type
   | File

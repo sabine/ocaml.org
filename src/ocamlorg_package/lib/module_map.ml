@@ -6,14 +6,14 @@ type kind =
   | Page
   | Leaf_page
   | Module_type
-  | Parameter
+  | Parameter of int
   | Class
   | Class_type
   | File
 
 let prefix_of_kind = function
   | Module_type -> "module-type-"
-  | Parameter -> "argument-"
+  | Parameter i -> "argument-" ^ (Int.to_string i) ^ "-"
   | Class -> "class-"
   | Class_type -> "class-type-"
   | _ -> ""
@@ -57,11 +57,16 @@ let kind_of_yojson v =
   | "module" -> Module
   | "leaf-page" -> Leaf_page
   | "module-type" -> Module_type
-  | "argument" -> Parameter
   | "class" -> Class
   | "class-type" -> Class_type
   | "file" -> File
-  | _ -> raise (Type_error ("Variant not supported", v))
+  | s ->
+    if String.starts_with ~prefix:"argument-" s then
+      let i =
+        List.hd (List.tl (String.split_on_char '-' s))
+      in
+      Parameter (int_of_string i)
+    else raise (Type_error ("Variant not supported", v))
 
 let rec module_of_yojson ?parent v : Module.t =
   let name = member "name" v |> to_string in
