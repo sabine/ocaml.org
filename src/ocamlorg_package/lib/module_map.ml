@@ -1,6 +1,7 @@
 module String_map = Map.Make (String)
 
 type kind =
+  | Library
   | Module
   | Page
   | Leaf_page

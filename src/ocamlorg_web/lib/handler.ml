@@ -492,7 +492,9 @@ let package_doc t kind req =
             |> List.map (function
                  | `Module s -> s
                  | `ModuleType s -> s
-                 | `FunctorArgument (_, s) -> s)
+                 | `FunctorArgument (_, s) -> s
+                 | `Class s -> s
+                 | `ClassType s -> s)
             |> String.concat "."
           in
           let title =
@@ -532,8 +534,9 @@ let package_doc t kind req =
             in
             let kind =
               match kind with
-              | Module_map.Module -> Ocamlorg_frontend.Navmap.Module
+              | Module_map.Library -> Ocamlorg_frontend.Navmap.Library
               | Module_map.Page -> Ocamlorg_frontend.Navmap.Page
+              | Module_map.Module -> Ocamlorg_frontend.Navmap.Module
               | Module_map.Leaf_page -> Ocamlorg_frontend.Navmap.Leaf_page
               | Module_map.Module_type -> Ocamlorg_frontend.Navmap.Module_type
               | Module_map.Argument -> Ocamlorg_frontend.Navmap.Argument
@@ -558,16 +561,47 @@ let package_doc t kind req =
                             toc_of_module ~root module')
                    in
                    Ocamlorg_frontend.Navmap.
-                     { title; href; kind = Page; children })
+                     { title; href; kind = Library; children })
           in
           let toc = toc_of_toc doc.toc in
           let* map = Ocamlorg_package.module_map ~kind package in
-          let maptoc = toc_of_map ~root map in
+          let (maptoc : Ocamlorg_frontend.Navmap.toc list) = toc_of_map ~root map in
+          let (path : Ocamlorg_frontend.Breadcrumbs.path_item list) =
+            if doc.module_path != [] then
+              let module_path_to_breadcrumb_path_item p = match p with
+                | `Module s -> Ocamlorg_frontend.Breadcrumbs.Module s
+                | `ModuleType s -> ModuleType s
+                | `FunctorArgument (i, s) -> FunctorArgument (i, s)
+                | `Class s -> Class s
+                | `ClassType s -> ClassType s
+              in
+              let first_path_item = List.hd doc.module_path in
+              let first_path_item_title = match first_path_item with
+                | `Module s
+                | `ModuleType s
+                | `FunctorArgument (_, s) -> s
+                | `Class s -> s
+                | `ClassType s -> s
+              in
+              (* TODO: we need to know if it's a standalone page, if so, we can't
+                 find the lib path item, but need to find the docs path item *)
+              let library_path_item = List.find_opt (
+                fun (toc : Ocamlorg_frontend.Navmap.toc) ->
+                  List.exists (fun (t : Ocamlorg_frontend.Navmap.toc) ->
+                    t.title = first_path_item_title) toc.children) maptoc in
+              let path = List.map module_path_to_breadcrumb_path_item doc.module_path in
+              match library_path_item with
+                | Some (item) -> Library item.title :: path
+                | None -> Page "manual" :: path (* TODO: as soon as we have a more specific name for
+                        standalone docs pages, we should use that here *)
+            else
+              []
+          in
+          let package_meta = package_meta t package in
           let* documentation_status =
             Ocamlorg_package.documentation_status ~kind package
           in
-          let package_meta = package_meta t package in
           Dream.html
-            (Ocamlorg_frontend.package_documentation ~documentation_status
-               ~path:doc.module_path ~title ~toc ~maptoc ~content:doc.content
+            (Ocamlorg_frontend.package_documentation
+               ~path ~title ~toc ~maptoc ~documentation_status ~content:doc.content
                package_meta))
