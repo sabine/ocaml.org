@@ -1,51 +1,81 @@
 type tab =
   | Overview
   | Documentation
+  
+
+let packages_link =
+  <a class="block text-lg text-orange-600 font-bold" href="<%s Url.packages %>">Packages</a>
+
+let version_select ~tab ~(package : Package_intf.package) =
+  <select id="version" name="version" onchange="location = this.value;" class="sm:block w-full lg:w-auto appearance-none text-body-600 border rounded-md py-1 pl-3 border-gray-200 pr-14 h-full">
+    <% package.versions |> List.iter begin fun v -> %>
+    <option value="<%s (match tab with
+      | Documentation -> Url.package_doc package.name v ~page:"index.html"
+      | Overview -> Url.package_with_version package.name v) %>" <%s if v = package.version then "selected" else "" %>>
+      <%s v %>
+    </option>
+    <% end; %>
+  </select>
+
+let package_overview_link ~active ~(package : Package_intf.package) =
+  <a class="block font-semibold text-gray-900 <%s if active then "underline" else ""%>" href="<%s Url.package_with_version package.name package.version %>"><%s package.name %></a>
+
+let package_docs_link ~active ~(package: Package_intf.package) =
+  <a class="block <%s if active then "text-gray-900 underline" else ""%>" href="<%s Url.package_doc package.name package.version ~page:"index.html" %>">Documentation</a>
+
 
 let render
 ?styles
+?(wide=false)
+?(extra_header_html="")
 ~title
 ~description
+~(tab: tab)
 ~canonical
 ~(package : Package_intf.package)
-~tab
-inner =
-Layout.render
-?styles
-~wide:true
-~title
-~description
-~canonical @@
-<div class="bg-white">
-  <div class="py-5 lg:py-6">
-    <div class="container-fluid wide">
-      <div class="flex justify-between flex-col md:flex-row border-b border-gray-200">
-        <div class="flex flex-col items-baseline mb-6">
-          <h4 class="font-bold md:whitespace-nowrap flex items-center">
-            <a class="flex items-center" href="<%s Url.package_with_version package.name package.version %>">
-              <% if tab != Overview then ( %>
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
-                </svg>&nbsp;
-              <% ); %>
-              <%s package.name %>
-            </a>
-            <select id="version" name="version" onchange="location = this.value;" class="appearance-none cursor-pointer py-0 pt-1 border rounded-md border-transparent pr-8">
-              <% package.versions |> List.iter begin fun item -> %>
-              <option value="/p/<%s package.name %>/<%s item %>"<%s if item = package.version then "selected" else "" %>>
-                <%s item %>
-              </option>
-              <% end; %>
-            </select>
-          </h4>
-          <div class="text-body-400">
-            <%s package.description %>
-          </div>
-        </div>
-      </div>
-      <div class="py-6">
-        <%s! inner %>
-      </div>
+inner_html =
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <% (match description with | Some description -> %>
+    <meta name="description" content="<%s description %>">
+    <% | None -> ()); %>
+    <meta name="twitter:title" content="<%s title %>">
+    <% (match description with | Some description -> %>
+    <meta name="twitter:description" content="<%s description %>">
+    <% | None -> ()); %>
+    <meta property="og:site_name" content="OCaml">
+    <meta property="og:type" content="object">
+    <meta property="og:title" content="<%s title %>">
+    <% (match description with | Some description -> %>
+    <meta property="og:description" content="<%s description %>">
+    <% | None -> ()); %>
+    <% (match canonical with | Some canonical -> %>
+    <link rel="canonical" href="https://ocaml.org<%s canonical %>">
+    <% | None -> ()); %>
+    <meta name="theme-color" content="#fff">
+    <meta name="color-scheme" content="white">
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="manifest" href="/manifest.json">
+    <% (match styles with | Some styles -> styles |> List.iter (fun style -> %>
+    <link rel="stylesheet" href="<%s style %>">
+    <% ) | None -> %>
+    <link rel="stylesheet" href="/css/main.css">
+    <% ); %>
+    <link rel="stylesheet" href="/vendors/font-files/inter.css">
+    <script defer src="/vendors/alpine.min.js"></script>
+    <title><%s title %></title>
+  </head>
+
+  <body class="light">
+    <%s! Docs_header.render ~wide ~inner_html:((packages_link) ^ (package_overview_link ~package ~active:(tab == Overview)) ^ (version_select ~tab ~package) ^ extra_header_html) () %>
+
+    <div class="lg:pt-12">
+      <%s! inner_html %>
     </div>
-  </div>
-</div>
+
+    <%s! Docs_footer.render () %>
+  </body>
+</html>

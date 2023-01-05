@@ -173,6 +173,16 @@
   (action
    (run %{bin:dream_eml} %{deps} --workspace %{workspace_root})))
  (rule
+  (targets docs_footer.ml)
+  (deps docs_footer.eml)
+  (action
+   (run %{bin:dream_eml} %{deps} --workspace %{workspace_root})))
+ (rule
+  (targets docs_header.ml)
+  (deps docs_header.eml)
+  (action
+   (run %{bin:dream_eml} %{deps} --workspace %{workspace_root})))
+ (rule
   (targets navmap.ml)
   (deps navmap.eml)
   (action

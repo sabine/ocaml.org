@@ -39,51 +39,60 @@ let str_path =
         | Manual -> ""
         | Page s -> s) path
 in
-let path_page = match str_path |> String.concat "/" with
-                | "" -> None
-                | path -> Some (path ^ if String.contains path '.' then "" else "/index.html") in
 Package_layout.render
 ~title
-~description:(Printf.sprintf "%s %s: %s" package.name package.version package.description)
+~description:(Some(Printf.sprintf "%s %s: %s" package.name package.version package.description))
 ~package
-~canonical:(Url.package_doc package.name package.version ?page:path_page)
+~canonical:(Some(Url.package_doc package.name package.version))
 ~styles:["/css/main.css"; "/css/doc.css"]
-~tab:Documentation @@
-<div x-data="{ open: false, sidebar: window.innerWidth > 1024 && true, showOnMobile: false}" @resize.window="sidebar = window.innerWidth > 1024">
-  <button class="bg-primary-600  p-3 z-30 rounded-r-xl text-white shadow-md top-2/4 fixed lg:hidden left-0"
-    :class="sidebar ? 'pl-1 pr-2': ''" x-on:click="sidebar = ! sidebar">
-    <div class="transform transition-transform" :class='sidebar ? "" : "rotate-180" '>
-      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 17l-5-5m0 0l5-5m-5 5h12" />
-      </svg>
-    </div>
-  </button>
+~tab:Package_layout.Documentation
+~extra_header_html:(Package_layout.package_docs_link ~package ~active:true)
+~wide:true @@
+  <main>
+    <div class="bg-white" x-data="{ open: false, sidebar: window.innerWidth > 1024 && true, showOnMobile: false}" @resize.window="sidebar = window.innerWidth > 1024">
+      <div role="button" class="bg-primary-600  p-3 z-30 rounded-r-xl text-white shadow-md top-2/4 fixed lg:hidden left-0"
+        :class="sidebar ? 'pl-1 pr-2': ''" x-on:click="sidebar = ! sidebar">
+        <div class="transform transition-transform" :class='sidebar ? "" : "rotate-180" '>
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 17l-5-5m0 0l5-5m-5 5h12" />
+          </svg>
+        </div>
+      </div>
 
-  <div class="flex flex-col lg:flex-row md:gap-12">
-    <div
-      class="p-10 z-10 w-full bg-white flex-shrink-0 flex-col fixed h-screen overflow-auto lg:pr-0 lg:flex left-0 top-0 lg:sticky lg:w-72 lg:p-0 lg:pt-6 font-normal text-body-400"
-      x-show="sidebar" x-transition:enter="transition duration-200 ease-out"
-      x-transition:enter-start="-translate-x-full" x-transition:leave="transition duration-100 ease-in"
-      x-transition:leave-end="-translate-x-full">
-      <%s! sidebar ~str_path ~toc ~maptoc package %>
-    </div>
-    <div class="flex-1 z-0 z- w-full lg:max-w-3xl relative lg:pt-6">
-      <% if (maptoc != []) && (List.length path > 1) then (%>
-        <div class="text-body-400">
-          <%s! Breadcrumbs.render path %>
+      <div class="container-fluid wide">
+        <div class="flex flex-col lg:flex-row md:gap-12">
+          <div
+            class="p-10 z-10 w-full bg-white flex-shrink-0 flex-col fixed h-screen overflow-auto lg:pr-0 lg:flex left-0 top-0 lg:sticky lg:w-72 lg:p-0 lg:pt-6 font-normal text-body-400"
+            x-show="sidebar" x-transition:enter="transition duration-200 ease-out"
+            x-transition:enter-start="-translate-x-full" x-transition:leave="transition duration-100 ease-in"
+            x-transition:leave-end="-translate-x-full">
+            <%s! sidebar ~str_path ~toc ~maptoc package %>
+          </div>
+          <div class="flex-1 z-0 z- w-full lg:max-w-3xl relative lg:pt-6 pb-10">
+              <!-- this is where search will go
+              <input style="width:100%" class="mb-6 focus:ring-orange-500 focus:border-orange-500"
+                type="search" id="search_in_package" name="search_in_package"
+                placeholder="search in this package...">
+            -->
+            <% if (maptoc != []) && (List.length path > 1) then (%>
+                <div class="text-body-400">
+                  <%s! Breadcrumbs.render path %>
+                </div>
+              <% ); %>
+            <div class="odoc prose prose-orange">
+              <%s! content %>
+            </div>
+          </div>
+          <div class="hidden xl:flex top-0 sticky h-screen">
+            <div class="flex-col w-60">
+              <div class="h-screen overflow-scroll right-sidebar pt-6">
+                <div class="font-semibold text-gray-500 text-sm mb-4">ON THIS PAGE</div>
+                <%s! Toc.render toc %>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-      <% ); %>
-      <div class="odoc prose prose-orange">
-        <%s! content %>
       </div>
     </div>
-    <div class="hidden xl:flex top-0 sticky h-screen">
-      <div class="flex-col w-60">
-        <div class="h-screen overflow-scroll right-sidebar pt-6">
-          <div class="font-semibold text-gray-500 text-sm mb-4">ON THIS PAGE</div>
-          <%s! Toc.render toc %>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
+  </main>
