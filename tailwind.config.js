@@ -17,6 +17,13 @@ module.exports = {
           }
         }
       },
+      gridTemplateColumns: {
+        'learn-layout-lg': '15rem minmax(0, 1fr)',
+        'learn-layout-xl': '18rem minmax(0, 1fr) 15rem',
+
+        'package-documentation-lg': '15rem minmax(0, 1fr)',
+        'package-documentation-xl': '18rem minmax(0, 1fr) 15rem',
+      },
       maxWidth: {
         '8xl': '90rem',
       },
