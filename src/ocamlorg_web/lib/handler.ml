@@ -498,10 +498,11 @@ let package_doc t kind req =
             |> Option.value ~default:[]
           in
           let canonical_module =
-            let name_of_breadcrumb (b: Ocamlorg_package.Documentation.breadcrumb) = b.name in
-            doc.breadcrumbs
-            |> List.map name_of_breadcrumb
-            |> String.concat "."
+            let name_of_breadcrumb
+                (b : Ocamlorg_package.Documentation.breadcrumb) =
+              b.name
+            in
+            doc.breadcrumbs |> List.map name_of_breadcrumb |> String.concat "."
           in
           let title =
             match path with
@@ -546,6 +547,7 @@ let package_doc t kind req =
               | Module_map.Leaf_page -> Ocamlorg_frontend.Navmap.Leaf_page
               | Module_map.Module_type -> Ocamlorg_frontend.Navmap.Module_type
               | Module_map.Parameter _ -> Ocamlorg_frontend.Navmap.Parameter
+              | Module_map.OLDParameter -> Ocamlorg_frontend.Navmap.OLDParameter
               | Module_map.Class -> Ocamlorg_frontend.Navmap.Class
               | Module_map.Class_type -> Ocamlorg_frontend.Navmap.Class_type
               | Module_map.File -> Ocamlorg_frontend.Navmap.File
@@ -575,40 +577,43 @@ let package_doc t kind req =
             toc_of_map ~root map
           in
           let (path : Ocamlorg_frontend.Package_breadcrumbs.path) =
-            let breadcrumbs = List.tl (List.tl (List.tl (List.tl doc.breadcrumbs))) in
+            let breadcrumbs = doc.breadcrumbs in
             if breadcrumbs != [] then
-              let first_path_item = List.hd (breadcrumbs) in
-              let doc_breadcrumb_to_library_path_item (p: Ocamlorg_package.Documentation.breadcrumb) = match p.kind with
+              let first_path_item = List.hd breadcrumbs in
+              let doc_breadcrumb_to_library_path_item
+                  (p : Ocamlorg_package.Documentation.breadcrumb) =
+                match p.kind with
                 | Module -> Ocamlorg_frontend.Package_breadcrumbs.Module p.name
                 | ModuleType -> ModuleType p.name
                 | Parameter i -> Parameter (i, p.name)
                 | Class -> Class p.name
                 | ClassType -> ClassType p.name
-
-                | Page
-                | LeafPage
-                | File -> failwith "library paths do not contain Page, LeafPage or File"
+                | Page | LeafPage | File ->
+                    failwith
+                      "library paths do not contain Page, LeafPage or File"
               in
 
               match first_path_item.kind with
-                | Page
-                | LeafPage
-                | File -> Ocamlorg_frontend.Package_breadcrumbs.Documentation (Page first_path_item.name)
+              | Page | LeafPage | File ->
+                  Ocamlorg_frontend.Package_breadcrumbs.Documentation
+                    (Page first_path_item.name)
+              | Module | ModuleType | Parameter _ | Class | ClassType ->
+                  let library =
+                    List.find
+                      (fun (toc : Ocamlorg_frontend.Navmap.toc) ->
+                        List.exists
+                          (fun (t : Ocamlorg_frontend.Navmap.toc) ->
+                            t.title = first_path_item.name)
+                          toc.children)
+                      maptoc
+                  in
 
-                | Module
-                | ModuleType
-                | Parameter _
-                | Class
-                | ClassType ->
-                  let library = List.find (
-                    fun (toc : Ocamlorg_frontend.Navmap.toc) ->
-                      List.exists (fun (t : Ocamlorg_frontend.Navmap.toc) ->
-                        t.title = first_path_item.name) toc.children) maptoc in
-
-                  Ocamlorg_frontend.Package_breadcrumbs.Documentation (Library (library.title,
-                    List.map doc_breadcrumb_to_library_path_item breadcrumbs))
-            else
-              Ocamlorg_frontend.Package_breadcrumbs.Documentation Index
+                  Ocamlorg_frontend.Package_breadcrumbs.Documentation
+                    (Library
+                       ( library.title,
+                         List.map doc_breadcrumb_to_library_path_item
+                           breadcrumbs ))
+            else Ocamlorg_frontend.Package_breadcrumbs.Documentation Index
           in
           let package_meta = package_meta t package in
           Dream.html

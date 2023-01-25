@@ -202,7 +202,7 @@ let featured_packages t = t.featured_packages
 module Documentation = struct
   type toc = { title : string; href : string; children : toc list }
 
-  type breadcrumb_kind = 
+  type breadcrumb_kind =
     | Page
     | LeafPage
     | Module
@@ -212,7 +212,8 @@ module Documentation = struct
     | ClassType
     | File
 
-  let breadcrumb_kind_from_string s = match s with
+  let breadcrumb_kind_from_string s =
+    match s with
     | "page" -> Page
     | "leaf-page" -> LeafPage
     | "module" -> Module
@@ -221,21 +222,18 @@ module Documentation = struct
     | "class-type" -> ClassType
     | "file" -> File
     | _ ->
-      if String.starts_with ~prefix:"argument-" s then
-        let i =
-          List.hd (List.tl (String.split_on_char '-' s))
-        in
-        Parameter (int_of_string i)
-      else
-        raise (Invalid_argument ("kind not recognized: " ^ s))
+        if String.starts_with ~prefix:"argument-" s then
+          let i = List.hd (List.tl (String.split_on_char '-' s)) in
+          Parameter (int_of_string i)
+        else raise (Invalid_argument ("kind not recognized: " ^ s))
 
-  type breadcrumb = { name : string ; href : string ; kind: breadcrumb_kind }
+  type breadcrumb = { name : string; href : string; kind : breadcrumb_kind }
 
   type t = {
     uses_katex : bool;
     toc : toc list;
     breadcrumbs : breadcrumb list;
-    content : string
+    content : string;
   }
 
   let rec toc_of_json = function
@@ -251,16 +249,14 @@ module Documentation = struct
   let breadcrumb_from_json = function
     | `Assoc
         [
-          ("name", `String name);
-          ("href", `String href);
-          ("kind", `String kind);
+          ("name", `String name); ("href", `String href); ("kind", `String kind);
         ] ->
-        { name ; href ; kind = breadcrumb_kind_from_string kind }
+        { name; href; kind = breadcrumb_kind_from_string kind }
     | _ -> raise (Invalid_argument "malformed breadcrumb field")
 
   let doc_from_string s =
     match Yojson.Safe.from_string s with
-      | `Assoc
+    | `Assoc
         [
           ("uses_katex", `Bool uses_katex);
           ("breadcrumbs", `List json_breadcrumbs);
@@ -268,8 +264,64 @@ module Documentation = struct
           ("preamble", `String preamble);
           ("content", `String content);
         ] ->
-          {uses_katex; breadcrumbs = List.map breadcrumb_from_json json_breadcrumbs; toc = List.map toc_of_json json_toc; content = preamble ^ content}
-      | _ -> raise (Invalid_argument "malformed .html.json file")
+        let breadcrumbs =
+          List.tl
+            (List.tl
+               (List.tl
+                  (List.tl (List.map breadcrumb_from_json json_breadcrumbs))))
+        in
+
+        {
+          uses_katex;
+          breadcrumbs;
+          toc = List.map toc_of_json json_toc;
+          content = preamble ^ content;
+        }
+    | _ -> raise (Invalid_argument "malformed .html.json file")
+
+  let old_toc_from_string s =
+    match Yojson.Safe.from_string s with
+    | `List xs -> List.map toc_of_json xs
+    | _ -> raise (Invalid_argument "the toplevel json is not a list")
+
+  let old_module_path_from_path s =
+    let parse_item i =
+      match String.split_on_char '-' i with
+      | [ "index.html" ] | [ "" ] -> None
+      | [ module_name ] ->
+          Some { kind = Module; name = module_name; href = "#" }
+      | [ "module"; "type"; module_name ] ->
+          Some { kind = ModuleType; name = module_name; href = "#" }
+      | [ "argument"; arg_number; arg_name ] -> (
+          try
+            Some
+              {
+                kind = Parameter (int_of_string arg_number);
+                name = arg_name;
+                href = "#";
+              }
+          with Failure _ -> None)
+      | [ "class"; class_name ] ->
+          Some { kind = Class; name = class_name; href = "#" }
+      | [ "class"; "type"; class_name ] ->
+          Some { kind = ClassType; name = class_name; href = "#" }
+      | _ -> None
+    in
+    String.split_on_char '/' s |> List.filter_map parse_item
+
+  let old_doc path toc_content content =
+    let toc =
+      try old_toc_from_string toc_content
+      with Yojson.Json_error err ->
+        Logs.err (fun m -> m "Invalid toc: %s" err);
+        []
+    in
+    {
+      uses_katex = false;
+      toc;
+      breadcrumbs = old_module_path_from_path path;
+      content;
+    }
 end
 
 module Module_map = Module_map
@@ -279,6 +331,14 @@ let package_path ~kind name version =
   | `Package -> Config.documentation_url ^ "p/" ^ name ^ "/" ^ version ^ "/"
   | `Universe s ->
       Config.documentation_url ^ "u/" ^ s ^ "/" ^ name ^ "/" ^ version ^ "/"
+
+let new_documentation_path ~kind name version =
+  match kind with
+  | `Package ->
+      "https://docs-data.ocaml.org/current/" ^ "p/" ^ name ^ "/" ^ version ^ "/doc" ^ "/"
+  | `Universe s ->
+      "https://docs-data.ocaml.org/current/" ^ "u/" ^ s ^ "/" ^ name ^ "/" ^ version ^ "/doc"
+      ^ "/"
 
 let documentation_path ~kind name version =
   match kind with
@@ -311,19 +371,37 @@ let http_get url =
 
 let documentation_page ~kind t path =
   let open Lwt.Syntax in
-  let root =
-    documentation_path ~kind (Name.to_string t.name)
+  let new_root =
+    new_documentation_path ~kind (Name.to_string t.name)
       (Version.to_string t.version)
   in
-  (*let module_path = Documentation.module_path_from_path path in*)
-  let path = root ^ path ^ ".json" in
-  let* content = http_get path in
+  let full_path = new_root ^ path ^ ".json" in
+  let* content = http_get full_path in
   match content with
   | Ok content ->
       let doc = Documentation.doc_from_string content in
-      Logs.info (fun m -> m "Found documentation page for %s" path);
-      Lwt.return (Some doc )
-  | Error _ -> Lwt.return None
+      Logs.info (fun m -> m "Found documentation page for %s" full_path);
+      Lwt.return (Some doc)
+  | Error _ -> (
+      (* fall back to old documentation *)
+      let old_root =
+        documentation_path ~kind (Name.to_string t.name)
+          (Version.to_string t.version)
+      in
+      let full_path = old_root ^ path in
+      let* content = http_get full_path in
+      match content with
+      | Ok content ->
+          let toc_path = Filename.remove_extension full_path ^ ".toc.json" in
+          let* toc_content =
+            let+ toc_response = http_get toc_path in
+            match toc_response with
+            | Ok toc_content -> toc_content
+            | Error _ -> ""
+          in
+          Logs.info (fun m -> m "Found OLD documentation page for %s" full_path);
+          Lwt.return (Some (Documentation.old_doc path toc_content content))
+      | Error _ -> Lwt.return None)
 
 let maybe_file ~kind t filename =
   let open Lwt.Syntax in

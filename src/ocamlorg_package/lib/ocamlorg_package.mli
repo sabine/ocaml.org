@@ -67,7 +67,7 @@ end
 module Documentation : sig
   type toc = { title : string; href : string; children : toc list }
 
-  type breadcrumb_kind = 
+  type breadcrumb_kind =
     | Page
     | LeafPage
     | Module
@@ -77,13 +77,13 @@ module Documentation : sig
     | ClassType
     | File
 
-  type breadcrumb = { name : string ; href : string ; kind: breadcrumb_kind }
+  type breadcrumb = { name : string; href : string; kind : breadcrumb_kind }
 
-  type t =  {
-    uses_katex: bool;
+  type t = {
+    uses_katex : bool;
     toc : toc list;
     breadcrumbs : breadcrumb list;
-    content : string
+    content : string;
   }
 end
 
