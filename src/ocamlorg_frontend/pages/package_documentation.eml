@@ -64,7 +64,29 @@ Package_layout.render
       x-show="sidebar" x-transition:enter="transition duration-200 ease-out"
       x-transition:enter-start="-translate-x-full" x-transition:leave="transition duration-100 ease-in"
       x-transition:leave-end="-translate-x-full">
-      <%s! sidebar ~str_path ~toc ~maptoc package %>
+
+      <div class="package_documentation__tabs">
+        <!-- GUIDES -->
+        <input class="package_documentation__input" name="tabs" tabindex="1" type="radio" id="tabone" checked="checked">
+        <label class="package_documentation__label" for="tabone">DOCS</label>
+        <div class="package_documentation__panel" tabindex="1">
+          <p>Coming soon...</p>
+        </div>
+
+        <!-- MODULES -->
+        <input class="package_documentation__input" tabindex="1" name="tabs" type="radio" id="tabtwo">
+        <label class="package_documentation__label" for="tabtwo">MODULES</label>
+        <div class="package_documentation__panel" tabindex="1">
+          <%s! sidebar ~str_path ~toc ~maptoc package %>
+        </div>
+
+        <!-- CONTENT -->
+        <input class="xl:hidden package_documentation__input" tabindex="1" name="tabs" type="radio" id="tabthree">
+        <label class="xl:hidden package_documentation__label" for="tabthree" >INDEX</label>
+        <div class="xl:hidden package_documentation__panel" tabindex="1">
+          <p>Coming soon...</p>
+        </div>
+      </div>
     </div>
     <div class="flex-1 z-0 z- min-w-0 lg:max-w-3xl lg:pt-6" id="htmx-content">
       <div class="odoc prose prose-orange">
