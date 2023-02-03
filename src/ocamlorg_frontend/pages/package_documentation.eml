@@ -1,25 +1,21 @@
-let sidebar
+let module_explorer
 ~str_path
-~toc
 ~maptoc
 (package : Package_intf.package)
 =
   <div class="flex flex-col font-normal text-body-400" id="htmx-sidebar">
-    <% if str_path != [] && toc != [] then ( %>
-    <a title="Package <%s package.name %>" class="xl:hidden py-1 font-regular text-body-600 hover:text-orange-600 transition-colors mb-6" href="<%s Url.package_doc package.name package.version %>">
-      back to documentation root
-    </a>
-    <% ); %>
-    <% if (toc != []) then ( %>
-    <div class="xl:hidden mb-6 xl:mb-0">
-    <%s! Toc.render toc %>
-    </div><% ); %>
     <div class="space-y-6 flex flex-col overflow-x:scroll">
       <div>
       <%s! Navmap.render ~package ~path:str_path maptoc %>
       </div>
     </div>
   </div>
+
+let on_this_page
+~toc
+=
+  <div class="font-semibold text-gray-500 text-sm mb-4">ON THIS PAGE</div>
+  <%s! Toc.render toc %>
 
 let render
 ~title
@@ -63,31 +59,99 @@ Package_layout.render
 
   <div class="flex flex-col lg:flex-row md:gap-12">
     <div
-      class="p-10 z-20 bg-white flex-col fixed h-screen overflow-auto lg:pr-0 lg:flex left-0 top-0 lg:sticky w-72 lg:p-0 lg:pt-6"
+      class="p-10 z-20 bg-white flex-col fixed h-screen lg:pr-0 lg:flex left-0 top-0 lg:sticky w-72 lg:p-0"
       x-show="sidebar" x-transition:enter="transition duration-200 ease-out"
       x-transition:enter-start="-translate-x-full" x-transition:leave="transition duration-100 ease-in"
       x-transition:leave-end="-translate-x-full">
 
-      <div class="package_documentation__tabs">
-        <!-- GUIDES -->
-        <input class="package_documentation__input" name="tabs" tabindex="1" type="radio" id="tabone" checked="checked">
-        <label class="package_documentation__label" for="tabone">DOCS</label>
-        <div class="package_documentation__panel" tabindex="1">
+      <div x-cloak x-data="{ currentTab: 0, totalTabs: 3 }">
+        <nav
+          role="tablist"
+          class="package_documentation__tabs"
+          aria-label="tabs"
+        >
+          <button 
+            role="tab"
+            id="first-tab"
+            x-ref="tab-0"
+            aria-controls="first-tab-panel"
+            :aria-selected="currentTab === 0"
+            class="package_documentation__tab"
+            :class="currentTab === 0 && 'active'"
+            @click="currentTab = 0"
+            @keyup.right="currentTab = (currentTab + 1) % totalTabs; $nextTick(() => $refs['tab-'+currentTab].focus())"
+            @keyup.left="currentTab = (currentTab + totalTabs - 1) % totalTabs; $nextTick(() => $refs['tab-'+currentTab].focus())"
+            :tabindex="currentTab === 0 ? '0' : '-1'"
+          >
+            DOCS
+          </button>
+          <button
+            role="tab"
+            id="second-tab"
+            x-ref="tab-1"
+            aria-controls="second-tab-panel"
+            :aria-selected="currentTab === 2"
+            class="package_documentation__tab"
+            :class="currentTab === 1 && 'active'"
+            @click="currentTab = 1"
+            @keyup.right="currentTab = (currentTab + 1) % totalTabs; $nextTick(() => $refs['tab-'+currentTab].focus())"
+            @keyup.left="currentTab = (currentTab + totalTabs - 1) % totalTabs; $nextTick(() => $refs['tab-'+currentTab].focus())"
+            :tabindex="currentTab === 1 ? '0' : '-1'"
+          >
+            MODULES
+          </button>
+          <button
+            role="tab"
+            id="third-tab"
+            x-ref="tab-2"
+            aria-controls="third-tab-panel"
+            :aria-selected="currentTab === 3"
+            class="xl:opacity-0 xl:absolute package_documentation__tab"
+            :class="currentTab === 2 && 'active'"
+            @click="currentTab = 2"
+            @keyup.right="currentTab = (currentTab + 1) % totalTabs; $nextTick(() => $refs['tab-'+currentTab].focus())"
+            @keyup.left="currentTab = (currentTab + totalTabs - 1) % totalTabs; $nextTick(() => $refs['tab-'+currentTab].focus())"
+            :tabindex="currentTab === 2 ? '0' : '-1'"
+          >
+            INDEX
+          </button>
+        </nav><!-- /role=tablist -->
+        <div
+          role="tabpanel"
+          id="first-tab-panel"
+          x-ref="firstTabPanel"
+          aria-labelledby="first-tab"
+          x-show="currentTab === 0"
+          tabindex="0"
+          @keyup.shift.tab="currentTab = 0; $nextTick(() => $refs['tab-'+currentTab].focus())"
+        >
           <p>Coming soon...</p>
         </div>
-
-        <!-- MODULES -->
-        <input class="package_documentation__input" tabindex="1" name="tabs" type="radio" id="tabtwo">
-        <label class="package_documentation__label" for="tabtwo">MODULES</label>
-        <div class="package_documentation__panel" tabindex="1">
-          <%s! sidebar ~str_path ~toc ~maptoc package %>
+        <div
+          role="tabpanel"
+          id="second-tab-panel"
+          x-ref="secondTabPanel"
+          aria-labelledby="second-tab"
+          x-show="currentTab === 1"
+          tabindex="0"
+          @keyup.shift.tab="currentTab = 1; $nextTick(() => $refs['tab-'+currentTab].focus())"
+        >
+          <div class="overflow-auto h-screen pt-6" tabindex="0">
+            <%s! module_explorer ~str_path ~maptoc package %>
+          </div>
         </div>
-
-        <!-- CONTENT -->
-        <input class="xl:hidden package_documentation__input" tabindex="1" name="tabs" type="radio" id="tabthree">
-        <label class="xl:hidden package_documentation__label" for="tabthree" >INDEX</label>
-        <div class="xl:hidden package_documentation__panel" tabindex="1">
-          <p>Coming soon...</p>
+        <div
+          role="tabpanel" 
+          id="third-tab-panel"
+          x-ref="thirdTabPanel"
+          aria-labelledby="third-tab"
+          x-show="currentTab === 2"
+          tabindex="0"
+          @keyup.shift.tab="currentTab = 2; $nextTick(() => $refs['tab-'+currentTab].focus())"
+        >
+          <div class="overflow-auto h-screen pt-6" tabindex="0" id="htmx-on-this-page">
+            <%s! on_this_page ~toc %>
+          </div>
         </div>
       </div>
     </div>
@@ -101,9 +165,8 @@ Package_layout.render
         <%s! content %>
       </div>
     </div>
-    <div class="hidden xl:flex top-0 sticky h-screen flex-col w-60 overflow-auto right-sidebar" id="htmx-right-sidebar">
-      <div class="font-semibold text-gray-500 text-sm mb-4">ON THIS PAGE</div>
-      <%s! Toc.render toc %>
+    <div class="hidden xl:flex top-0 sticky h-screen flex-col w-60 overflow-auto lg:pt-6" id="htmx-right-sidebar">
+      <%s! on_this_page ~toc %>
     </div>
   </div>
 </div>

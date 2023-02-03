@@ -1,30 +1,20 @@
 .package_documentation__tabs {
   display: flex;
-  flex-wrap: wrap;
 }
 
-.package_documentation__input {
-  position: absolute;
-  opacity: 0;
-}
-
-.package_documentation__label {
+.package_documentation__tab {
   width: 33.333333%;
   cursor: pointer;
-  @apply py-2 border-b-4 border-gray-200;
+  @apply py-2 border-b-4 border-gray-200 text-gray-600;
   text-align: center;
 }
 
-.package_documentation__input:checked + .package_documentation__label {
-  @apply border-primary-600 border-b-4;
+@media (min-width: 1280px) {
+  .package_documentation__tab {
+    width: 50%;
+  } 
 }
 
-.package_documentation__panel {
-  display: none;
-  width: 100%;
-  order: 99;
-}
-
-.package_documentation__input:checked + .package_documentation__label + .package_documentation__panel {
-  display: block;
+.package_documentation__tab.active {
+  @apply border-primary-600 border-b-4 text-gray-800;
 }
