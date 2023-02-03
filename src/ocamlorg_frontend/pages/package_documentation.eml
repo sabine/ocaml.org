@@ -1,20 +1,21 @@
-let sidebar
+let module_explorer
 ~str_path
-~toc
 ~maptoc
 (package : Package_intf.package)
 =
   <div class="flex flex-col font-normal text-body-400" id="htmx-sidebar">
-    <% if (toc != []) then ( %>
-    <div class="xl:hidden mb-6 xl:mb-0">
-    <%s! Toc.render toc %>
-    </div><% ); %>
     <div class="space-y-6 flex flex-col overflow-x:scroll">
       <div>
       <%s! Navmap.render ~package ~path:str_path maptoc %>
       </div>
     </div>
   </div>
+
+let on_this_page
+~toc
+=
+  <div class="font-semibold text-gray-500 text-sm mb-4">ON THIS PAGE</div>
+  <%s! Toc.render toc %>
 
 let render
 ~title
@@ -60,41 +61,67 @@ Package_layout.render
 
   <div class="flex flex-col lg:flex-row md:gap-12">
     <div
-      class="p-10 z-20 bg-white flex-col fixed h-screen overflow-auto lg:pr-0 lg:flex left-0 top-0 lg:sticky w-72 lg:p-0 lg:pt-6"
+      class="p-10 z-20 bg-white flex-col fixed h-screen lg:pr-0 lg:flex left-0 top-0 lg:sticky w-72 lg:p-0"
       x-show="sidebar" x-transition:enter="transition duration-200 ease-out"
       x-transition:enter-start="-translate-x-full" x-transition:leave="transition duration-100 ease-in"
       x-transition:leave-end="-translate-x-full">
 
       <div class="package_documentation__tabs">
         <!-- GUIDES -->
-        <input class="package_documentation__input" name="tabs" tabindex="1" type="radio" id="tabone" checked="checked">
+        <input class="package_documentation__input" name="tabs" type="radio" id="tabone">
         <label class="package_documentation__label" for="tabone">DOCS</label>
-        <div class="package_documentation__panel" tabindex="1">
+        <div class="package_documentation__panel overflow-auto h-screen pt-6" tabindex="0">
           <p>Coming soon...</p>
         </div>
 
         <!-- MODULES -->
-        <input class="package_documentation__input" tabindex="1" name="tabs" type="radio" id="tabtwo">
+        <input class="package_documentation__input" name="tabs" type="radio" id="tabtwo" checked="checked">
         <label class="package_documentation__label" for="tabtwo">MODULES</label>
-        <div class="package_documentation__panel" tabindex="1">
-          <%s! sidebar ~str_path ~toc ~maptoc package %>
+        <div class="package_documentation__panel overflow-auto h-screen pt-6" tabindex="0">
+          <%s! module_explorer ~str_path ~maptoc package %>
         </div>
 
         <!-- CONTENT -->
-        <input class="xl:hidden package_documentation__input" tabindex="1" name="tabs" type="radio" id="tabthree">
+        <input class="package_documentation__input" name="tabs" type="radio" id="tabthree">
         <label class="xl:hidden package_documentation__label" for="tabthree" >INDEX</label>
-        <div class="xl:hidden package_documentation__panel" tabindex="1">
-          <p>Coming soon...</p>
+        <div class="package_documentation__panel overflow-auto h-screen pt-6" tabindex="0" id="htmx-on-this-page">
+          <%s! on_this_page ~toc %>
         </div>
       </div>
     </div>
-    <div class="flex-1 z-0 z- min-w-0 lg:max-w-3xl lg:pt-6" id="htmx-content">
+    <div class="flex-1 z-0 z- min-w-0 lg:max-w-3xl" id="htmx-content">
       <div class="odoc prose prose-orange">
+        <div class="relative w-full text-gray-400 focus-within:text-gray-600">
+          <input
+            name="q"
+            id="package_search"
+            class="w-full appearance-none focus:ring-orange-500 focus:border-primary-600 text-body-600 border py-3 pr-6 border-gray-200 pl-14 h-full"
+            placeholder="Search in this package..."
+            type="search"
+            value="">
+          <div class="absolute h-full flex items-center pl-6 opacity-60 left-0 top-0">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-5 w-5 text-body-400"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="rgba(26, 32, 44, 1)"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+              />
+            </svg>
+          </div>
+        </div>
+
         <%s! content %>
       </div>
     </div>
-    <div class="hidden xl:flex top-0 sticky h-screen flex-col w-60 overflow-auto right-sidebar" id="htmx-right-sidebar">
-      <%s! Toc.render toc %>
+    <div class="hidden xl:flex top-0 sticky h-screen flex-col w-60 overflow-auto lg:pt-6" id="htmx-right-sidebar">
+      <%s! on_this_page ~toc %>
     </div>
   </div>
 </div>

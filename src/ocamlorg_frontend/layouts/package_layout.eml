@@ -27,7 +27,7 @@ Layout.render
           <% ); %>
         </div>
       </div>
-      <div class="py-6">
+      <div class="pb-6">
         <%s! inner %>
       </div>
     </div>

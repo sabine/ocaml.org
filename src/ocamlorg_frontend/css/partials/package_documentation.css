@@ -11,12 +11,18 @@
 .package_documentation__label {
   width: 33.333333%;
   cursor: pointer;
-  @apply py-2 border-b-4 border-gray-200;
+  @apply py-2 border-b-4 border-gray-200 text-gray-600;
   text-align: center;
 }
 
+@media (min-width: 1280px) {
+  .package_documentation__label {
+    width: 50%;
+  }
+}
+
 .package_documentation__input:checked + .package_documentation__label {
-  @apply border-primary-600 border-b-4;
+  @apply border-primary-600 border-b-4 text-gray-800;
 }
 
 .package_documentation__panel {
