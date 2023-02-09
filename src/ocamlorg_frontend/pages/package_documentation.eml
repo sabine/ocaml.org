@@ -11,12 +11,6 @@ let module_explorer
     </div>
   </div>
 
-let on_this_page
-~toc
-=
-  <div class="font-semibold text-gray-500 text-sm mb-4">ON THIS PAGE</div>
-  <%s! Toc.render toc %>
-
 let render
 ~title
 ~(path: Package_breadcrumbs.path)
@@ -69,59 +63,54 @@ Package_layout.render
       <div class="package_documentation__tabs">
         <!-- GUIDES -->
         <input class="package_documentation__input" name="tabs" type="radio" id="tabone">
-        <label class="package_documentation__label" for="tabone">DOCS</label>
+        <div class="package_documentation__label_wrapper">
+          <label class="package_documentation__label" for="tabone">DOCS</label>
+        </div>
         <div class="package_documentation__panel overflow-auto h-screen pt-6" tabindex="0">
           <p>Coming soon...</p>
         </div>
 
         <!-- MODULES -->
         <input class="package_documentation__input" name="tabs" type="radio" id="tabtwo" checked="checked">
-        <label class="package_documentation__label" for="tabtwo">MODULES</label>
+        <div class="package_documentation__label_wrapper">
+          <label class="package_documentation__label" for="tabtwo">MODULES</label>
+        </div>
         <div class="package_documentation__panel overflow-auto h-screen pt-6" tabindex="0">
           <%s! module_explorer ~str_path ~maptoc package %>
         </div>
 
         <!-- CONTENT -->
         <input class="package_documentation__input" name="tabs" type="radio" id="tabthree">
-        <label class="xl:hidden package_documentation__label" for="tabthree" >INDEX</label>
+        <div class="xl:hidden package_documentation__label_wrapper">
+          <label class="package_documentation__label" for="tabthree" >INDEX</label>
+        </div>
         <div class="package_documentation__panel overflow-auto h-screen pt-6" tabindex="0" id="htmx-on-this-page">
-          <%s! on_this_page ~toc %>
+          <%s! Toc.render toc %>
         </div>
       </div>
     </div>
-    <div class="flex-1 z-0 z- min-w-0 lg:max-w-3xl" id="htmx-content">
-      <div class="odoc prose prose-orange">
-        <div class="relative w-full text-gray-400 focus-within:text-gray-600">
-          <input
-            name="q"
-            id="package_search"
-            class="w-full appearance-none focus:ring-orange-500 focus:border-primary-600 text-body-600 border py-3 pr-6 border-gray-200 pl-14 h-full"
-            placeholder="Search in this package..."
-            type="search"
-            value="">
-          <div class="absolute h-full flex items-center pl-6 opacity-60 left-0 top-0">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              class="h-5 w-5 text-body-400"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="rgba(26, 32, 44, 1)"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-              />
-            </svg>
-          </div>
-        </div>
-
+    <div class="flex-1 z-0 z- min-w-0 lg:max-w-3xl">
+      <div class="flex items-center justify-center">
+        <input
+          type="search"
+          name="q" id="q2"
+          class="package__search w-full focus:border-gray-800 text-gray-800 border-primary-600 h-10 appearance-none px-4 py-1"
+          value=""
+          placeholder="Search in this package...">
+        <button aria-label="search" class="h-10 bg-primary-600 text-white flex items-center justify-center px-4">
+          <svg class="w-6 h-6 text-white" fill="currentColor" xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24">
+            <path
+                d="M16.32 14.9l5.39 5.4a1 1 0 0 1-1.42 1.4l-5.38-5.38a8 8 0 1 1 1.41-1.41zM10 16a6 6 0 1 0 0-12 6 6 0 0 0 0 12z" />
+          </svg>
+        </button>
+      </div>
+      <div class="odoc prose prose-orange pt-6" id="htmx-content">
         <%s! content %>
       </div>
     </div>
     <div class="hidden xl:flex top-0 sticky h-screen flex-col w-60 overflow-auto lg:pt-6" id="htmx-right-sidebar">
-      <%s! on_this_page ~toc %>
+      <%s! Toc.render toc %>
     </div>
   </div>
 </div>

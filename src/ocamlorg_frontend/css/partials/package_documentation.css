@@ -8,20 +8,23 @@
   opacity: 0;
 }
 
-.package_documentation__label {
+.package_documentation__label_wrapper {
   width: 33.333333%;
+  @apply border-b border-gray-200 text-gray-600;
+}
+
+.package_documentation__label {
   cursor: pointer;
-  @apply py-2 border-b-4 border-gray-200 text-gray-600;
-  text-align: center;
+  @apply flex justify-center pt-2 pb-1 border-b-4 border-transparent text-gray-600;
 }
 
 @media (min-width: 1280px) {
-  .package_documentation__label {
+  .package_documentation__label_wrapper {
     width: 50%;
   }
 }
 
-.package_documentation__input:checked + .package_documentation__label {
+.package_documentation__input:checked + .package_documentation__label_wrapper > .package_documentation__label {
   @apply border-primary-600 border-b-4 text-gray-800;
 }
 
@@ -31,6 +34,6 @@
   order: 99;
 }
 
-.package_documentation__input:checked + .package_documentation__label + .package_documentation__panel {
+.package_documentation__input:checked + .package_documentation__label_wrapper + .package_documentation__panel {
   display: block;
 }
