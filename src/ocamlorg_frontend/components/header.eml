@@ -20,7 +20,7 @@ let render
 ?(active_top_nav_item: active_nav_item option)
 ()
 =
-<header
+<header id="header"
   class="h-20 flex items-center dark:bg-[#171717]"
   x-data="{ open: false }">
   <nav class="container-fluid wide header flex justify-between items-center">
