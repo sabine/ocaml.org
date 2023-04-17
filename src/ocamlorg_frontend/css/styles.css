@@ -122,7 +122,7 @@ body {
 }
 
 .prose :is(h1:target, h2:target, h3:target, h4:target, h5:target, h6:target) {
-  background:rgb(255, 243, 173);
+  @apply bg-primary-200 text-primary-700;
   padding: 0.2rem 0rem;
 }
 

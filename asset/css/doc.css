@@ -53,9 +53,7 @@ div.odoc *:hover > a.anchor:hover {
 
 /* selected anchor target highlighting */
 
-div.odoc .spec:target {
-  background: rgb(255, 248, 206);
-}
+div.odoc .spec:target,
 div.odoc .anchored:target,
 div.odoc h1:target,
 div.odoc h2:target,
@@ -63,12 +61,8 @@ div.odoc h3:target,
 div.odoc h4:target,
 div.odoc h5:target,
 div.odoc h6:target {
-  background: rgb(255, 243, 173);
-}
-
-div.odoc .spec:target a,
-div.odoc .anchored:target a {
-  color: rgb(204, 48, 0);
+  background-color: #ee6a1a26; /* bg-primary-200 */
+  color: rgb(220 84 2/var(--tw-text-opacity)); /* text-primary-700 */
 }
 
 div.odoc *[id] {
