@@ -1,4 +1,4 @@
-FROM ocaml/opam:alpine-3.17-ocaml-4.14 as build
+FROM ocaml/opam:alpine-3.17-ocaml-5.0 as build
 
 # Install system dependencies
 RUN sudo apk update && sudo apk add --update git-lfs libev-dev openssl-dev gmp-dev oniguruma-dev inotify-tools

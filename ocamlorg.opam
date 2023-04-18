@@ -18,7 +18,7 @@ homepage: "https://github.com/ocaml/ocaml.org"
 doc: "https://ocaml.github.io/ocaml.org/"
 bug-reports: "https://github.com/ocaml/ocaml.org/issues"
 depends: [
-  "ocaml" {>= "4.14.0"}
+  "ocaml" {>= "5.0.0"}
   "dune" {>= "3.6"}
   "cohttp"
   "cohttp-lwt-unix"
@@ -39,7 +39,7 @@ depends: [
   "lwt"
   "tailwindcss"
   "hilite"
-  "river"
+  "river" {= "0.2"}
   "syndic"
   "alcotest" {with-test}
   "mdx" {with-test & >= "1.10.0"}

@@ -31,7 +31,7 @@
   "This repository contains the server that serves the official OCaml website at https://ocaml.org.")
  (depends
   (ocaml
-   (>= 4.14.0))
+   (>= 5.0.0))
   dune
   cohttp
   cohttp-lwt-unix
@@ -56,7 +56,7 @@
   lwt
   tailwindcss
   hilite
-  river
+  (river (= 0.2))
   syndic
   (alcotest :with-test)
   (mdx
