@@ -3,6 +3,17 @@ let of_url_path = File.of_url_path
 module Media = struct
   let digest = Media.hash
   let read = Media.read
+
+  (* given the path of a file from `media.ml`: 1. looks up the file's digest in
+    and 2. returns the corresponding digest URL for use in templates *)
+  let url filepath =
+    let digest = Option.map Dream.to_base64url (Media.hash filepath) in
+    if digest = None then
+      raise
+        (Invalid_argument
+            (Fmt.str "'%s' is rendered via Media.url, but it doesn't exist!"
+              filepath));
+    "/media" ^ File.to_url_path ?digest filepath
 end
 
 module Asset = struct
