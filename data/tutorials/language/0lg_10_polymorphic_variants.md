@@ -8,35 +8,16 @@ category: "Language"
 
 # Polymorphic Variants
 
-## Introduction
+This tutorial covers how and when to use polymorphic variants, what common error messages relating to polymorphic variants mean and how to refactor between regular variants and polymorphic variants.
 
-This tutorial teaches you how to use polymorphic variants. This includes starting to use them, maintaining a project already using them, deciding when to use them or not, and balancing their unique benefits against their drawbacks.
-
-Product types and data types such as `option` and `list` are variants and polymorphic. In this tutorial, they are called _simple variants_ to distinguish them from the _polymorphic variants_ presented here. Simple variants and polymorphic variants are close siblings. Their values are both introduced using labels that may carry data. Both can be recursive and have type parameters. By the way, don't trust a [LLM](https://en.wikipedia.org/wiki/Large_language_model) chatbot if it tells you polymorphic variants are dynamically typed; it is a hallucination. Like simple variants, polymorphic variants are type-checked statically.
-
-However, they are type-checked using different algorithms, which results in a different programming experience. The relationship between value and type (written with the colon symbol `:`) is changed with polymorphic variants. Usually, values are thought of as inhabitants of the type, which is regarded as a set-like thing. Rather, polymorphic variant values should be considered as pieces of data that several functions can accept. Polymorphic variants types are a way to express compatibility relationships between those functions. The approach in this tutorial is to build sense from experience using features of polymorphic variants.
-
-**Prerequisites**: This is an intermediate-level tutorial. It is required to have completed tutorials on [Functions and Values](/docs/functions-and-values), [Basic Data Types](/docs/basic-data-types), and [Lists](/docs/lists) to begin this one.
-
-### Origin and Context
-
-Polymorphic variants originate from Jacques Garrigue's work on Objective Label, which was [first published in 1996](https://caml.inria.fr/pub/old_caml_site/caml-list-ar/0533.html). It became part of standard Objective Caml with [release 3.0](https://caml.inria.fr/distrib/ocaml-3.00/) in 2000, along with labelled and optional function arguments. They were introduced to give more precise types in [LablTk](https://garrigue.github.io/labltk/).
-
-The core type system of OCaml follows a [_nominal_](https://en.wikipedia.org/wiki/Nominal_type_system) discipline. Variants must be explicitly declared before being used. The typing discipline used for polymorphic variants and classes is different, as it is [_structural_](https://en.wikipedia.org/wiki/Structural_type_system).
-
-In the nominal approach of typing, types are first defined; later, when the type of an expression is inferred, three outcomes are possible:
-1. If a matching type is found, it becomes the inferred type.
-1. If any type can be applied, a type parameter is created.
-1. If typing inconsistencies are found, an error is raised.
-
-This is very similar to solving an equation in mathematics. Equations accept either zero, exactly one, several, or infinitely many numbers as solutions. Nominal type-checking finds that either zero, exactly one, or any type can be used in an expression.
-
-In the structural approach of typing, type definitions are optional, so they can be omitted. Type-checking an expression constructs a data structure that represents the types that are compatible with it. These data structures are displayed as type expressions sharing a resemblance with simple variants.
+**Prerequisites**:
+- [Functions and Values](/docs/functions-and-values)
+- [Basic Data Types](/docs/basic-data-types)
+- [Lists](/docs/lists)
 
 <!--
-### Learning Goals
+Learning Goals
 
-The goal of this tutorial is to make the reader acquire the following capabilities:
 - Write polymorphic variants using code, from scratch, using mainstream features
 - Maintain existing code that is using polymorphic variants
 - Sort out polymorphic variant types and errors
@@ -47,15 +28,71 @@ The goal of this tutorial is to make the reader acquire the following capabiliti
 - Choose to use polymorphic variants when really needed
 -->
 
-### A Note on Simple Variants and Polymorphism
+# What is a Polymorphic Variant?
 
-The type expression `'a list` does not designate a single type; it designates a family of types, basically all the types that can be created by substituting an actual type to type parameter `'a`. The type expressions `int list`, `bool option list`, or `(float -> float) list list` are real types. They're actual members of the _type family_ `'a list`. Types are intended to have inhabitants, type families don't.
+A _polymorphic variant_ is a more flexible kind of variant type that
 
-The identifiers `list`, `option`, and others are _type operators_. Just like functions, they take parameters. Although these parameters are not values, they are types. Their results aren't values but types, too.
+1. does not need to be defined upfront, and
+2. can be extended or reduced by constructors (we call them _tags_) and merge with other polymorphic variants ad-hoc.
 
-Simple variants are polymorphic, but not in the same sense as polymorphic variants.
-- Simple variants have [parametric polymorphism](https://en.wikipedia.org/wiki/Parametric_polymorphism)
-- Polymorphic variants have a form of [structural polymorphism](https://en.wikipedia.org/wiki/Structural_type_system)
+To see what this means, let's look at a regular variant type:
+```ocaml
+# type msg = Hello | Goodbye of string;;
+type msg = Hello | Goodbye of string
+
+# Hello;;
+- : msg = Hello
+```
+
+A type like this needs to be defined and given a name before it can be used, and only the constructors you explicitly list here are part of the type. In this example, the constructors are `Hello_world` and `Goodbye`.
+
+Polymorphic variants can be defined as values without defining a type upfront. A polymorphic variant constructor is always prefixed with a backtick:
+```ocaml
+# `Hello
+- : [> `Hello ] = `Hello
+
+# `Goodbye "sabine";;
+- : [> `Goodbye of string ] = `Goodbye "sabine"
+```
+
+The interesting thing to see here is that the type checker infers the type ```[> `Hello ]``` for the `` `Hello`` value, and the type ``[> `Goodbye of string]`` for the expression `` `Goodbye "sabine"``. The `[>` symbol indicates an _open_ polymorphic variant type, meaning it can be extended with more constructors.
+
+Let's look at a function that takes a polymorphic variant:
+```ocaml
+# let greet msg = match msg with
+    | `Hello -> "Hi"
+    | `Goodbye s -> "Bye " ^ s;;
+val greet : [< `Goodbye of string | `Hello ] -> string = <fun>
+
+# greet (`Goodbye "sabine");;
+- : string = "Bye sabine"
+```
+
+See how the type of `greet` looks different, there's a `<` symbol instead of a `>`. The `[<` symbol indicates that a polymorphic variant type is _closed_, meaning that at most the listed constructors are allowed.
+
+Polymorphic variants can be merged and extended, and the same constructor can appear in and be shared between different polymorphic variant types, as long as it has the same structure. 
+
+For example, we can modify the `greet` function and add another constructor `` `Thanks``:
+```ocaml
+# let extended_greet msg = match msg with
+    | `Thanks -> "Thank you"
+    | `Hello -> "Hi"
+    | `Goodbye s -> "Bye " ^ s;;
+val extended_greet : [< `Goodbye of string | `Hello | `Thanks ] -> string = <fun>
+```
+
+Polymorphic variants are useful for scenarios where type definitions need to be flexible and evolve over time, such as plugin architectures or when interacting with JSON and other dynamic data structures.
+
+However, the type errors you may encounter when using polymorphic variants tend to me more complex than when using regular variant types. Also, there is a runtime cost associated with polymorphic variants since their memory representation, as well as pattern matching on them, cannot be optimized by the compiler to the same extent as for regular variants.
+
+<!--
+The same polymorphic variant constructor in a type-signature will be wrapped in square brackets:
+`` [ `Hello_world ] ``.
+-->
+
+
+
+<!-- WE ARE HERE -->
 
 ## A First Example
 
@@ -698,8 +735,43 @@ Polymorphic variants should not be considered as an improvement over simple vari
 
 It is important to be comfortable with polymorphic variants, many projects are using them. Most often, only a fraction of their expressive strength is used. However, refactoring code using them requires being able to understand more than what's used. Otherwise, one may quickly end up stalled by indecipherable type error messages.
 
+### Appendix: Origin and Context
+
+Polymorphic variants originate from Jacques Garrigue's work on Objective Label, which was [first published in 1996](https://caml.inria.fr/pub/old_caml_site/caml-list-ar/0533.html). It became part of standard Objective Caml with [release 3.0](https://caml.inria.fr/distrib/ocaml-3.00/) in 2000, along with labelled and optional function arguments. They were introduced to give more precise types in [LablTk](https://garrigue.github.io/labltk/).
+
+The core type system of OCaml follows a [_nominal_](https://en.wikipedia.org/wiki/Nominal_type_system) discipline. Variants must be explicitly declared before being used. The typing discipline used for polymorphic variants and classes is different, as it is [_structural_](https://en.wikipedia.org/wiki/Structural_type_system).
+
+In the nominal approach of typing, types are first defined; later, when the type of an expression is inferred, three outcomes are possible:
+1. If a matching type is found, it becomes the inferred type.
+1. If any type can be applied, a type parameter is created.
+1. If typing inconsistencies are found, an error is raised.
+
+This is very similar to solving an equation in mathematics. Equations accept either zero, exactly one, several, or infinitely many numbers as solutions. Nominal type-checking finds that either zero, exactly one, or any type can be used in an expression.
+
+In the structural approach of typing, type definitions are optional, so they can be omitted. Type-checking an expression constructs a data structure that represents the types that are compatible with it. These data structures are displayed as type expressions sharing a resemblance with simple variants.
+
+<!-- 
+#### A Note on Simple Variants and Polymorphism
+
+The type expression `'a list` does not designate a single type; it designates a family of types, basically all the types that can be created by substituting an actual type to type parameter `'a`. The type expressions `int list`, `bool option list`, or `(float -> float) list list` are real types. They're actual members of the _type family_ `'a list`. Types are intended to have inhabitants, type families don't.
+
+The identifiers `list`, `option`, and others are _type operators_. Just like functions, they take parameters. Although these parameters are not values, they are types. Their results aren't values but types, too.
+
+Simple variants are polymorphic, but not in the same sense as polymorphic variants.
+- Simple variants have [parametric polymorphism](https://en.wikipedia.org/wiki/Parametric_polymorphism)
+- Polymorphic variants have a form of [structural polymorphism](https://en.wikipedia.org/wiki/Structural_type_system)
+-->
+
 <!--
-## References
+FIXME: moved from introduction section to here
+
+Product types and data types such as `option` and `list` are variants and polymorphic. In this tutorial, they are called _simple variants_ to distinguish them from the _polymorphic variants_ presented here. Simple variants and polymorphic variants are close siblings. Their values are both introduced using labels that may carry data. Both can be recursive and have type parameters. Like simple variants, polymorphic variants are type-checked statically.
+
+However, they are type-checked using different algorithms, which results in a different programming experience. The relationship between value and type (written with the colon symbol `:`) is changed with polymorphic variants. Usually, values are thought of as inhabitants of the type, which is regarded as a set-like thing. Rather, polymorphic variant values should be considered as pieces of data that several functions can accept. Polymorphic variants types are a way to express compatibility relationships between those functions. The approach in this tutorial is to build sense from experience using features of polymorphic variants.
+-->
+
+<!--
+References
 
 - https://blog.shaynefletcher.org/2017/03/polymorphic-variants-subtyping-and.html
 - https://caml.inria.fr/pub/papers/garrigue-polymorphic_variants-ml98.pdf
