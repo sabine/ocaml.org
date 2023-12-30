@@ -220,6 +220,14 @@ module Tutorial : sig
     contribute_link : contribute_link;
   }
 
+  type document = {
+    title : string;
+    category : string;
+    section_heading : string;
+    content : string;
+    slug : string;
+  }
+
   type t = {
     title : string;
     fpath : string;
@@ -234,6 +242,7 @@ module Tutorial : sig
   }
 
   val all : t list
+  val all_document : document list
   val get_by_slug : string -> t option
 end
 
