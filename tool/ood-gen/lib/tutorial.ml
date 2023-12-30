@@ -35,6 +35,8 @@ type metadata = {
 }
 [@@deriving of_yaml]
 
+open Ppx_yojson_conv_lib.Yojson_conv
+
 type document = {
   title : string;
   category : string;
@@ -42,7 +44,7 @@ type document = {
   content : string;
   slug : string;
 }
-[@@deriving of_yaml, show { with_path = false }]
+[@@deriving of_yaml, show { with_path = false }, yojson_of]
 
 type t = {
   title : string;
@@ -238,9 +240,101 @@ let all () =
 let all_document () : document list =
   Utils.map_files decode_document "tutorials/*.md" |> List.flatten
 
+let index_search_documents () =
+  let env_with_default k v = Sys.getenv_opt k |> Option.value ~default:v in
+
+  let typesense_config =
+    let url =
+      env_with_default "OCAMLORG_TYPESENSE_URL" "http://localhost:8108"
+    in
+    let api_key =
+      env_with_default "OCAMLORG_TYPESENSE_API_KEY"
+        "{OCAMLORG_TYPESENSE_API_KEY is missing}"
+    in
+    Typesense.Api.{ url; api_key }
+  in
+  let typesense_schema =
+    Typesense.Api.Schema.(
+      schema "tutorials"
+        [
+          create_field "title" String;
+          create_field "category" String ~facet:true;
+          create_field "section_heading" String;
+          create_field "content" String;
+          create_field "slug" String;
+          create_field "embedding" FloatArray
+            ~embed:
+              {
+                from = [ "title"; "section_heading"; "content" ];
+                model_config =
+                  {
+                    model_name = "ts/e5-small";
+                    api_key = "";
+                    project_id = "";
+                    indexing_prefix = "";
+                    query_prefix = "";
+                    access_token = "";
+                    refresh_token = "";
+                    client_id = "";
+                    client_secret = "";
+                  };
+              };
+        ])
+  in
+  let open Lwt.Syntax in
+  let make_cohttp_lwt_request req =
+    let* response =
+      match req with
+      | Typesense.Api.RequestDescriptor.Get { host; path; headers; params } ->
+          Typesense_cohttp_lwt_unix.get ~headers ~params ~host path
+      | Post { host; path; headers; params; body } ->
+          Typesense_cohttp_lwt_unix.post ~headers ~params ~host ~body path
+      | Delete { host; path; headers; params } ->
+          Typesense_cohttp_lwt_unix.delete ~headers ~params ~host path
+      | Patch { host; path; headers; params; body } ->
+          Typesense_cohttp_lwt_unix.patch ~headers ~params ~host ~body path
+      | Put { host; path; headers; params; body } ->
+          Typesense_cohttp_lwt_unix.put ~headers ~params ~host ~body path
+    in
+    Lwt.return response
+    (*|> Result.map (fun (`Success s) -> s |> Yojson.Safe.from_string)*)
+  in
+  let print_lwt_req ~make_request title r =
+    let* () = Lwt_io.printl title in
+    let* () = Lwt_io.printl @@ Typesense.Api.RequestDescriptor.show_request r in
+    let* () = Lwt_io.printl "" in
+    let* response = make_request r in
+    match response with
+    | Ok (`Success response) -> Lwt.return (print_endline response)
+    | Error (`Msg m) -> Lwt.return (print_endline m)
+  in
+  let print_req = print_lwt_req ~make_request:make_cohttp_lwt_request in
+  let documents = all_document () in
+
+  Lwt_main.run
+    (let open Lwt.Syntax in
+     let* () =
+       print_req "Deleting search documents collection"
+         (Typesense.Api.Collection.delete ~config:typesense_config "tutorials")
+     in
+     let* () =
+       print_req "Creating search documents collection"
+         (Typesense.Api.Collection.create ~config:typesense_config
+            typesense_schema)
+     in
+     let* () =
+       print_req "Indexing search documents"
+         (Typesense.Api.Document.import ~config:typesense_config
+            ~action:Typesense.Api.Document.DocumentWriteParameters.Upsert
+            ~collection_name:"tutorials"
+            (List.map yojson_of_document documents))
+     in
+     Lwt.return ())
+
 let template () =
   Format.asprintf
     {|
+open Ppx_yojson_conv_lib.Yojson_conv
 module Section = struct
   type t = GetStarted | Language | Platform | Guides
 end
@@ -271,7 +365,7 @@ type document =
   ; section_heading : string
   ; content : string
   ; slug : string
-}
+} [@@@@deriving of_yojson] [@@@@yojson.allow_extra_fields]
 
 type t =
   { title : string

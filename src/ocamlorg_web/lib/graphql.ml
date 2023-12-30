@@ -29,33 +29,25 @@ let is_valid_params limit offset total_packages =
   else if offset < 0 || offset > total_packages - 1 then Wrong_offset
   else Valid_params
 
-let packages_list ?contains ?(sort_by_popularity = false) offset limit
-    all_packages t =
+open Lwt.Syntax
+
+let packages_list ?contains all_packages ~(p : int) t =
   let results =
     match contains with
-    | None -> all_packages
+    | None -> Lwt.return all_packages
     | Some q ->
-        Package.search ~is_author_match:Handler.is_author_match
-          ~sort_by_popularity t q
+        let* packages, _, _, _ =
+          Package.search ~config:Config.typesense_config ~q ~p t
+        in
+        Lwt.return packages
   in
-  List.filteri (fun i _ -> offset <= i && i < offset + limit) results
+  results
 
-let all_packages_result ?contains ?sort_by_popularity offset limit t =
+let all_packages_result ?(contains : string option) ~(p : int) t =
   let all_packages = Package.all_latest t in
   let total_packages = List.length all_packages in
-  let limit = match limit with None -> total_packages | Some limit -> limit in
-  let result = is_valid_params limit offset total_packages in
-  match result with
-  | Wrong_offset ->
-      Error
-        ("offset must be greater than or equal to 0 AND less than or equal to "
-        ^ string_of_int (total_packages - 1))
-  | Wrong_limit -> Error "limit must be greater than or equal to 1"
-  | _ ->
-      let packages =
-        packages_list ?contains ?sort_by_popularity offset limit all_packages t
-      in
-      Ok { total_packages; packages }
+  let* packages = packages_list ?contains ~p all_packages t in
+  Lwt.return (Ok { total_packages; packages })
 
 let package_result name version t =
   match version with
@@ -249,27 +241,14 @@ let schema t : Dream.request Graphql_lwt.Schema.schema =
               [
                 arg ~doc:"Return only packages that match this search query"
                   "contains" ~typ:string;
-                arg
-                  ~doc:
-                    "If a search query is given, sort the results by package \
-                     popularity"
-                  "sort_by_popularity" ~typ:bool;
                 arg'
                   ~doc:
                     "Specifies at what index packages can start, set to 0 by \
                      default which means start from the first package"
-                  "offset" ~typ:int ~default:(`Int 0);
-                arg
-                  ~doc:
-                    "Specifies the limit which means the number of packages \
-                     you want to return if you do not want all packages \
-                     returned at once. By default, all the packages are \
-                     returned"
-                  "limit" ~typ:int;
+                  "page" ~typ:int ~default:(`Int 1);
               ]
-          ~resolve:(fun _ () contains sort_by_popularity offset limit ->
-            Lwt.return
-              (all_packages_result ?contains ?sort_by_popularity offset limit t));
+          ~resolve:(fun _ () contains page ->
+            all_packages_result ?contains ~p:page t);
         io_field "package" ~typ:(non_null package)
           ~doc:
             "Returns details of a specified package. It returns the latest \

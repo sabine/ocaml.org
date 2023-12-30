@@ -1,4 +1,6 @@
 pin-depends: [
   ["tailwindcss.dev" "https://github.com/tmattio/opam-tailwindcss/archive/3e60fc32bbcf82525999d83ad0f395e16107026b.tar.gz"]
   ["olinkcheck.~dev" "git+https://github.com/tarides/olinkcheck"]
+  ["typesense.dev" "../typesense-ocaml"]
+  ["typesense-cohttp-lwt-unix.dev" "../typesense-ocaml"]
 ]

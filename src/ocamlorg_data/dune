@@ -1,6 +1,9 @@
 (library
  (name data)
- (public_name ocamlorg.data))
+ (public_name ocamlorg.data)
+ (libraries yojson)
+ (preprocess
+  (pps ppx_yojson_conv)))
 
 (rule
  (target is_ocaml_yet.ml)

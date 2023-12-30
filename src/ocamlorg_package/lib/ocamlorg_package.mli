@@ -183,11 +183,15 @@ val is_latest_version : state -> Name.t -> Version.t -> bool
 (** Returns a bool if the given version is the latest version of a package. **)
 
 val search :
-  is_author_match:(string -> string -> bool) ->
-  ?sort_by_popularity:bool ->
+  config:
+    (*is_author_match:(string -> string -> bool) -> ?sort_by_popularity:bool ->
+      state ->*)
+    Typesense.Api.config ->
+  p:int ->
+  q:string ->
   state ->
-  string ->
-  t list
+  (t list * int * int * Typesense.Api.Search.SearchResponse.FacetCounts.t) Lwt.t
+
 (** Search package that match the given string.
 
     Packages returned contain the string either in the name, tags, synopsis or

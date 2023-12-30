@@ -110,27 +110,6 @@ let is_valid_params_test limit offset cond () =
   in
   Alcotest.(check string) ("returns " ^ cond) cond is_valid_params
 
-let packages_list_test ?contains offset limit total_length () =
-  let state = Package.mockup_state packages in
-  let all_packages =
-    Ocamlorg_web.Graphql.packages_list ?contains offset limit packages state
-  in
-  let num_of_packages_returned = List.length all_packages in
-  Alcotest.(check int)
-    "returns all matched packages" total_length num_of_packages_returned
-
-let all_packages_result_test ?contains offset limit () =
-  let state = Package.mockup_state packages in
-  let all_packages =
-    Ocamlorg_web.Graphql.all_packages_result ?contains offset limit state
-  in
-  let num_of_packages_returned =
-    match all_packages with
-    | Error _ -> 0
-    | Ok all_packages -> List.length all_packages.packages
-  in
-  Alcotest.(check int) "returns all the packages" 5 num_of_packages_returned
-
 let package_result_test name version expect () =
   let state = Package.mockup_state packages in
   let package = Ocamlorg_web.Graphql.package_result name version state in
@@ -153,17 +132,6 @@ let package_versions_result_test name from upto total_packages () =
   in
   Alcotest.(check int)
     "returns all package versions" total_packages num_of_packages_returned
-
-let state_test () =
-  let state = Package.mockup_state packages in
-  let pkg =
-    Package.search ~is_author_match:Ocamlorg_web.Handler.is_author_match state
-      "abt"
-    |> List.map Package.name
-    |> List.map Package.Name.to_string
-  in
-  let expect = [ "abt" ] in
-  Alcotest.(check (list string)) "same package" expect pkg
 
 let () =
   Alcotest.run "ocamlorg"
@@ -206,22 +174,6 @@ let () =
           Alcotest.test_case "returns wrong_offset" `Quick
             (is_valid_params_test (List.length packages) 200 "wrong_offset");
         ] );
-      ( "packages_list_test_no_contains",
-        [
-          Alcotest.test_case "returns all packages" `Quick
-            (packages_list_test 0 (List.length packages) (List.length packages));
-        ] );
-      ( "packages_list_test_with_contains",
-        [
-          Alcotest.test_case
-            "returns the number of packages that has 'abt' in its name" `Quick
-            (packages_list_test ~contains:"abt" 0 (List.length packages) 1);
-        ] );
-      ( "all_packages_result_test",
-        [
-          Alcotest.test_case "returns the number of packages found" `Quick
-            (all_packages_result_test 0 None);
-        ] );
       ( "package_result_test_with_valid_name",
         [
           Alcotest.test_case "returns package name" `Quick
@@ -242,10 +194,6 @@ let () =
           Alcotest.test_case "returns number of package versions found" `Quick
             (package_versions_result_test "merlin" (Some "1.0.0") (Some "4.1.0")
                3);
-        ] );
-      ( "state_test",
-        [
-          Alcotest.test_case "returns same package from state" `Quick state_test;
         ] );
       ( "GET /packages",
         [

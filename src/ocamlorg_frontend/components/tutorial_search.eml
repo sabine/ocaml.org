@@ -1,69 +1,81 @@
+let render_sidebar
+facet_counts =
+  <div>
+    <% facet_counts |> List.iter (fun (facet: Typesense.Api.Search.SearchResponse.FacetCounts.facet_count_schema) -> %>
+    <div><%s facet.field_name %></div>
+      <% facet.counts |> List.iter (fun (count: Typesense.Api.Search.SearchResponse.FacetCounts.facet_count) -> %>
+      <div><%s count.value %> - <%s string_of_int count.count %></div>
+      <% ); %>
+    <% ); %>
+  </div>
+
 let render 
 ~search
 ~total
 ~number_of_pages
 ~page
+~(facet_counts: Typesense.Api.Search.SearchResponse.FacetCounts.facet_count_schema list)
 (documents : Data.Tutorial.document list) = 
-Learn_layout.single_column_layout
+Learn_layout.three_column_layout
 ~title:"OCaml Tutorial Documents Search"
 ~description:""
 ~canonical:Url.tutorial_search
 ~active_top_nav_item:Header.Community
-~current:Guides @@
+~current:Guides
+~left_sidebar_html:(Some(render_sidebar facet_counts))
+~right_sidebar_html:None @@
 <div class="bg-legacy-default dark:bg-legacy-dark-default">
   <div class="py-7 lg:py-5">
-    <div class="container-fluid">
-      <div class="flex flex-col lg:px-28 gap-2 max-w-5xl">
-          <form action="<%s Url.tutorial_search %>" method="GET">
-              <%s! Forms.search_input
-                  ~name:"q"
-                  ~label:"Search inside the OCaml documentation"
-                  ~button_attrs:{|type="submit"|}
-                  "mb-4" %>
-          </form>
+    <div class="flex flex-col gap-2 max-w-5xl">
+        <form action="<%s Url.tutorial_search %>" method="GET">
+            <%s! Forms.search_input
+                ~name:"q"
+                ~label:"Search inside the OCaml documentation"
+                ~button_attrs:{|type="submit"|}
+                "mb-4" %>
+        </form>
 
-          <div class="prose max-w-5xl mb-2 lg:mb-4">
-            <h1 class="font-bold text-2xl">
-              <% (match total with
-                | 0 -> %> No search results for "<%s search %>"
-              <% | 1 -> %> 1 search result for "<%s search %>"
-              <% | _ -> %> <%s string_of_int total ^ " search results for \"" ^ search ^ "\"" %>
-              <% ); %>
-            </h1>
-
-            <% if List.length documents = 0 then ( %>
-            <p>
-              We didn't find a match for "<%s search %>".
-            </p>
+        <div class="prose max-w-5xl mb-2 lg:mb-4">
+          <h1 class="font-bold text-2xl">
+            <% (match total with
+              | 0 -> %> No search results for "<%s search %>"
+            <% | 1 -> %> 1 search result for "<%s search %>"
+            <% | _ -> %> <%s string_of_int total ^ " search results for \"" ^ search ^ "\"" %>
             <% ); %>
-          </div>
+          </h1>
 
-          <% if List.length documents > 0 then ( %>
-            <div class="text-legacy-lighter mb-2 lg:mb-4">
-              Showing <%i ((page - 1) * 50 + 1) %> - <%i (min (page * 50) total) %>
-            </div>
-          <ol class="flex flex-col">
-            <% documents |> List.iter (fun (doc : Data.Tutorial.document) -> %>
-            <li class="border-gray-200 border-b py-6 space-y-2 md:py-8">
-                <a href="<%s doc.slug %>">
-                  <h3 class="text-primary text-xl"><%s! Search.highlight_search_terms ~class_:"bg-legacy-search-term-highlight" ~search doc.title %></h3>
-                  <div class="mb-2 mt-5 flex flex-row text-sm gap-x-2.5">
-                    <%s! Icons.hashtag "w-6 h-6 border rounded-md text-white bg-black" %>
-                    <h4>
-                      <%s! Search.highlight_search_terms ~class_:"bg-legacy-search-term-highlight" ~search doc.section_heading %>
-                    </h4>
-                  </div>
-                  <p class="mt-4 text-text_content leading-7"> 
-                    <%s! Search.highlight_search_terms ~class_:"bg-legacy-search-term-highlight" ~search (Search.display_surrounding_text ~search doc.content) %>
-                  </p>
-                  <button class="mt-2.5 px-5 whitespace-nowrap py-0.5 text-primary font-normal bg-legacy-primary-100 border border-primary rounded"><%s! doc.category %> </button>
-                </a>
-            </li>
-            <% ); %>
-          </ol>
+          <% if List.length documents = 0 then ( %>
+          <p>
+            We didn't find a match for "<%s search %>".
+          </p>
           <% ); %>
-        <%s! Pagination.render ~total_page_count:number_of_pages ~page_number:page ~base_url:Url.tutorial_search ~queries:[("q", search)] %>
-      </div>
+        </div>
+
+        <% if List.length documents > 0 then ( %>
+          <div class="text-legacy-lighter mb-2 lg:mb-4">
+            Showing <%i ((page - 1) * 50 + 1) %> - <%i (min (page * 50) total) %>
+          </div>
+        <ol class="flex flex-col">
+          <% documents |> List.iter (fun (doc : Data.Tutorial.document) -> %>
+          <li class="border-gray-200 border-b py-6 space-y-2 md:py-8">
+              <a href="<%s doc.slug %>">
+                <h3 class="text-primary text-xl"><%s! Search.highlight_search_terms ~class_:"bg-legacy-search-term-highlight" ~search doc.title %></h3>
+                <div class="mb-2 mt-5 flex flex-row text-sm gap-x-2.5">
+                  <%s! Icons.hashtag "w-6 h-6 border rounded-md text-white bg-black" %>
+                  <h4>
+                    <%s! Search.highlight_search_terms ~class_:"bg-legacy-search-term-highlight" ~search doc.section_heading %>
+                  </h4>
+                </div>
+                <p class="mt-4 text-text_content leading-7"> 
+                  <%s! Search.highlight_search_terms ~class_:"bg-legacy-search-term-highlight" ~search (Search.display_surrounding_text ~search doc.content) %>
+                </p>
+                <button class="mt-2.5 px-5 whitespace-nowrap py-0.5 text-primary font-normal bg-legacy-primary-100 border border-primary rounded"><%s! doc.category %> </button>
+              </a>
+          </li>
+          <% ); %>
+        </ol>
+        <% ); %>
+      <%s! Pagination.render ~total_page_count:number_of_pages ~page_number:page ~base_url:Url.tutorial_search ~queries:[("q", search)] %>
     </div>
   </div>
 </div>

@@ -12,3 +12,8 @@
  (name watch_scrape)
  (modules watch_scrape)
  (libraries yaml ezjsonm ood_gen))
+
+(executable
+ (name index)
+ (modules index)
+ (libraries cmdliner ood_gen))

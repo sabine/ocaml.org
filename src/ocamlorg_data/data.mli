@@ -228,6 +228,8 @@ module Tutorial : sig
     slug : string;
   }
 
+  val document_of_yojson : Yojson.Safe.t -> document
+
   type t = {
     title : string;
     fpath : string;

@@ -16,9 +16,11 @@
   lambdasoup
   fpath
   ppx_stable
-  hilite)
+  hilite
+  typesense
+  typesense-cohttp-lwt-unix)
  (preprocess
-  (pps ppx_deriving_yaml ppx_stable ppx_show)))
+  (pps ppx_deriving_yaml ppx_stable ppx_show ppx_yojson_conv)))
 
 (rule
  (targets data.ml)

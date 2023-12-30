@@ -10,4 +10,6 @@
   cmarkit
   ocamlorg.data
   timedesc
-  mirage-kv-mem))
+  mirage-kv-mem
+  typesense
+  typesense-cohttp-lwt-unix))

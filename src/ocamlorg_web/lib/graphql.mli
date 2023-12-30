@@ -28,13 +28,9 @@ val is_valid_params : int -> int -> int -> params_validity
     [all_packages] *)
 
 val packages_list :
-  ?contains:string ->
-  ?sort_by_popularity:bool ->
-  int ->
-  int ->
-  Package.t list ->
-  Package.state ->
-  Package.t list
+          ?contains:string ->
+          Package.t list -> p:int -> Package.state -> Package.t list Lwt.t
+
 (** [packages_list] function is a sub function of [all_packages_result] that
     takes an optional [contains] together with [offset], [limit], [all_packages]
     and [state] parameters. It applies the [offset] and [limit] specified on
@@ -43,12 +39,9 @@ val packages_list :
     match the query [contains] *)
 
 val all_packages_result :
-  ?contains:string ->
-  ?sort_by_popularity:bool ->
-  int ->
-  int option ->
-  Package.state ->
-  (packages_success, string) result
+    ?contains:string ->
+    p:int -> Package.state -> (packages_success, 'a) result Lwt.t
+
 (** [packages_list] function takes [contains] [offset] [limit] [all_packages]
     [state] and returns a list of the latest version of all packages with
     [limit] and [offset] options which is used to cut out some parts of the

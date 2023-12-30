@@ -1,7 +1,26 @@
-let render ~total ~search ~page ~number_of_pages (packages : Package.package list) = Layout.render ~title:"OCaml Packages · Search Result"
+let render_sidebar
+facet_counts =
+  <div class="flex flex-col gap-10">
+    <% facet_counts |> List.iter (fun (facet: Typesense.Api.Search.SearchResponse.FacetCounts.facet_count_schema) -> %>
+    <div>
+    <strong><%s facet.field_name %></strong>
+      <% facet.counts |> List.iter (fun (count: Typesense.Api.Search.SearchResponse.FacetCounts.facet_count) -> %>
+      <div class="flex"><span class="flex-grow"><%s count.value %></span> <span><%s string_of_int count.count %></span></div>
+      <% ); %>
+    </div>
+    <% ); %>
+  </div>
+
+let render ~total ~search ~page ~number_of_pages (packages : Package.package list) ~facet_counts
+=
+Learn_layout.three_column_layout
+~title:"OCaml Packages · Search Result"
 ~description:"Find the package you need to build your application in the thousands of available OCaml packages."
 ~canonical:(Url.packages_search ^ "?q=" ^ search)
-~active_top_nav_item:Header.Packages @@
+~active_top_nav_item:Header.Packages
+~current:Guides
+~left_sidebar_html:(Some(render_sidebar facet_counts))
+~right_sidebar_html:None @@
 <div class="bg-legacy-default dark:bg-legacy-dark-default">
   <div class="py-10 lg:py-14">
     <div class="container-fluid">

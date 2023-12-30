@@ -9,6 +9,11 @@
   lwt
   lwt.unix
   yojson
+  ppx_yojson_conv
   cohttp
   cohttp-lwt-unix
-  voodoo_serialize))
+  voodoo_serialize
+  typesense
+  typesense-cohttp-lwt-unix)
+ (preprocess
+  (pps ppx_yojson_conv)))

@@ -71,32 +71,70 @@ let paginate ~req ~n items =
   (page, number_of_pages, current_items)
 
 let learn_documents_search req =
-  let search_keyword = Dream.query req "q" in
-  let search_documents keyword (documents : Data.Tutorial.document list) =
-    let is_match (doc : Data.Tutorial.document) (keyword : string) =
-      let keyword = String.lowercase_ascii keyword in
-      let search_in_field field =
-        try
-          let regexp = Str.regexp_string keyword in
-          Str.search_forward regexp field 0 >= 0
-        with Not_found -> false
+  let open Lwt.Syntax in
+  let q = Dream.query req "q" in
+  let p = Dream.query req "p" in
+  let search_documents q =
+    let make_cohttp_lwt_request req =
+      let* response =
+        match req with
+        | Typesense.Api.RequestDescriptor.Get { host; path; headers; params } ->
+            Typesense_cohttp_lwt_unix.get ~headers ~params ~host path
+        | Post { host; path; headers; params; body } ->
+            Typesense_cohttp_lwt_unix.post ~headers ~params ~host ~body path
+        | Delete { host; path; headers; params } ->
+            Typesense_cohttp_lwt_unix.delete ~headers ~params ~host path
+        | Patch { host; path; headers; params; body } ->
+            Typesense_cohttp_lwt_unix.patch ~headers ~params ~host ~body path
+        | Put { host; path; headers; params; body } ->
+            Typesense_cohttp_lwt_unix.put ~headers ~params ~host ~body path
       in
-      search_in_field doc.title
-      || search_in_field doc.section_heading
-      || search_in_field doc.content
+      Lwt.return response
+      (*|> Result.map (fun (`Success s) -> s |> Yojson.Safe.from_string)*)
     in
-    List.filter (fun doc -> is_match doc keyword) documents
+    let* response =
+      make_cohttp_lwt_request
+        (Typesense.Api.Search.search ~config:Config.typesense_config
+           ~search_params:
+             (Typesense.Api.Search.make_search_params
+                ~q
+                  (*~query_by:"title,section_heading,content,category"
+                    ~query_by_weights:"4,3,2,1"*)
+                ~query_by:"embedding" ~facet_by:"category" ~per_page:50
+                ~page:(Option.value ~default:"1" p |> int_of_string)
+                ())
+           ~collection_name:"tutorials" ())
+    in
+    match response with
+    | Ok (`Success s) ->
+        Dream.log "%s" s;
+        let r =
+          try
+            s |> Yojson.Safe.from_string
+            |> Typesense.Api.Search.SearchResponse.t_of_yojson
+          with Ppx_yojson_conv_lib.Yojson_conv.Of_yojson_error (s, _) ->
+            failwith (Printexc.to_string s)
+        in
+        ( List.map
+            (fun (hit : Typesense.Api.Search.SearchResponse.search_response_hit) ->
+              try hit.document |> Data.Tutorial.document_of_yojson
+              with Ppx_yojson_conv_lib.Yojson_conv.Of_yojson_error (s, _) ->
+                failwith (Printexc.to_string s))
+            r.hits,
+          r.found,
+          r.page,
+          r.facet_counts )
+        |> Lwt.return
+    | Error (`Msg m) -> failwith m
   in
-  let keyword = Option.value ~default:"" search_keyword in
-  let documents = Data.Tutorial.all_document in
-  let searched_docs = search_documents keyword documents in
-  let page, number_of_pages, current_items =
-    paginate ~req ~n:50 searched_docs
+  let q = Option.value ~default:"" q in
+  let* searched_docs, total, page, facet_counts = search_documents q in
+  let number_of_pages =
+    int_of_float (Float.ceil (float_of_int total /. float_of_int 50))
   in
-  let total = List.length searched_docs in
   Dream.html
-    (Ocamlorg_frontend.tutorial_search current_items ~total ~page
-       ~number_of_pages ~search:keyword)
+    (Ocamlorg_frontend.tutorial_search searched_docs ~total ~page
+       ~number_of_pages ~search:q ~facet_counts)
 
 let changelog req =
   let current_tag = Dream.query req "t" in
@@ -648,30 +686,40 @@ let is_author_match name pattern =
       match_opt (Some name) || match_opt email || match_opt github_username
 
 let packages_search t req =
-  let packages =
+  let open Lwt.Syntax in
+  let p =
+    Dream.query req "p" |> Option.map int_of_string |> Option.value ~default:1
+  in
+  let* (total, page, packages, facet_counts) =
     match Dream.query req "q" with
     | Some search ->
-        Ocamlorg_package.search ~is_author_match ~sort_by_popularity:true t
-          search
-    | None -> Ocamlorg_package.all_latest t
+        let* packages, total, _, facet_counts =
+          Ocamlorg_package.search ~config:Config.typesense_config ~p ~q:search t
+        in
+        Lwt.return (total, p, packages, facet_counts)
+    | None ->
+      let packages = Ocamlorg_package.all_latest t in
+      Lwt.return (List.length packages, 1, packages, [])
   in
-  let total = List.length packages in
-  let page, number_of_pages, current_items = paginate ~req ~n:50 packages in
+  let number_of_pages = 99 in
   let search =
     Dream.from_percent_encoded
       (match Dream.query req "q" with Some search -> search | None -> "")
   in
-  let results = List.map (Package_helper.frontend_package t) current_items in
+  let results = List.map (Package_helper.frontend_package t) packages in
   Dream.html
-    (Ocamlorg_frontend.packages_search ~total ~search ~page ~number_of_pages
+    (Ocamlorg_frontend.packages_search ~total ~search ~page ~number_of_pages ~facet_counts
        results)
 
 let packages_autocomplete_fragment t req =
+  let open Lwt.Syntax in
+  let p =
+    Dream.query req "p" |> Option.map int_of_string |> Option.value ~default:1
+  in
   match Dream.query req "q" with
   | Some search when search <> "" ->
-      let packages =
-        Ocamlorg_package.search ~is_author_match ~sort_by_popularity:true t
-          search
+      let* (packages, _, _, _) =
+        Ocamlorg_package.search ~config:Config.typesense_config ~p ~q:search t
       in
       let results = List.map (Package_helper.frontend_package t) packages in
       let top_5 = results |> List.take 5 in

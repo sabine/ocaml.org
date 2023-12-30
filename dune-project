@@ -74,4 +74,6 @@
   (cmdliner
    (>= 1.1.0))
   xmlm
-  uri))
+  uri
+  typesense
+  typesense-cohttp-lwt-unix))

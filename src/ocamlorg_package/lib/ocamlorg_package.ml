@@ -121,6 +121,119 @@ let get_latest' packages name =
          in
          { version; info; name })
 
+module SearchDocument = struct
+  open Ppx_yojson_conv_lib.Yojson_conv
+
+  type package_document = {
+    name : string;
+    tags : string list;
+    authors: string list;
+    description : string;
+  }
+  [@@deriving yojson_of]
+end
+
+let index_packages (packages : Info.t Version.Map.t OpamTypes.name_map) :
+    unit Lwt.t =
+  let env_with_default k v = Sys.getenv_opt k |> Option.value ~default:v in
+
+  let typesense_config =
+    let url =
+      env_with_default "OCAMLORG_TYPESENSE_URL" "http://localhost:8108"
+    in
+    let api_key =
+      env_with_default "OCAMLORG_TYPESENSE_API_KEY"
+        "{OCAMLORG_TYPESENSE_API_KEY is missing}"
+    in
+    Typesense.Api.{ url; api_key }
+  in
+  let typesense_schema =
+    Typesense.Api.Schema.(
+      schema "packages"
+        [
+          create_field "name" String;
+          create_field "tags" StringArray ~facet:true;
+          create_field "authors" StringArray ~facet:true;
+          create_field "description" String;
+          create_field "embedding" FloatArray
+            ~embed:
+              {
+                from = [ "tags"; "description" ];
+                model_config =
+                  {
+                    model_name = "ts/e5-small";
+                    api_key = "";
+                    project_id = "";
+                    indexing_prefix = "";
+                    query_prefix = "";
+                    access_token = "";
+                    refresh_token = "";
+                    client_id = "";
+                    client_secret = "";
+                  };
+              };
+        ])
+  in
+  let open Lwt.Syntax in
+  let make_cohttp_lwt_request req =
+    let* response =
+      match req with
+      | Typesense.Api.RequestDescriptor.Get { host; path; headers; params } ->
+          Typesense_cohttp_lwt_unix.get ~headers ~params ~host path
+      | Post { host; path; headers; params; body } ->
+          Typesense_cohttp_lwt_unix.post ~headers ~params ~host ~body path
+      | Delete { host; path; headers; params } ->
+          Typesense_cohttp_lwt_unix.delete ~headers ~params ~host path
+      | Patch { host; path; headers; params; body } ->
+          Typesense_cohttp_lwt_unix.patch ~headers ~params ~host ~body path
+      | Put { host; path; headers; params; body } ->
+          Typesense_cohttp_lwt_unix.put ~headers ~params ~host ~body path
+    in
+    Lwt.return response
+    (*|> Result.map (fun (`Success s) -> s |> Yojson.Safe.from_string)*)
+  in
+  let print_lwt_req ~make_request title r =
+    let* () = Lwt_io.printl title in
+    let* () = Lwt_io.printl @@ Typesense.Api.RequestDescriptor.show_request r in
+    let* () = Lwt_io.printl "" in
+    let* response = make_request r in
+    match response with
+    | Ok (`Success response) -> Lwt.return (print_endline response)
+    | Error (`Msg m) -> Lwt.return (print_endline m)
+  in
+  let print_req = print_lwt_req ~make_request:make_cohttp_lwt_request in
+  let transform_package ((name, version_map) : Name.t * Info.t Version.Map.t) =
+    let _version, info = Version.Map.max_binding version_map in
+    SearchDocument.
+      {
+        name = OpamPackage.Name.to_string name;
+        tags = info.tags;
+        authors = info.authors;
+        description = info.description;
+      }
+  in
+  let documents =
+    packages |> OpamPackage.Name.Map.to_seq |> Seq.map transform_package
+    |> List.of_seq
+  in
+  let open Lwt.Syntax in
+  let* () =
+    print_req "Deleting search documents collection"
+      (Typesense.Api.Collection.delete ~config:typesense_config "packages")
+  in
+  let* () =
+    print_req "Creating search documents collection"
+      (Typesense.Api.Collection.create ~config:typesense_config typesense_schema)
+  in
+  let* () =
+    print_req "Indexing search documents"
+      (Typesense.Api.Document.import ~config:typesense_config
+         ~action:Typesense.Api.Document.DocumentWriteParameters.Upsert
+         ~collection_name:"packages"
+         (List.map SearchDocument.yojson_of_package_document documents))
+  in
+  Lwt.return ()
+
 let update ~commit t =
   let open Lwt.Syntax in
   Logs.info (fun m -> m "Opam repository is currently at %s" commit);
@@ -130,6 +243,8 @@ let update ~commit t =
   let* packages = read_packages () in
   Logs.info (fun f -> f "Computing additional informations...");
   let* packages = Info.of_opamfiles packages in
+  Logs.info (fun f -> f "Indexing package info into search server...");
+  let* () = index_packages packages in
   Logs.info (fun f -> f "Computing packages statistics...");
   let+ stats = Statistics.compute packages in
   t.packages <- packages;
@@ -412,165 +527,67 @@ let is_latest_version t name version =
   | None -> false
   | Some pkg -> pkg.version = version
 
-module Search : sig
-  type search_request
+module Search = struct
+  open Ppx_yojson_conv_lib.Yojson_conv
 
-  val to_request : string -> search_request
+  type document = { name : string }
+  [@@deriving of_yojson] [@@yojson.allow_extra_fields]
 
-  val match_request :
-    is_author_match:(string -> string -> bool) -> search_request -> t -> bool
+  open Lwt.Syntax
 
-  val compare : search_request -> t -> t -> int
-  val compare_by_popularity : search_request -> t -> t -> int
-end = struct
-  type search_constraint =
-    | Tag of string
-    | Name of string
-    | Synopsis of string
-    | Description of string
-    | Author of string
-    | Any of string
-
-  type search_request = search_constraint list
-
-  let re =
-    let notnl_no_quote = Re.rep1 @@ Re.diff Re.notnl @@ Re.set "\"" in
-    let unquoted = Re.group @@ Re.rep1 @@ Re.diff Re.notnl @@ Re.set " \"" in
-    let quoted = Re.seq [ Re.str "\""; Re.group notnl_no_quote; Re.str "\"" ] in
-    let option name =
-      Re.seq [ Re.group @@ Re.str name; Re.alt [ quoted; unquoted ] ]
+  let search_documents ~config ~p ~q t =
+    let make_cohttp_lwt_request req =
+      let* response =
+        match req with
+        | Typesense.Api.RequestDescriptor.Get { host; path; headers; params } ->
+            Typesense_cohttp_lwt_unix.get ~headers ~params ~host path
+        | Post { host; path; headers; params; body } ->
+            Typesense_cohttp_lwt_unix.post ~headers ~params ~host ~body path
+        | Delete { host; path; headers; params } ->
+            Typesense_cohttp_lwt_unix.delete ~headers ~params ~host path
+        | Patch { host; path; headers; params; body } ->
+            Typesense_cohttp_lwt_unix.patch ~headers ~params ~host ~body path
+        | Put { host; path; headers; params; body } ->
+            Typesense_cohttp_lwt_unix.put ~headers ~params ~host ~body path
+      in
+      Lwt.return response
+      (*|> Result.map (fun (`Success s) -> s |> Yojson.Safe.from_string)*)
     in
-    let tag = option "tag:"
-    and author = option "author:"
-    and synopsis = option "synopsis:"
-    and description = option "description:"
-    and name = option "name:"
-    and plain = option "" in
-    let atom = Re.alt [ name; author; tag; synopsis; description; plain ] in
-    Re.compile atom
-
-  let to_request str =
-    let str = String.lowercase_ascii str in
-    let to_constraint = function
-      | [ _; s ] -> Any s
-      | [ _; "tag:"; s ] -> Tag s
-      | [ _; "author:"; s ] -> Author s
-      | [ _; "synopsis:"; s ] -> Synopsis s
-      | [ _; "description:"; s ] -> Description s
-      | [ _; "name:"; s ] -> Name s
-      | _ -> Any str
+    let* response =
+      make_cohttp_lwt_request
+        (Typesense.Api.Search.search ~config
+           ~search_params:
+             (Typesense.Api.Search.make_search_params
+                ~q
+                  (*~query_by:"title,section_heading,content,category"
+                    ~query_by_weights:"4,3,2,1"*)
+                ~query_by:"name,description,tags,authors" ~query_by_weights:"4,1,2,1" ~facet_by:"tags,authors" ~per_page:50 ~page:p
+                ())
+           ~collection_name:"packages" ())
     in
-    let g = Re.all re str in
-    List.map
-      (fun g ->
-        Re.Group.all g |> Array.to_list
-        |> List.filter (fun a -> not (String.equal a ""))
-        |> to_constraint)
-      g
-
-  let match_ f s pattern = f (String.lowercase_ascii @@ s) pattern
-
-  let match_tag ?(f = String.contains_s) pattern package =
-    List.exists (fun tag -> match_ f tag pattern) package.info.tags
-
-  let match_name ?(f = String.contains_s) pattern package =
-    match_ f (Name.to_string package.name) pattern
-
-  let match_synopsis ?(f = String.contains_s) pattern package =
-    match_ f package.info.synopsis pattern
-
-  let match_description ?(f = String.contains_s) pattern package =
-    match_ f package.info.description pattern
-
-  let match_author ?(f = String.contains_s) pattern package =
-    List.exists (fun tag -> match_ f tag pattern) package.info.authors
-
-  let match_constraint ~is_author_match (package : t) (cst : search_constraint)
-      =
-    match cst with
-    | Tag pattern -> match_tag pattern package
-    | Name pattern -> match_name pattern package
-    | Synopsis pattern -> match_synopsis pattern package
-    | Description pattern -> match_description pattern package
-    | Author pattern -> match_author ~f:is_author_match pattern package
-    | Any pattern ->
-        match_author ~f:is_author_match pattern package
-        || match_description pattern package
-        || match_name pattern package
-        || match_synopsis pattern package
-        || match_tag pattern package
-
-  let match_request ~is_author_match c package =
-    List.for_all (match_constraint ~is_author_match package) c
-
-  type score = {
-    name : int;
-    exact_name : int;
-    author : int;
-    exact_author : int;
-    tag : int;
-    exact_tag : int;
-    synopsis : int;
-    description : int;
-  }
-
-  let score package query =
-    let score_if f s = if f s package then 1 else 0 in
-    let update_score score = function
-      | Any s ->
-          {
-            tag = score.tag + score_if match_tag s;
-            exact_tag = score.exact_tag + score_if (match_tag ~f:String.equal) s;
-            name = score.name + score_if match_name s;
-            exact_name =
-              score.exact_name + score_if (match_name ~f:String.equal) s;
-            author = score.author + score_if match_author s;
-            exact_author =
-              score.exact_author + score_if (match_author ~f:String.equal) s;
-            synopsis = score.synopsis + score_if match_synopsis s;
-            description = score.description + score_if match_description s;
-          }
-      | _ -> score
-    in
-    let null =
-      {
-        name = 0;
-        exact_name = 0;
-        author = 0;
-        exact_author = 0;
-        tag = 0;
-        exact_tag = 0;
-        synopsis = 0;
-        description = 0;
-      }
-    in
-    List.fold_left update_score null query
-
-  let score_to_float score =
-    Float.of_int
-      ((4 * score.name) + (10 * score.exact_name) + (2 * score.author)
-     + score.tag + (2 * score.exact_tag) + score.synopsis + score.description)
-
-  let adjust_score_by_popularity query p =
-    (score p query |> score_to_float)
-    *. (1.0 +. Float.log (Float.of_int (List.length p.info.rev_deps + 1)))
-
-  let compare query p1 p2 =
-    let s1 = score p1 query |> score_to_float in
-    let s2 = score p2 query |> score_to_float in
-    Float.compare s2 s1
-
-  let compare_by_popularity query p1 p2 =
-    let s1 = adjust_score_by_popularity query p1 in
-    let s2 = adjust_score_by_popularity query p2 in
-    Float.compare s2 s1
+    match response with
+    | Ok (`Success s) ->
+        (*Dream.log "%s" s;*)
+        let r =
+          try
+            s |> Yojson.Safe.from_string
+            |> Typesense.Api.Search.SearchResponse.t_of_yojson
+          with Ppx_yojson_conv_lib.Yojson_conv.Of_yojson_error (s, _) ->
+            failwith (Printexc.to_string s)
+        in
+        ( List.map
+            (fun (hit : Typesense.Api.Search.SearchResponse.search_response_hit) ->
+              try hit.document |> document_of_yojson
+              with Ppx_yojson_conv_lib.Yojson_conv.Of_yojson_error (s, _) ->
+                failwith (Printexc.to_string s))
+            r.hits
+          |> List.map (fun d ->
+                 get_latest t (Name.of_string d.name) |> Option.get),
+          r.found,
+          r.page,
+          r.facet_counts )
+        |> Lwt.return
+    | Error (`Msg m) -> failwith m
 end
 
-let search ~is_author_match ?(sort_by_popularity = false) t query =
-  let compare =
-    Search.(if sort_by_popularity then compare_by_popularity else compare)
-  in
-  let request = Search.to_request query in
-  all_latest t
-  |> List.filter (Search.match_request ~is_author_match request)
-  |> List.sort (compare request)
+let search ~config ~p ~q t = Search.search_documents ~config ~p ~q t
