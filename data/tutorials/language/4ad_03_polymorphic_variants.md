@@ -3,17 +3,14 @@ id: polymorphic-variants
 title: Polymorphic Variants
 description: |
   Everything you always wanted to know about polymorphic variants but were afraid to ask
-category: "Language"
+category: "Advanced Topics"
+prerequisite_tutorials:
+  - "values-and-functions"
+  - "basic-data-types"
+  - "lists"
 ---
 
-# Polymorphic Variants
-
 This tutorial covers how and when to use polymorphic variants, what common error messages relating to polymorphic variants mean and how to refactor between regular variants and polymorphic variants.
-
-**Prerequisites**:
-- [Functions and Values](/docs/functions-and-values)
-- [Basic Data Types](/docs/basic-data-types)
-- [Lists](/docs/lists)
 
 <!--
 Learning Goals
@@ -44,41 +41,41 @@ type msg = Hello | Goodbye of string
 - : msg = Hello
 ```
 
-A type like this needs to be defined and given a name before it can be used, and only the constructors you explicitly list here are part of the type. In this example, the constructors are `Hello_world` and `Goodbye`.
+A type like this needs to be defined and given a name before it can be used, and only the constructors you explicitly list here are part of the type. In this example, the constructors are `Hello` and `Goodbye`.
 
 Polymorphic variants can be defined as values without defining a type upfront. A polymorphic variant constructor is always prefixed with a backtick:
 ```ocaml
 # `Hello
 - : [> `Hello ] = `Hello
 
-# `Goodbye "sabine";;
-- : [> `Goodbye of string ] = `Goodbye "sabine"
+# `Goodbye "cruel world";;
+- : [> `Goodbye of string ] = `Goodbye "cruel world"
 ```
 
-The interesting thing to see here is that the type checker infers the type ```[> `Hello ]``` for the `` `Hello`` value, and the type ``[> `Goodbye of string]`` for the expression `` `Goodbye "sabine"``. The `[>` symbol indicates an _open_ polymorphic variant type, meaning it can be extended with more constructors.
+The interesting thing to see here is that the type checker infers the type ```[> `Hello ]``` for the `` `Hello`` value, and the type ``[> `Goodbye of string]`` for the expression `` `Goodbye "cruel world"``. The `[>` symbol indicates an _open_ polymorphic variant type, meaning it can be extended with more constructors.
 
 Let's look at a function that takes a polymorphic variant:
 ```ocaml
-# let greet msg = match msg with
+# let say msg = match msg with
     | `Hello -> "Hi"
     | `Goodbye s -> "Bye " ^ s;;
-val greet : [< `Goodbye of string | `Hello ] -> string = <fun>
+val say : [< `Goodbye of string | `Hello ] -> string = <fun>
 
-# greet (`Goodbye "sabine");;
+# say (`Goodbye "sabine");;
 - : string = "Bye sabine"
 ```
 
-See how the type of `greet` looks different, there's a `<` symbol instead of a `>`. The `[<` symbol indicates that a polymorphic variant type is _closed_, meaning that at most the listed constructors are allowed.
+See how the type of `say` looks different, there's a `<` symbol instead of a `>`. The `[<` symbol indicates that a polymorphic variant type is _closed_, meaning that at most the listed constructors are allowed.
 
 Polymorphic variants can be merged and extended, and the same constructor can appear in and be shared between different polymorphic variant types, as long as it has the same structure. 
 
-For example, we can modify the `greet` function and add another constructor `` `Thanks``:
+For example, we can modify the `say` function and add another constructor `` `Thanks``:
 ```ocaml
-# let extended_greet msg = match msg with
+# let extended_say msg = match msg with
     | `Thanks -> "Thank you"
     | `Hello -> "Hi"
     | `Goodbye s -> "Bye " ^ s;;
-val extended_greet : [< `Goodbye of string | `Hello | `Thanks ] -> string = <fun>
+val extended_say : [< `Goodbye of string | `Hello | `Thanks ] -> string = <fun>
 ```
 
 Polymorphic variants are useful for scenarios where type definitions need to be flexible and evolve over time, such as plugin architectures or when interacting with JSON and other dynamic data structures.
