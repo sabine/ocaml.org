@@ -25,7 +25,7 @@ Learning Goals
 - Choose to use polymorphic variants when really needed
 -->
 
-# What is a Polymorphic Variant?
+## What is a Polymorphic Variant?
 
 A _polymorphic variant_ is a more flexible kind of variant type that
 
@@ -43,7 +43,7 @@ type msg = Hello | Goodbye of string
 
 A type like this needs to be defined and given a name before it can be used, and only the constructors you explicitly list here are part of the type. In this example, the constructors are `Hello` and `Goodbye`.
 
-Polymorphic variants can be defined as values without defining a type upfront. A polymorphic variant constructor is always prefixed with a backtick:
+Polymorphic variants can be defined as values without defining a type upfront. A polymorphic variant constructor always begins with a backtick (`` ` ``):
 ```ocaml
 # `Hello
 - : [> `Hello ] = `Hello
@@ -52,22 +52,24 @@ Polymorphic variants can be defined as values without defining a type upfront. A
 - : [> `Goodbye of string ] = `Goodbye "cruel world"
 ```
 
-The interesting thing to see here is that the type checker infers the type ```[> `Hello ]``` for the `` `Hello`` value, and the type ``[> `Goodbye of string]`` for the expression `` `Goodbye "cruel world"``. The `[>` symbol indicates an _open_ polymorphic variant type, meaning it can be extended with more constructors.
+The type checker infers the type ```[> `Hello ]``` for the `` `Hello`` value, and the type ``[> `Goodbye of string]`` for the expression `` `Goodbye "cruel world"``. The `>` symbol indicates an _open_ polymorphic variant type: it can be extended with more constructors.
 
-Let's look at a function that takes a polymorphic variant:
+Let's look at a function that takes a polymorphic variant as parameter:
 ```ocaml
-# let say msg = match msg with
+# let say = function
     | `Hello -> "Hi"
     | `Goodbye s -> "Bye " ^ s;;
 val say : [< `Goodbye of string | `Hello ] -> string = <fun>
 
-# say (`Goodbye "sabine");;
-- : string = "Bye sabine"
+# say (`Goodbye "cruel world");;
+- : string = "Bye cruel world"
 ```
 
-See how the type of `say` looks different, there's a `<` symbol instead of a `>`. The `[<` symbol indicates that a polymorphic variant type is _closed_, meaning that at most the listed constructors are allowed.
+The polymorphic variant type here looks different: `` [< `Goodbye of string | `Hello ] ``. There's a `<` symbol instead of a `>` symbol. The `<` symbol indicates that the polymorphic variant type is _closed_: at most the listed constructors are allowed.
 
-Polymorphic variants can be merged and extended, and the same constructor can appear in and be shared between different polymorphic variant types, as long as it has the same structure. 
+Polymorphic variants can merge with other polymorphic variants and be extended ad-hoc or in type definitions. The same constructor can appear in and be shared between different polymorphic variant types, as long as it has the same structure. They are useful for scenarios where type definitions need to be flexible and evolve over time, such as plugin architectures or when interacting with JSON and other dynamic data structures.
+
+<!--
 
 For example, we can modify the `say` function and add another constructor `` `Thanks``:
 ```ocaml
@@ -77,17 +79,9 @@ For example, we can modify the `say` function and add another constructor `` `Th
     | `Goodbye s -> "Bye " ^ s;;
 val extended_say : [< `Goodbye of string | `Hello | `Thanks ] -> string = <fun>
 ```
-
-Polymorphic variants are useful for scenarios where type definitions need to be flexible and evolve over time, such as plugin architectures or when interacting with JSON and other dynamic data structures.
-
-However, the type errors you may encounter when using polymorphic variants tend to me more complex than when using regular variant types. Also, there is a runtime cost associated with polymorphic variants since their memory representation, as well as pattern matching on them, cannot be optimized by the compiler to the same extent as for regular variants.
-
-<!--
-The same polymorphic variant constructor in a type-signature will be wrapped in square brackets:
-`` [ `Hello_world ] ``.
 -->
 
-
+However, the type errors you may encounter when using polymorphic variants tend to me more complex than when using regular variant types. Also, there is a runtime cost associated with polymorphic variants since their memory representation, as well as pattern matching on them, cannot be optimized by the compiler to the same extent as for regular variants.
 
 <!-- WE ARE HERE -->
 
@@ -694,7 +688,7 @@ The following function was presented in the [Inferred Type Aliases](#Inferred-Ty
 
 Because of the `plant -> plant` pattern, the types inferred as domain and codomain are the same. As `` `Avocado`` is accepted, it must be part of the domain; and as`` `Cilantro`` is returned, it must be part of the codomain. Both end up being part of the common type. However, `` `Avocado`` should not be part of the codomain, as this function can't possibly return this value. A finer type-checker would infer more precise types. Type-checking is an approximation and a trade-off, some valid programs are rejected, and some types are too coarse.
 
-### Performances
+### Performance
 
 TODO: Expand this section
 
