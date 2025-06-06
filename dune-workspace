@@ -10,8 +10,10 @@
  (package
   (name olinkcheck)))
 
+(repository (name pinned_overlay_repository) (url git+https://github.com/ocaml-dune/opam-overlays#2a9543286ff0e0656058fee5c0da7abc16b8717d))
+
 (lock_dir
-  (repositories pinned_opam_repository)
+  (repositories pinned_opam_repository pinned_overlay_repository)
   (pins olinkcheck)
    (version_preference newest)
   )

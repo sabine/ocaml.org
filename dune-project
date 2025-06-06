@@ -63,7 +63,6 @@
    (and
     :with-test
     (>= 1.10.0)))
-  olinkcheck
   ; tools/ood-gen
   ppx_deriving_yaml
   ppx_import
