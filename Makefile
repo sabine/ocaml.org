@@ -40,7 +40,7 @@ fmt: ## Format the codebase with ocamlformat
 	dune build --root . --auto-promote @fmt
 
 .PHONY: watch
-watch: ## Watch for the filesystem and rebuild on every change
+watch: dune.lock ## Watch for the filesystem and rebuild on every change
 	dune build @run -w --force --no-buffer
 
 .PHONY: utop
@@ -49,8 +49,9 @@ utop: ## Run a REPL and link with the project's libraries
 
 .PHONY: scrape_ocaml_planet
 scrape_ocaml_planet: dune.lock ## Generate the po files
-	dune build --root . tool/ood-gen/bin/scrape.exe planet
-	dune build --root . tool/ood-gen/bin/scrape.exe video
+	dune build --root . tool/ood-gen/bin/scrape.exe
+	dune exec --root . tool/ood-gen/bin/scrape.exe planet
+	dune exec --root . tool/ood-gen/bin/scrape.exe video
 
 .PHONY: scrape_changelog
 scrape_changelog:
