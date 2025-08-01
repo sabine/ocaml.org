@@ -60,10 +60,3 @@ scrape_changelog:
 .PHONY: docker
 docker: ## Generate docker container
 	docker build -f Dockerfile . -t ocamlorg:latest
-<<<<<<< HEAD
-=======
-
-.PHONY: linkcheck
-linkcheck:
-	dune exec --root . olinkcheck md data
->>>>>>> 182a78fb (update Makefile to use Dune Developer Preview)
