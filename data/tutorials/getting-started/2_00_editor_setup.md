@@ -5,6 +5,89 @@ description: |
   This page will show you how to set up your editor for OCaml. 
 category: "Tooling"
 ---
+
+<!--
+DOCUMENTATION REFERENCES:
+- Merlin: https://github.com/ocaml/merlin
+- ocaml-lsp-server: https://github.com/ocaml/ocaml-lsp
+- OCamlFormat: https://github.com/ocaml-ppx/ocamlformat
+- Language Server Protocol: https://microsoft.github.io/language-server-protocol/
+
+EDITOR SUPPORT:
+1. Visual Studio Code (Recommended):
+   - OCaml Platform extension
+   - Full LSP support
+   - Integrated terminal
+   - Cross-platform
+
+2. Emacs:
+   - Tuareg mode
+   - Merlin integration
+   - Company completion
+   - Mature support
+
+3. Vim/Neovim:
+   - vim-ocaml plugin
+   - Merlin integration
+   - ALE or CoC.nvim
+   - Terminal-based
+
+REQUIRED PACKAGES:
+- ocaml-lsp-server : LSP implementation
+- ocamlformat : Code formatter
+- merlin : Code intelligence backend
+
+EDITOR FEATURES:
+- Type information on hover
+- Go to definition
+- Find references
+- Code completion
+- Error/warning display
+- Automatic formatting
+- Inline documentation
+- Symbol search
+
+INSTALLATION:
+opam install ocaml-lsp-server ocamlformat merlin
+
+VSCODE SETUP:
+1. Install OCaml Platform extension
+2. Install required opam packages
+3. Select OCaml toolchain
+4. Configure .ocamlformat file
+
+EMACS SETUP:
+1. Install tuareg-mode
+2. Install merlin package
+3. Configure .emacs
+4. Enable company-mode
+
+VIM SETUP:
+1. Install vim-ocaml
+2. Install merlin
+3. Configure .vimrc
+4. Use ALE or CoC for LSP
+
+TROUBLESHOOTING:
+- Ensure opam env is loaded
+- Check LSP server in PATH
+- Verify switch is selected
+- Restart editor after install
+
+RELATED TUTORIALS:
+- Installing OCaml: /docs/installing-ocaml
+- opam Switches: /docs/opam-switch-introduction
+- Formatting Your Code: /docs/formatting-your-code
+- Your First OCaml Program: /docs/your-first-program
+
+EXTERNAL RESOURCES:
+- VSCode extension: https://marketplace.visualstudio.com/items?itemName=ocamllabs.ocaml-platform
+- Merlin GitHub: https://github.com/ocaml/merlin
+- ocaml-lsp GitHub: https://github.com/ocaml/ocaml-lsp
+- Tuareg mode: https://github.com/ocaml/tuareg
+- vim-ocaml: https://github.com/ocaml/vim-ocaml
+-->
+
 While the toplevel is great for interactively trying out the language, we will shortly need to write OCaml files in an editor. We already installed the tools required to enhance Merlin, our editor of choice with OCaml support. Merlin provides all features such as "jump to definition," "show type," and `ocaml-lsp-server`, a server that delivers those features to the editor through the LSP server.
 OCaml has plugins for many editors, but the most actively maintained are for Visual Studio Code, Emacs, and Vim.
 

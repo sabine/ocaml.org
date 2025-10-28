@@ -6,6 +6,60 @@ description: >
 category: "Guides"
 ---
 
+<!--
+DOCUMENTATION REFERENCES:
+- OCaml Manual - Native-code compilation: https://ocaml.org/manual/5.2/native.html
+- OCaml Manual - The runtime system: https://ocaml.org/manual/5.2/runtime.html
+- OCaml Manual - Memory representation of values: https://ocaml.org/manual/5.2/api/index.html#memory-model
+- OCaml Manual - Interfacing C with OCaml: https://ocaml.org/manual/5.2/intfc.html
+- OCaml Manual - Profiling (ocamlprof): https://ocaml.org/manual/5.2/profil.html
+- OCaml Manual - Compiler options: https://ocaml.org/manual/5.2/comp.html
+- OCaml Runtime Headers: /usr/include/caml/mlvalues.h
+
+COMPILER FLAGS:
+- -S : Keep assembly language file (.s)
+- -inline n : Set aggressiveness of inlining (default 10)
+- -p : Compile and link with profiling support (gprof)
+- -compact : Optimize code for space rather than speed
+- -unsafe : Turn off bounds checking for array and string access
+
+PROFILING TOOLS:
+- gprof - GNU profiler for native code
+- ocamlprof - Profiler for bytecode programs
+- perf - Linux performance monitoring tool
+- Landmarks - OCaml library for profiling: https://github.com/LexiFi/landmarks
+- Spacetime profiler (deprecated in OCaml 4.12+)
+
+ASSEMBLY CONCEPTS COVERED:
+- x86 registers and calling conventions
+- Assembly directives (.text, .data, .globl)
+- OCaml memory layout and object headers
+- String representation and padding
+- Tail recursion optimization
+- Function inlining
+- Polymorphic function dispatch
+
+PERFORMANCE TOPICS:
+- Tail recursion elimination
+- Function inlining
+- Static typing vs dynamic dispatch
+- Memory representation efficiency
+- Pattern matching compilation
+- List operations performance
+- Array access optimization
+
+RELATED TUTORIALS:
+- Using the OCaml Compiler Toolchain: /docs/using-the-ocaml-compiler-toolchain
+- Debugging: /docs/debugging
+- Garbage Collection: /docs/garbage-collection
+- Memory Representation: /docs/memory-representation
+
+EXTERNAL RESOURCES:
+- GNU gprof manual: https://sourceware.org/binutils/docs/gprof/
+- x86 Assembly Guide: https://www.cs.virginia.edu/~evans/cs216/guides/x86.html
+- Intel x86 Instruction Set Reference: https://www.intel.com/content/www/us/en/developer/articles/technical/intel-sdm.html
+-->
+
 ## Speed
 
 Why is OCaml fast? Indeed, step back and ask *is OCaml fast?* How can we

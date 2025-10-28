@@ -16,6 +16,65 @@ external_tutorial:
     description: "You are encouraged to contribute to the original sources of this page at the Real World OCaml GitHub repository."
 ---
 
+<!--
+DOCUMENTATION REFERENCES:
+- OCaml Manual - Native-code compilation: https://ocaml.org/manual/5.2/native.html
+- OCaml Manual - Bytecode compilation: https://ocaml.org/manual/5.2/comp.html
+- OCaml Manual - The runtime system: https://ocaml.org/manual/5.2/runtime.html
+- Real World OCaml - Compiler Backend: https://dev.realworldocaml.org/compiler-backend.html
+
+COMPILATION MODES:
+1. Bytecode (ocamlc):
+   - Platform-independent
+   - Fast compilation
+   - Interpreted by OCaml runtime
+   - Better for development
+   - Debugging support
+
+2. Native code (ocamlopt):
+   - Platform-specific machine code
+   - Slower compilation
+   - Faster execution
+   - Better for production
+   - Optimized performance
+
+COMPILER STAGES:
+1. Parsing - Source to AST
+2. Type checking - Type inference
+3. Translation - AST to intermediate
+4. Optimization - Various passes
+5. Code generation - Backend output
+
+INTERMEDIATE REPRESENTATIONS:
+- Lambda - High-level IR
+- Cmm - Mid-level IR
+- Linear - Low-level IR
+- Assembly - Target assembly
+
+FILE EXTENSIONS:
+- .cmo - Compiled bytecode object
+- .cmx - Compiled native object
+- .cma - Bytecode library archive
+- .cmxa - Native library archive
+- .cmi - Compiled interface
+
+OPTIMIZATIONS:
+- Inlining
+- Constant folding
+- Dead code elimination
+- Register allocation
+- Instruction scheduling
+
+RELATED TUTORIALS:
+- Using the OCaml Compiler Toolchain: /docs/using-the-ocaml-compiler-toolchain
+- Compiler Frontend: /docs/compiler-frontend
+- Profiling: /docs/profiling
+
+EXTERNAL RESOURCES:
+- Real World OCaml book: https://dev.realworldocaml.org/
+- RWO GitHub: https://github.com/realworldocaml/book
+-->
+
 This is an adaptation of the chapter [The Compiler Backend: Bytecode and Native code](https://dev.realworldocaml.org/compiler-backend.html) from the book [Real World OCaml](https://dev.realworldocaml.org/), reproduced here with permission.
 
 Once OCaml has passed the type checking stage, it can stop emitting syntax

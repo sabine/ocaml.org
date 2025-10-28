@@ -6,6 +6,15 @@ description: >
 category: "Tutorials"
 ---
 
+<!-- 
+## Reference Documentation
+- [Sys module](https://ocaml.org/manual/5.2/api/Sys.html) - System interface including Sys.argv
+- [Arg module](https://ocaml.org/manual/5.2/api/Arg.html) - Parsing of command line arguments
+- [Array module](https://ocaml.org/manual/5.2/api/Array.html) - Operations on arrays
+- [Cmdliner documentation](https://erratique.ch/software/cmdliner/doc/Cmdliner) - Modern CLI library
+- [Cmdliner tutorial](https://erratique.ch/software/cmdliner/doc/tutorial.html) - Getting started with Cmdliner
+-->
+
 In this tutorial we learn how to read command line arguments directly, using
 OCaml's `Sys.argv` array, and then how to do so more easily using the standard
 library's `Arg` module.

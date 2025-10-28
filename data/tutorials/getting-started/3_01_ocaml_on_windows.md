@@ -6,6 +6,83 @@ description: >
 category: "Resources"
 ---
 
+<!--
+DOCUMENTATION REFERENCES:
+- opam on Windows: https://opam.ocaml.org/doc/Install.html#Windows
+- opam Manual: https://opam.ocaml.org/doc/Manual.html
+- Diskuv OCaml: https://diskuv.com/ocaml/
+
+WINDOWS INSTALLATION OPTIONS:
+1. opam 2.2+ (Tier 1 - Recommended)
+   - Native Windows support
+   - Latest OCaml 5.x
+   - Full platform tool support
+   - Install via WinGet
+
+2. Diskuv OCaml (Tier 2)
+   - OCaml 4.14.x
+   - Easier for Unix-unfamiliar users
+   - More stable, less cutting-edge
+   - Commercial support available
+
+3. WSL2 (Tier 3)
+   - Linux environment on Windows
+   - Full Linux tooling
+   - User-supported
+   - Standard Linux installation
+
+4. Docker (Tier 3)
+   - Containerized environment
+   - For running, not developing
+   - User-supported
+   - Cross-platform
+
+SUPPORT TIERS:
+- Tier 1: Full official support, latest compilers
+- Tier 2: Supported on select versions, maintained when possible
+- Tier 3: Community/user supported
+
+OPAM ON WINDOWS:
+- Native Windows support since 2.2
+- Install via WinGet: winget install OCaml.opam
+- Requires Git
+- Works with cmd.exe and PowerShell
+- Full package ecosystem
+
+DISKUV OCAML:
+- Windows-native installation
+- Beginner-friendly
+- OCaml 4.14.x series
+- Commercial entity support
+- Stability over latest features
+
+WSL2 SETUP:
+- Linux subsystem for Windows
+- Full Linux experience
+- Access Windows filesystem
+- Standard Linux OCaml installation
+- Better for Unix-familiar users
+
+DOCKER APPROACH:
+- Containerized OCaml environment
+- Mainly for deployment/running
+- ocaml/opam Docker images
+- Not ideal for interactive development
+
+RELATED TUTORIALS:
+- Installing OCaml: /docs/installing-ocaml
+- ARM64 Fix (Mac): /docs/arm64-fix
+- opam Switches: /docs/opam-switch-introduction
+- Editor Setup: /docs/set-up-editor
+
+EXTERNAL RESOURCES:
+- opam homepage: https://opam.ocaml.org/
+- Diskuv OCaml: https://diskuv.com/ocaml/
+- WSL documentation: https://docs.microsoft.com/en-us/windows/wsl/
+- Docker Hub OCaml images: https://hub.docker.com/r/ocaml/opam
+- WinGet: https://github.com/microsoft/winget-cli
+-->
+
 We recommend installing [opam](https://opam.ocaml.org/) for new users. Opam, the OCaml package manager, has full Windows support since version 2.2 and provides the most up-to-date OCaml environment.
 
 There are a couple scenarios when other OCaml installers may be useful:

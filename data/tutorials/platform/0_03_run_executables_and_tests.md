@@ -7,6 +7,18 @@ description: |
 category: "Projects"
 ---
 
+<!--
+## Reference Documentation
+- [Dune Executable Stanza](https://dune.readthedocs.io/en/stable/reference/dune/executable.html) - Complete executable stanza reference
+- [Dune Test Stanza](https://dune.readthedocs.io/en/stable/reference/dune/test.html) - Complete test stanza reference
+- [Dune - dune exec](https://dune.readthedocs.io/en/stable/reference/cli/dune-exec.html) - Running executables
+- [Dune - dune test](https://dune.readthedocs.io/en/stable/reference/cli/dune-test.html) - Running tests
+- [Dune - dune build --watch](https://dune.readthedocs.io/en/stable/reference/cli/dune-build.html) - Watch mode
+- [Dune Tutorial - Writing Tests](https://dune.readthedocs.io/en/stable/tutorials/developing-with-dune/writing-tests.html) - Comprehensive testing guide
+- [Alcotest](https://github.com/mirage/alcotest) - Testing framework
+- [Alcotest Documentation](https://mirage.github.io/alcotest/alcotest/index.html) - API reference
+-->
+
 ## Running Executables
 
 > **TL;DR**

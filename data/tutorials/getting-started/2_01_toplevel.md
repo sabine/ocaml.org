@@ -6,6 +6,66 @@ description: |
 category: "Tooling"
 ---
 
+<!--
+DOCUMENTATION REFERENCES:
+- OCaml Manual - The toplevel system: https://ocaml.org/manual/5.2/toplevel.html
+- OCaml Manual - Batch compilation: https://ocaml.org/manual/5.2/comp.html
+- UTop Documentation: https://github.com/ocaml-community/utop
+- OCaml Platform: https://ocaml.org/docs/platform
+
+TOPLEVELS AVAILABLE:
+- utop - Enhanced interactive toplevel (recommended)
+- ocaml - Basic OCaml toplevel
+- Other REPLs - Various community projects
+
+UTOP FEATURES:
+- Syntax highlighting
+- Tab completion
+- Command history (up/down arrows)
+- Multi-line editing
+- Library loading with #require
+- PPX support
+
+TOPLEVEL DIRECTIVES:
+- #quit;; - Exit toplevel
+- #help;; - Show help
+- #require "<lib>";; - Load library
+- #use "file.ml";; - Load file
+- #trace <fun>;; - Trace function calls
+- #untrace <fun>;; - Stop tracing
+- #show <module>;; - Show module signature
+- #show_module <M>;; - Show module contents
+
+SYNTAX NOTES:
+- ;; - Statement terminator (REPL only, optional in files)
+- # - REPL prompt (not part of code)
+- Lines starting with # - Either prompt or directive
+
+LOADING LIBRARIES:
+- #require "str" - Load Str library
+- #require "unix" - Load Unix library
+- opam install <package> - Install package first
+- ocamlfind list - List available libraries
+
+PPX EXTENSIONS:
+- Loaded via #require like regular libraries
+- Enable code generation and metaprogramming
+- Examples: ppx_deriving, ppx_jane, etc.
+
+RELATED TUTORIALS:
+- Your First OCaml Program: /docs/your-first-program
+- Install OCaml: /docs/install
+- Editor Setup: /docs/set-up-editor
+- Debugging: /docs/debugging
+- Values and Functions: /docs/values-and-functions
+
+EXTERNAL RESOURCES:
+- UTop GitHub: https://github.com/ocaml-community/utop
+- OCaml Discuss forum: https://discuss.ocaml.org/
+- REPL concept: https://en.wikipedia.org/wiki/Read%E2%80%93eval%E2%80%93print_loop
+- NOP code: https://en.wikipedia.org/wiki/NOP_(code)
+-->
+
 An OCaml toplevel is a chat between the user and OCaml. The user writes OCaml code, and UTop evaluates it. This is why it is also called a Read-Eval-Print-Loop (REPL). Several OCaml toplevels exist, like `ocaml` and `utop`. We recommend using UTop, which is part of the [OCaml Platform](/docs/platform) toolchain.
 
 To run UTop, we use the `utop` command, which looks like this:

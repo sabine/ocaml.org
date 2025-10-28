@@ -7,6 +7,72 @@ description: |
 category: "Additional Tooling"
 ---
 
+<!--
+DOCUMENTATION REFERENCES:
+- odoc Documentation: https://ocaml.github.io/odoc/
+- odoc for Authors: https://ocaml.github.io/odoc/odoc/odoc_for_authors.html
+- odoc GitHub: https://github.com/ocaml/odoc
+- Dune Documentation Generation: https://dune.readthedocs.io/en/stable/reference/dune/documentation.html
+
+ODOC FEATURES:
+- Generates HTML, LaTeX, or man pages
+- Extracts from .mli interface files
+- Parses special comment syntax
+- Cross-references between modules
+- Custom documentation pages (.mld files)
+- Integrates with Dune
+
+OUTPUT FORMATS:
+- HTML (default, recommended)
+- LaTeX (for PDF generation)
+- Man pages (Unix manual format)
+
+DOCSTRING SYNTAX:
+- (** ... *) - Documentation comment
+- @param, @return, @raise - Special tags
+- {b bold}, {i italic} - Inline formatting
+- {[ ... ]} - Code blocks
+- {{:url}text} - Links
+- {!Module.value} - Cross-references
+
+USAGE WITH DUNE:
+- dune build @doc - Generate documentation
+- (documentation (package <name>)) - Dune stanza
+- Output in _build/default/_doc/_html/
+
+MLD FILES:
+- .mld extension for custom pages
+- index.mld replaces default index
+- Placed in doc/ or docs/ directory
+- Same syntax as docstrings
+
+DOCSTRING EXAMPLE:
+(** Short description.
+
+    Longer description with {b emphasis}.
+
+    @param x Description of parameter x
+    @return What the function returns
+    @raise Not_found When element not found *)
+
+INSTALLATION:
+- opam install odoc
+- Usually included in OCaml Platform
+- Dune handles invocation automatically
+
+RELATED TUTORIALS:
+- Your First OCaml Program: /docs/your-first-program
+- Dune Tutorial: /docs/dune
+- OCaml Programming Guidelines: /docs/guidelines
+- Creating Libraries: /docs/creating-libraries
+
+EXTERNAL RESOURCES:
+- odoc homepage: https://ocaml.github.io/odoc/
+- odoc GitHub: https://github.com/ocaml/odoc
+- OCaml.org package docs: https://ocaml.org/packages
+- Odoc examples: Various open-source OCaml projects
+-->
+
 The documentation rendering tool `odoc` generates documentation
 in the form of HTML, LaTeX, or man pages,
 from the docstrings and interfaces of the project's modules

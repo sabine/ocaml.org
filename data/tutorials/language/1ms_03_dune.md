@@ -9,6 +9,84 @@ prerequisite_tutorials:
   - functors
 ---
 
+<!--
+DOCUMENTATION REFERENCES:
+- Dune Documentation: https://dune.readthedocs.io/
+- Dune Library Stanza: https://dune.readthedocs.io/en/stable/reference/dune/library.html
+- Dune Project Files: https://dune.readthedocs.io/en/stable/reference/dune-project/index.html
+- opam Package Spec: https://opam.ocaml.org/doc/Manual.html#Package-definitions
+
+DUNE LIBRARY CONCEPTS:
+- Library: Collection of modules
+- Public libraries: Installed, available to other projects
+- Private libraries: Internal to project
+- Wrapped libraries: Single top-level module
+- Unwrapped libraries: All modules exposed
+- Virtual libraries: Abstract interfaces
+
+DUNE STANZAS:
+(library
+  (name <internal-name>)
+  (public_name <opam-name>)
+  (libraries <deps>)
+  (modules <list>)
+  (wrapped <bool>))
+
+PROJECT STRUCTURE:
+- dune-project: Project metadata
+- dune: Build rules per directory
+- *.opam: Package metadata
+- lib/: Library source code
+- bin/: Executables
+- test/: Tests
+
+LIBRARY FEATURES:
+- Automatic module discovery
+- Dependency management
+- Module wrapping/unwrapping
+- Private/public visibility
+- Virtual implementations
+- Preprocessing support
+
+COMMON PATTERNS:
+1. Single library per directory
+2. Wrapped by default
+3. Public name for installation
+4. Internal name for references
+5. Explicit module lists when needed
+
+MODULE WRAPPING:
+- Wrapped (default): Modules under Library namespace
+- Access: Library.Module
+- Prevents name conflicts
+- Unwrapped: Direct module access
+- Use (wrapped false) to disable
+
+LIBRARY DEPENDENCIES:
+- (libraries dep1 dep2): Depend on other libraries
+- Transitive: Dependencies' dependencies available
+- opam packages must be installed
+- Local libraries: Same project
+
+VISIBILITY:
+- Public: Has public_name, installed via opam
+- Private: No public_name, project-internal
+- Modules: Can be private within library
+
+RELATED TUTORIALS:
+- Modules: /docs/modules
+- Functors: /docs/functors
+- Your First OCaml Program: /docs/your-first-program
+- Creating Libraries: /docs/creating-libraries
+- Using the OCaml Compiler Toolchain: /docs/using-the-ocaml-compiler-toolchain
+
+EXTERNAL RESOURCES:
+- Dune homepage: https://dune.build/
+- Dune documentation: https://dune.readthedocs.io/
+- Dune GitHub: https://github.com/ocaml/dune
+- Real World OCaml - Files and Modules: https://dev.realworldocaml.org/
+-->
+
 ## Introduction
 
 Dune provides several means to arrange modules into libraries. We look at Dune's mechanisms for structuring projects with libraries that contain modules.

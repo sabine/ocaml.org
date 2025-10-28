@@ -7,6 +7,17 @@ description: |
 category: "Libraries & Packages"
 ---
 
+<!--
+## Reference Documentation
+- [dune-release Documentation](https://github.com/tarides/dune-release) - Automating package releases
+- [dune-release Quick Start](https://github.com/tarides/dune-release/blob/master/QUICK_START.md) - Getting started guide
+- [opam-repository](https://github.com/ocaml/opam-repository) - OCaml package repository
+- [opam-repository Contributing Guide](https://github.com/ocaml/opam-repository/blob/master/CONTRIBUTING.md) - Package submission guidelines
+- [Opam Packaging Guide](https://opam.ocaml.org/doc/Packaging.html) - Detailed packaging documentation
+- [Opam CI](https://check.ocamllabs.io/) - Package CI system
+- [Creating Libraries Tutorial](/docs/creating-libraries) - Previous step before publishing
+-->
+
 > **TL;DR**
 > 
 > Create a `CHANGES.md` file and run `dune-release bistro`.

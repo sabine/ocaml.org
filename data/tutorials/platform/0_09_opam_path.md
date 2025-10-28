@@ -6,6 +6,17 @@ description: |
 category: "Projects"
 ---
 
+<!--
+## Reference Documentation
+- [Opam Manual - Switches](https://opam.ocaml.org/doc/Manual.html#Switches) - Complete switch documentation
+- [Opam Manual - Environment](https://opam.ocaml.org/doc/Manual.html#opam-env) - Environment variable management
+- [opam env command](https://opam.ocaml.org/doc/man/opam-env.html) - Command reference
+- [opam exec command](https://opam.ocaml.org/doc/man/opam-exec.html) - Command reference
+- [direnv](https://direnv.net/) - Environment switcher for the shell
+- [direnv installation](https://direnv.net/#install) - How to install direnv
+- [direnv stdlib](https://direnv.net/man/direnv-stdlib.1.html) - Built-in direnv functions
+-->
+
 Opam is a package manager for OCaml that facilitates the installation and management of OCaml libraries and tools. When working with opam, it's essential to understand how to run commands within a specific opam switch. In this tutorial, we'll explore three methods: `opam env`, `opam exec`, and `direnv`.
 
 ## Using `opam env`

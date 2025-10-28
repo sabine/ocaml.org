@@ -17,6 +17,17 @@ prerequisite_tutorials:
   - "basic-data-types"
 ---
 
+<!--
+## Reference Documentation
+- [Real World OCaml - Memory Representation](https://dev.realworldocaml.org/runtime-memory-layout.html) - Original RWO chapter
+- [OCaml Manual - Runtime System](https://ocaml.org/manual/5.2/intfc.html) - C interface and memory layout
+- [OCaml Manual - FFI](https://ocaml.org/manual/5.2/intfc.html) - Foreign Function Interface
+- [Obj module](https://ocaml.org/manual/5.2/api/Obj.html) - Low-level representation access (use with caution)
+- [Garbage Collector Tutorial](/docs/garbage-collector) - Understanding GC
+- [Compiler Frontend Tutorial](/docs/compiler-frontend) - Parsing and type checking
+- [Compiler Backend Tutorial](/docs/compiler-backend) - Code generation
+-->
+
 This is an adaptation of the chapter [Memory Representation of Values](https://dev.realworldocaml.org/runtime-memory-layout.html) from the book [Real World OCaml](https://dev.realworldocaml.org/), reproduced here with permission.
 
 This document covers the precise mapping from OCaml types to runtime values

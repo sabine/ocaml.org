@@ -7,6 +7,93 @@ description: |
 category: "Advanced Topics"
 ---
 
+<!--
+DOCUMENTATION REFERENCES:
+- OCaml Manual - Preprocessors: https://ocaml.org/manual/5.2/comp.html#s:comp-options
+- OCaml Manual - AST and Parsetree: https://ocaml.org/manual/5.2/api/Parsetree.html
+- ppxlib Documentation: https://ocaml.github.io/ppxlib/
+- Dune Preprocessing: https://dune.readthedocs.io/en/stable/reference/preprocessing-spec.html
+
+PREPROCESSOR TYPES:
+1. Source-level preprocessors (text manipulation)
+   - cppo, m4, C preprocessor
+   - Work on raw source text
+   - Simple string/macro replacement
+
+2. PPX (PreProcessor eXtension)
+   - Work on OCaml AST (Parsetree)
+   - Type-aware transformations
+   - Better editor integration
+   - Recommended approach
+
+PPX ADVANTAGES:
+- Preserves source locations for error messages
+- Works with Merlin (jump to definition, etc.)
+- Type-aware transformations
+- Fast and composable
+- Official OCaml Platform support
+
+PPX SYNTAX:
+- Extensions: [%name payload]
+- Attributes: [@name payload] or [@@name payload] or [@@@name payload]
+- Extension points in expressions, patterns, types
+- Attributes on definitions, types, modules
+
+PPXLIB LIBRARY:
+- Official library for writing PPXs
+- Provides AST traversal helpers
+- Ensures PPX composition
+- Maintains compatibility across OCaml versions
+- AST pattern matching (metaquot)
+
+COMMON PPX LIBRARIES:
+- ppx_deriving: Automatic code generation
+- ppx_jane: Jane Street extensions
+- ppx_inline_test: Inline testing
+- ppx_let: Let-binding syntax extensions
+- ppx_sexp_conv: S-expression converters
+- ppx_compare: Comparison functions
+- ppx_fields_conv: Record field accessors
+
+USING PPXs IN DUNE:
+- (preprocess (pps <ppx-name>))
+- Multiple PPXs: (pps ppx1 ppx2 ...)
+- Preprocessing spec in dune file
+
+WRITING A PPX:
+- Use ppxlib library
+- Define extension/attribute rewriters
+- Register with Ppxlib.Driver
+- Test with ppxlib test infrastructure
+- Distribute as opam package
+
+SOURCE PREPROCESSORS:
+- cppo: OCaml-friendly C preprocessor
+- m4: General-purpose macro processor
+- C preprocessor (cpp): Traditional C-style
+- Use with: ocamlc -pp <command>
+
+AST CONCEPTS:
+- Parsetree: OCaml's AST representation
+- Pattern matching on AST nodes
+- Metaquot: Quotation syntax for AST construction
+- Mapper: Transform AST by traversal
+- Expander: Replace extension nodes
+
+RELATED TUTORIALS:
+- Modules: /docs/modules
+- Functors: /docs/functors
+- Your First OCaml Program: /docs/your-first-program
+
+EXTERNAL RESOURCES:
+- ppxlib GitHub: https://github.com/ocaml-ppx/ppxlib
+- ppxlib examples: https://github.com/ocaml-ppx/ppxlib/tree/main/examples
+- cppo: https://github.com/ocaml-community/cppo
+- m4 manual: https://www.gnu.org/software/m4/
+- C preprocessor: https://gcc.gnu.org/onlinedocs/cpp/
+- PPX tutorial: Various blog posts and papers
+-->
+
 Preprocessors are programs meant to be called at compile time, so that they
 alter the program before the actual compilation. They can be very
 useful for several things, such as the inclusion of a file, conditional

@@ -7,9 +7,19 @@ description: |
 category: "Projects"
 ---
 
+<!--
+## Reference Documentation
+- [Opam Switches](https://opam.ocaml.org/doc/Manual.html#Switches) - Complete guide to opam switches
+- [Opam Switch Commands](https://opam.ocaml.org/doc/Usage.html#opam-switch) - Switch management commands
+- [Dune Workspace](https://dune.readthedocs.io/en/stable/reference/dune-workspace/index.html) - Multi-context builds
+- [Dune Context Stanza](https://dune.readthedocs.io/en/stable/reference/dune-workspace/context.html) - Defining build contexts
+- [OCaml Compiler Releases](https://ocaml.org/releases) - Available OCaml versions
+- [Opam Compiler Packages](https://opam.ocaml.org/packages/search?q=compiler) - Compiler variants in opam
+-->
+
 > **TL;DR**
 > 
-> Use `opam switch set` to manually select the switch to use and use `dune-workspace` to automatically run commands in different environment.
+> Use `opam switch set` to manually select the switch to use and use `dune-workspace` to automatically run commands in different environments.
 
 Compilation environments are managed with opam switches. The typical workflow is to have a local opam switch for the project, but you may need to select a different compilation environment (i.e. a different compiler version) sometimes. For instance, to run unit tests on an older/newer version of OCaml.
 

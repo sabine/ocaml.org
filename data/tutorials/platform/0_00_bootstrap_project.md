@@ -7,6 +7,18 @@ description: |
 category: "Projects"
 ---
 
+<!--
+## Reference Documentation
+- [Dune Overview](https://dune.readthedocs.io/en/stable/overview.html) - Introduction to Dune build system
+- [Dune Quickstart](https://dune.readthedocs.io/en/stable/quickstart.html) - Getting started with Dune
+- [Dune - dune init](https://dune.readthedocs.io/en/stable/reference/cli/dune-init.html) - Command reference for dune init
+- [Dune Tutorial](https://dune.readthedocs.io/en/stable/tutorials/developing-with-dune/index.html) - Comprehensive Dune tutorial
+- [Dune - Project Layout](https://dune.readthedocs.io/en/stable/overview.html#project-layout) - Recommended project structure
+- [Spin](https://github.com/tmattio/spin) - Community project scaffolding tool
+- [Drom](https://ocamlpro.github.io/drom/sphinx/about.html) - OCamlPro's project scaffolding tool
+- [Carcass](https://github.com/dbuenzli/carcass) - Daniel Bünzli's project scaffolding tool
+-->
+
 [Dune](https://dune.readthedocs.io/en/stable/overview.html) is recommended for bootstrapping projects. To install `dune`, please see [the OCaml install page](/install).
 
 To start a new project, you can run:

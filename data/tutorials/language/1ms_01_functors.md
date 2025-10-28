@@ -8,6 +8,61 @@ prerequisite_tutorials:
   - modules
 ---
 
+<!--
+DOCUMENTATION REFERENCES:
+- OCaml Manual - Functors: https://ocaml.org/manual/5.2/moduleexamples.html#s:functors
+- OCaml Manual - Module system: https://ocaml.org/manual/5.2/modules.html
+- OCaml Manual - Set module: https://ocaml.org/manual/5.2/api/Set.html
+- OCaml Manual - Map module: https://ocaml.org/manual/5.2/api/Map.html
+- OCaml Manual - Hashtbl module: https://ocaml.org/manual/5.2/api/Hashtbl.html
+
+FUNCTOR CONCEPTS:
+- Functors are functions from modules to modules
+- Parameterized modules for code reuse
+- Take module(s) as input, return module as output
+- Functor signatures define parameter requirements
+- First-class modules enable runtime functor application
+
+FUNCTOR SYNTAX:
+- Definition: module F (X : S1) = struct ... end
+- Application: module M = F(Arg)
+- Anonymous modules: F(struct ... end)
+- Higher-order functors: functors returning functors
+
+STANDARD LIBRARY FUNCTORS:
+- Set.Make : OrderedType -> Set.S
+- Map.Make : OrderedType -> Map.S  
+- Hashtbl.Make : HashedType -> Hashtbl.S
+- Format.Make : Format_tags -> Format formatter functions
+
+COMMON USE CASES:
+1. Data structures parameterized by element type (Set, Map)
+2. Abstract data types with configurable implementation
+3. Dependency injection and module composition
+4. Code generation and metaprogramming
+5. Testing (mock implementations)
+
+FUNCTOR PATTERNS:
+- Simple functors: single parameter, direct application
+- Higher-order functors: functors taking/returning functors
+- Applicative functors: multiple parameter modules
+- Generative vs applicative: module identity semantics
+
+RELATED TUTORIALS:
+- Modules: /docs/modules
+- Sets: /docs/sets
+- Maps: /docs/maps
+- Hash Tables: /docs/hashtbl
+- First-class Modules: Advanced topic
+
+EXTERNAL RESOURCES:
+- Tutorial Git repo: https://github.com/ocaml-web/ocamlorg-docs-functors
+- Dune build system: https://dune.build
+- Real World OCaml - Functors: https://dev.realworldocaml.org/functors.html
+- Functor (mathematics): https://en.wikipedia.org/wiki/Functor
+- OCaml module system paper: Academic papers on OCaml's module system
+-->
+
 ## Introduction
 
 In this tutorial, we look at how to apply functors and how to write functors. We also show some use cases involving functors.

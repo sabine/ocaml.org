@@ -2,9 +2,19 @@
 id: lists
 title: Lists
 description: >
-  Learn about one of OCaml's must used, built-in data types
+  Learn about one of OCaml's most used, built-in data types
 category: "Introduction"
 ---
+
+<!--
+## Reference Documentation
+- [List module](https://ocaml.org/manual/5.2/api/List.html) - Standard library list operations
+- [StdLabels.List](https://ocaml.org/manual/5.2/api/StdLabels.List.html) - List module with labeled functions
+- [Language Manual - Core Language](https://ocaml.org/manual/5.2/coreexamples.html) - Basic OCaml examples including lists
+- [Language Manual - Pattern Matching](https://ocaml.org/manual/5.2/patterns.html) - Pattern matching on lists
+- [Fun module](https://ocaml.org/manual/5.2/api/Fun.html) - Function utilities (including Fun.flip)
+- [Data Structures Comparison](/docs/data-structures-comparison) - Performance comparison of OCaml data structures
+-->
 
 A list is an ordered sequence of elements. All elements of a list in OCaml must
 be the same type. Lists are built into the language and have a special syntax.

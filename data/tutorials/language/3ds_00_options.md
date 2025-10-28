@@ -2,9 +2,65 @@
 id: options
 title: Options
 description: >
-  Add nothing-as-value to anything to avoid confusion between something and “no such thing“.
+  Add nothing-as-value to anything to avoid confusion between something and "no such thing".
 category: "Data Structures"
 ---
+
+<!--
+DOCUMENTATION REFERENCES:
+- OCaml Manual - Option module: https://ocaml.org/manual/5.2/api/Option.html
+- OCaml Manual - Predefined types: https://ocaml.org/manual/5.2/api/Stdlib.html
+- OCaml Manual - Pattern matching: https://ocaml.org/manual/5.2/patterns.html
+
+OPTION TYPE:
+- type 'a option = None | Some of 'a
+- Type-safe way to represent absence of value
+- Alternative to exceptions and null values
+- Prevents confusion between 0/""/false and "no value"
+
+CONSTRUCTORS:
+- None - Represents absence of value
+- Some v - Wraps a value v
+
+COMMON FUNCTIONS:
+- Option.map : ('a -> 'b) -> 'a option -> 'b option
+- Option.bind : 'a option -> ('a -> 'b option) -> 'b option
+- Option.value : 'a option -> default:'a -> 'a
+- Option.get : 'a option -> 'a (raises Invalid_argument on None)
+- Option.is_none : 'a option -> bool
+- Option.is_some : 'a option -> bool
+- Option.fold : none:'a -> some:('b -> 'a) -> 'b option -> 'a
+- Option.iter : ('a -> unit) -> 'a option -> unit
+- Option.to_result : none:'e -> 'a option -> ('a, 'e) result
+- Option.to_list : 'a option -> 'a list
+
+USE CASES:
+1. Optional function parameters
+2. Search results (found/not found)
+3. Nullable fields in records
+4. Error handling (alternative to exceptions)
+5. Partial functions (division, array access)
+
+PATTERN MATCHING:
+- match opt with None -> ... | Some x -> ...
+- function None -> ... | Some x -> ...
+- let Some x = opt in ... (warning if not exhaustive)
+
+COMPARISON WITH OTHER APPROACHES:
+- vs Exceptions: Options in types, exceptions not visible
+- vs Null: Type-safe, no NullPointerException equivalent
+- vs Result: Options for simple presence/absence, Result for error info
+
+RELATED TUTORIALS:
+- Error Handling: /docs/error-handling
+- Result type: Covered in Error Handling tutorial
+- Pattern Matching: Various tutorials
+- Basic Data Types: /docs/basic-data-types
+
+EXTERNAL RESOURCES:
+- Option type (Wikipedia): https://en.wikipedia.org/wiki/Option_type
+- Real World OCaml - Error Handling: https://dev.realworldocaml.org/error-handling.html
+-->
 
 ## Introduction
 

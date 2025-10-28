@@ -7,6 +7,16 @@ description: |
 category: "Libraries & Packages"
 ---
 
+<!--
+## Reference Documentation
+- [Dune Library Stanza](https://dune.readthedocs.io/en/stable/reference/dune/library.html) - Complete library stanza reference
+- [Dune Tutorial - Creating Libraries](https://dune.readthedocs.io/en/stable/tutorials/developing-with-dune/creating-libraries.html) - Step-by-step guide
+- [Dune - Visibility](https://dune.readthedocs.io/en/stable/concepts/visibility.html) - Public vs private libraries
+- [Dune - Library Dependencies](https://dune.readthedocs.io/en/stable/reference/library-dependencies.html) - Specifying dependencies
+- [Dune - Scopes](https://dune.readthedocs.io/en/stable/explanations/scopes.html) - Understanding scopes and packages
+- [Publishing Packages Tutorial](/docs/publishing-packages) - Next steps after creating libraries
+-->
+
 > **TL;DR**
 > 
 > Add a `library` stanza in your `dune` file.

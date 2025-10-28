@@ -6,6 +6,65 @@ description: >
 category: "Resources"
 ---
 
+<!--
+DOCUMENTATION REFERENCES:
+- OCaml Manual - The core language: https://ocaml.org/manual/5.2/coreexpr.html
+- OCaml Manual - Module system: https://ocaml.org/manual/5.2/moduleexamples.html
+- OCaml Manual - Objects: https://ocaml.org/manual/5.2/objectexamples.html
+- OCaml Manual - Polymorphic variants: https://ocaml.org/manual/5.2/polyvariant.html
+- OCaml Manual - GADTs: https://ocaml.org/manual/5.2/gadts.html
+- OCaml Style Guide: https://ocaml.org/docs/guidelines
+
+CODE FORMATTING TOOLS:
+- OCamlFormat: https://github.com/ocaml-ppx/ocamlformat
+- ocp-indent: https://github.com/OCamlPro/ocp-indent
+- .ocamlformat configuration: https://ocamlformat.org/
+
+NAMING CONVENTIONS:
+- Types: lowercase_with_underscores
+- Modules: CapitalizedCamelCase
+- Functions: lowercase_with_underscores
+- Constructors: CapitalizedCamelCase
+- Record fields: lowercase_with_underscores
+- Constants: lowercase_with_underscores or UPPERCASE
+
+STYLE TOPICS COVERED:
+- Naming conventions and identifier choice
+- Function definition and composition
+- Pattern matching best practices
+- Module signatures and encapsulation
+- Error handling patterns
+- Code organization
+- Performance considerations
+- Readability vs brevity
+- Comments and documentation
+
+BEST PRACTICES:
+- Write readable code first, optimize later
+- Use meaningful names for functions and variables
+- Keep functions short and focused
+- Prefer immutable data structures
+- Use pattern matching over conditionals
+- Leverage the type system
+- Write module interfaces (.mli files)
+- Document public APIs
+- Handle errors explicitly
+
+RELATED TUTORIALS:
+- Error Handling: /docs/error-handling
+- Modules: /docs/modules
+- Functors: /docs/functors
+- Labels: /docs/labels
+- Values and Functions: /docs/values-and-functions
+- OCamlFormat Tutorial: /docs/ocamlformat
+
+EXTERNAL RESOURCES:
+- Real World OCaml Style Guide: https://dev.realworldocaml.org/
+- OCaml Best Practices: https://ocaml.org/learn/best-practices
+- Jane Street Style Guide: https://opensource.janestreet.com/standards/
+- OCaml API documentation conventions: https://ocaml.github.io/odoc/odoc_for_authors.html
+-->
+
 This is a set of reasonable guidelines for writing OCaml
 programs that reflect the consensus among veteran OCaml
 programmers.

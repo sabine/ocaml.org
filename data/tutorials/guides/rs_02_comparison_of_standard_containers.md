@@ -6,6 +6,87 @@ description: >
 category: "Resources"
 ---
 
+<!--
+DOCUMENTATION REFERENCES:
+- OCaml Manual - Standard library: https://ocaml.org/manual/5.2/api/index.html
+- OCaml Manual - List module: https://ocaml.org/manual/5.2/api/List.html
+- OCaml Manual - Array module: https://ocaml.org/manual/5.2/api/Array.html
+- OCaml Manual - String module: https://ocaml.org/manual/5.2/api/String.html
+- OCaml Manual - Set module: https://ocaml.org/manual/5.2/api/Set.html
+- OCaml Manual - Map module: https://ocaml.org/manual/5.2/api/Map.html
+- OCaml Manual - Hashtbl module: https://ocaml.org/manual/5.2/api/Hashtbl.html
+- OCaml Manual - Buffer module: https://ocaml.org/manual/5.2/api/Buffer.html
+- OCaml Manual - Queue module: https://ocaml.org/manual/5.2/api/Queue.html
+- OCaml Manual - Stack module: https://ocaml.org/manual/5.2/api/Stack.html
+
+CONTAINER COMPARISON:
+
+Lists (immutable, singly-linked):
+- Add: O(1) cons (::)
+- Length: O(n)
+- Access i: O(i)
+- Find: O(n)
+- Use for: I/O, pattern matching
+
+Arrays (mutable, indexed):
+- Add: O(n) (create new)
+- Length: O(1)
+- Access i: O(1)
+- Find: O(n)
+- Use for: random access, known size
+
+Strings (immutable, bytes):
+- Add: O(n) (create new)
+- Length: O(1)
+- Access i: O(1)
+- Find: O(n)
+- Use for: text data, fixed length
+
+Set/Map (immutable, balanced trees):
+- Add: O(log n)
+- Size: O(n)
+- Find: O(log n)
+- Use for: versioned data, compilation
+
+Hashtbl (mutable, hash table):
+- Add: O(1) average
+- Size: O(1)
+- Find: O(1) average
+- Use for: key-value storage
+
+Buffer (mutable, extensible):
+- Add char: O(1) amortized
+- Add string: O(k)
+- Length: O(1)
+- Access i: O(1)
+- Use for: building strings
+
+Queue (mutable, FIFO):
+- Add: O(1)
+- Take: O(1)
+- Length: O(1)
+
+Stack (mutable, LIFO):
+- Add (push): O(1)
+- Take (pop): O(1)
+- Length: O(1)
+
+RELATED TUTORIALS:
+- Lists: /docs/lists
+- Arrays: /docs/arrays
+- Maps: /docs/maps
+- Sets: /docs/sets
+- Hash Tables: /docs/hashtbl
+- Options: /docs/options
+- Sequences: /docs/seq
+
+EXTERNAL RESOURCES:
+- Big-O notation: https://en.wikipedia.org/wiki/Big_O_notation
+- Data structures: https://en.wikipedia.org/wiki/Data_structure
+- OCaml source code: https://github.com/ocaml/ocaml/tree/trunk/stdlib
+- Cons operator: https://en.wikipedia.org/wiki/Cons
+-->
+
 This is a rough comparison of the different container types
 provided by the OCaml standard library. In each
 case, _n_ is the number of valid elements in the container.

@@ -15,6 +15,16 @@ external_tutorial:
     description: "You are encouraged to contribute to the original sources of this page at the CS3110 GitHub repository."
 ---
 
+<!--
+## Reference Documentation
+- [CS3110 - Memoization](https://cs3110.github.io/textbook/chapters/ds/memoization.html) - Original CS3110 chapter
+- [Array module](https://ocaml.org/manual/5.2/api/Array.html) - Array-based memoization
+- [Hashtbl module](https://ocaml.org/manual/5.2/api/Hashtbl.html) - Hash table memoization
+- [Weak module](https://ocaml.org/manual/5.2/api/Weak.html) - Weak hash tables for caching
+- [Memoization](https://en.wikipedia.org/wiki/Memoization) - General concept
+- [Hash Tables Tutorial](/docs/hash-tables) - Related data structure
+-->
+
 Memoization is a powerful technique for speeding up simple recursive
 algorithms, without having to change the way the algorithm works. This is done
 by "remembering" the results of a computation, so that previously computed results

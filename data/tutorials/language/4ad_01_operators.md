@@ -6,6 +6,16 @@ description: |
 category: "Advanced Topics"
 ---
 
+<!--
+## Reference Documentation
+- [OCaml Manual - Expressions](https://ocaml.org/manual/5.2/expr.html) - Expression syntax including operators
+- [OCaml Manual - Operator Precedence](https://ocaml.org/manual/5.2/expr.html#sss%3Aprecedence-and-associativity) - Precedence and associativity
+- [OCaml Manual - Custom Operators](https://ocaml.org/manual/5.2/names.html#sss%3Aprefix-and-infix-symbols) - Defining operators
+- [Stdlib module](https://ocaml.org/manual/5.2/api/Stdlib.html) - Standard operators
+- [List module](https://ocaml.org/manual/5.2/api/List.html) - List operations
+- [Partial Application](https://en.wikipedia.org/wiki/Partial_application) - Operator as functions
+-->
+
 ## Goals
 
 The learning goals of this tutorial are:

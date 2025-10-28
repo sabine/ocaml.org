@@ -9,6 +9,20 @@ prerequisite_tutorials:
   - "values-and-functions"
 ---
 
+<!--
+## Reference Documentation
+- [OCaml Manual - Core Types](https://ocaml.org/manual/5.2/types.html) - Type system reference
+- [OCaml Manual - Pattern Matching](https://ocaml.org/manual/5.2/patterns.html) - Pattern syntax
+- [OCaml Manual - Variant Types](https://ocaml.org/manual/5.2/coreexamples.html#s%3Atut-recvariants) - Variant examples
+- [Stdlib module](https://ocaml.org/manual/5.2/api/Stdlib.html) - Standard library
+- [Int module](https://ocaml.org/manual/5.2/api/Int.html) - Integer operations
+- [Float module](https://ocaml.org/manual/5.2/api/Float.html) - Float operations
+- [Int32 module](https://ocaml.org/manual/5.2/api/Int32.html) - 32-bit integers
+- [Int64 module](https://ocaml.org/manual/5.2/api/Int64.html) - 64-bit integers
+- [String module](https://ocaml.org/manual/5.2/api/String.html) - String operations
+- [Char module](https://ocaml.org/manual/5.2/api/Char.html) - Character operations
+-->
+
 ## Introduction
 
 This document covers atomic types, such as integers and Booleans; predefined compound types, like strings and lists; and user-defined types, namely variants and records. We show how to pattern match on those types.

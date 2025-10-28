@@ -15,6 +15,50 @@ external_tutorial:
     description: "You are encouraged to contribute to the original sources of this page at the Real World OCaml GitHub repository."
 ---
 
+<!--
+DOCUMENTATION REFERENCES:
+- OCaml Manual - Gc module: https://ocaml.org/manual/5.2/api/Gc.html
+- OCaml Manual - The runtime system: https://ocaml.org/manual/5.2/runtime.html
+- OCaml Manual - Memory model: https://ocaml.org/manual/5.2/memorymodel.html
+- Real World OCaml - Garbage Collector: https://dev.realworldocaml.org/garbage-collector.html
+
+GC ALGORITHM:
+- Mark and Sweep collection
+- Generational GC (minor and major heap)
+- Incremental major collection
+- Stop-the-world minor collection
+- Color marking (white, gray, black)
+
+GC STRUCTURE:
+- Minor heap: Young generation, fast collection
+- Major heap: Old generation, incremental collection
+- Roots: Stack, global values, C roots
+- Remembered set: Minor->major pointers
+
+COLLECTION PHASES:
+1. Mark phase: Identify live values
+2. Sweep phase: Collect dead values
+3. Compact phase: Defragment heap (optional)
+
+GC PARAMETERS:
+- minor_heap_size
+- major_heap_increment
+- space_overhead
+- max_overhead
+- stack_limit
+- allocation_policy
+
+RELATED TUTORIALS:
+- How to Work with the Garbage Collector: /docs/garbage-collection
+- Memory Representation: /docs/memory-representation
+- Profiling: /docs/profiling
+
+EXTERNAL RESOURCES:
+- Real World OCaml book: https://dev.realworldocaml.org/
+- RWO GitHub: https://github.com/realworldocaml/book
+- GC papers: Academic publications on OCaml GC
+-->
+
 This is an adaptation of the chapter [Understanding the Garbage Collector](https://dev.realworldocaml.org/garbage-collector.html) from the book [Real World OCaml](https://dev.realworldocaml.org/), reproduced here with permission.
 
 *This chapter includes contributions from Stephen Weeks and Sadiq Jaffer.*

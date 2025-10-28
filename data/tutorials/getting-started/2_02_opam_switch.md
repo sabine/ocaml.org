@@ -6,6 +6,86 @@ description: |
 category: "Tooling"
 ---
 
+<!--
+DOCUMENTATION REFERENCES:
+- opam Manual - Switches: https://opam.ocaml.org/doc/Manual.html#Switches
+- opam switch command: https://opam.ocaml.org/doc/man/opam-switch.html
+- opam Manual - File Hierarchies: https://opam.ocaml.org/doc/Manual.html
+- opam Homepage: https://opam.ocaml.org/
+
+SWITCH CONCEPTS:
+- Isolated OCaml environments
+- Similar to Python's virtualenv
+- Independent package installations
+- Separate compiler versions
+- Project-specific configurations
+
+SWITCH TYPES:
+1. Global switches:
+   - System-wide availability
+   - Named switches (e.g., "default", "4.14.0")
+   - Stored in ~/.opam/<switch-name>
+   - Not tied to specific directory
+
+2. Local switches:
+   - Project-specific
+   - Stored in _opam/ directory
+   - Automatically selected in project dir
+   - Isolated dependencies per project
+
+3. System switch:
+   - Uses OS-provided OCaml
+   - Special global switch
+   - May have limited package management
+
+COMMON COMMANDS:
+- opam switch - Show current switch
+- opam switch list - List all switches
+- opam switch list-available - Show available compilers
+- opam switch create <name> <version> - Create switch
+- opam switch <name> - Activate switch
+- opam switch remove <name> - Delete switch
+- eval $(opam env) - Update shell environment
+
+CREATING SWITCHES:
+- opam switch create <name> <compiler> - Named switch
+- opam switch create . <compiler> - Local switch in current dir
+- opam switch create my_project 5.2.0 - With specific version
+- opam switch create . --packages=<pkg1>,<pkg2> - With packages
+
+SELECTING SWITCHES:
+1. Global: opam switch <name>
+2. Local: Automatic in project directory
+3. Environment: OPAMSWITCH=<name>
+4. Per-command: opam <cmd> --switch=<name>
+5. eval $(opam env --switch=<name>)
+
+SWITCH CONFIGURATION:
+- Compiler version
+- Installed packages
+- Repository configuration
+- Environment variables
+- Pin configurations
+
+USE CASES:
+- Testing across OCaml versions
+- Project isolation
+- Experimenting with packages
+- CI/CD environments
+- Teaching/learning different versions
+
+RELATED TUTORIALS:
+- Installing OCaml: /docs/installing-ocaml
+- Managing Dependencies: /docs/managing-dependencies
+- Your First OCaml Program: /docs/your-first-program
+- Install OCaml: /docs/install
+
+EXTERNAL RESOURCES:
+- opam documentation: https://opam.ocaml.org/doc/
+- opam GitHub: https://github.com/ocaml/opam
+- Python virtualenv comparison: https://virtualenv.pypa.io/
+-->
+
 OCaml's package manager, opam, introduces the concept of a _switch_, which is an isolated OCaml environment. These switches often cause confusion amongst OCaml newcomers, so this document aims to provide a better understanding of opam switches and their usage for managing dependencies and project-specific configurations.
 
 Opam is designed to manage multiple concurrent installation prefixes called "switches." Similar to Python's `virtualenv`, an opam switch is a tool that creates isolated environments. They are independent of each other and have their own set of installed packages, repositories, and configuration options. Switches also have their own OCaml compiler, libraries, and binaries. This enables you to have multiple compiler versions available at once.

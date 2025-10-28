@@ -9,6 +9,17 @@ prerequisite_tutorials:
   - basic-data-types
 ---
 
+<!--
+## Reference Documentation
+- [OCaml Manual - Modules](https://ocaml.org/manual/5.2/moduleexamples.html) - Complete module system guide
+- [OCaml Manual - Module Types](https://ocaml.org/manual/5.2/manual033.html) - Module signatures
+- [Dune - Library Stanza](https://dune.readthedocs.io/en/stable/reference/dune/library.html) - Compiling modules
+- [Dune - Modules Field](https://dune.readthedocs.io/en/stable/reference/dune-project/package.html#modules) - Module specification
+- [GitHub Example Repo](https://github.com/ocaml-web/ocamlorg-docs-modules) - Tutorial examples
+- [Functors Tutorial](/docs/functors) - Parameterized modules
+- [First-Class Modules Tutorial](/docs/first-class-modules) - Advanced module features
+-->
+
 ## Introduction
 
 In this tutorial, we look at how to use and define modules.

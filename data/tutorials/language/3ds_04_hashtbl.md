@@ -6,6 +6,71 @@ description: >
 category: "Data Structures"
 ---
 
+<!--
+DOCUMENTATION REFERENCES:
+- OCaml Manual - Hashtbl module: https://ocaml.org/manual/5.2/api/Hashtbl.html
+- OCaml Manual - Map module: https://ocaml.org/manual/5.2/api/Map.html
+- OCaml Manual - Weak polymorphism: https://ocaml.org/manual/5.2/polymorphism.html
+
+HASHTBL CHARACTERISTICS:
+- Mutable associative array (key-value pairs)
+- O(1) average time complexity for lookup/insert/delete
+- Uses hashing function for efficient access
+- Allows duplicate keys (keeps all values)
+- Generic built-in hash function (Hashtbl.hash)
+- Customizable via Hashtbl.Make functor
+
+KEY FUNCTIONS:
+- Hashtbl.create : int -> ('a, 'b) Hashtbl.t
+- Hashtbl.add : ('a, 'b) t -> 'a -> 'b -> unit
+- Hashtbl.replace : ('a, 'b) t -> 'a -> 'b -> unit
+- Hashtbl.find : ('a, 'b) t -> 'a -> 'b
+- Hashtbl.find_opt : ('a, 'b) t -> 'a -> 'b option
+- Hashtbl.find_all : ('a, 'b) t -> 'a -> 'b list
+- Hashtbl.remove : ('a, 'b) t -> 'a -> unit
+- Hashtbl.mem : ('a, 'b) t -> 'a -> bool
+- Hashtbl.iter : ('a -> 'b -> unit) -> ('a, 'b) t -> unit
+- Hashtbl.fold : ('a -> 'b -> 'c -> 'c) -> ('a, 'b) t -> 'c -> 'c
+
+HASHTBL VS MAP:
+Hashtbl:
+- Mutable, in-place updates
+- O(1) average time complexity
+- Duplicate keys allowed
+- Generic polymorphic version available
+- Better for frequent updates
+
+Map:
+- Immutable, functional style
+- O(log n) time complexity
+- No duplicate keys
+- Must use functor (Map.Make)
+- Better for versioning/persistence
+
+WEAK POLYMORPHISM:
+- '_weak1, '_weak2 : Types not yet determined
+- Types become concrete after first use
+- Cannot mix different types in same hashtbl
+- Underscore prefix indicates monomorphic restriction
+
+CUSTOM HASH FUNCTIONS:
+- Hashtbl.Make functor for custom types
+- Requires HashedType signature:
+  - type t
+  - val equal : t -> t -> bool
+  - val hash : t -> int
+
+RELATED TUTORIALS:
+- Maps: /docs/maps
+- Comparison of Standard Containers: /docs/data-structures-comparison
+- Memoization: /docs/memoization
+- Functors: /docs/functors
+
+EXTERNAL RESOURCES:
+- Hash table (Wikipedia): https://en.wikipedia.org/wiki/Hash_table
+- Hash function: https://en.wikipedia.org/wiki/Hash_function
+-->
+
 ## Introduction
 
 The OCaml Standard Library's `Hashtbl` module implements an associative array

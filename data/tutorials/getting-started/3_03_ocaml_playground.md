@@ -7,6 +7,71 @@ description: |
 category: "Resources"
 ---
 
+<!--
+DOCUMENTATION REFERENCES:
+- OCaml Playground: https://ocaml.org/play
+- OCaml Manual - The core language: https://ocaml.org/manual/5.2/coreexpr.html
+- OCaml Standard Library: https://ocaml.org/manual/5.2/api/index.html
+
+PLAYGROUND FEATURES:
+- In-browser OCaml execution
+- No installation required
+- Two-panel interface (editor + output)
+- Code sharing via URLs
+- Standard library search
+- Autocomplete support
+- Syntax highlighting
+- Real-time compilation and execution
+
+EDITOR PANEL:
+- Left side of interface
+- Write/edit OCaml code
+- Run button to execute
+- Share button for URL generation
+- Clear button to reset editor
+
+OUTPUT PANEL:
+- Right side of interface
+- Displays compilation results
+- Shows type information
+- Displays program output
+- Clear output button
+
+DIFFERENCES FROM TOPLEVEL:
+- No ;; required between definitions
+- All code evaluated together on Run
+- File-like behavior vs line-by-line REPL
+- Expressions need separation (;; or let bindings)
+
+KEYBOARD SHORTCUTS:
+- Ctrl+A - Select all
+- Standard text editing shortcuts
+- Tab - Autocomplete suggestions
+
+CODE SHARING:
+- Click "Share" button
+- Copy generated URL
+- Share with others
+- Code embedded in URL
+
+EXAMPLES COVERED:
+- Simple arithmetic: 2+3
+- String literals: "OCaml is amazing"
+- Function definitions: fib, fib_par
+- Parallel computation with Domain module
+- Printf formatting
+
+RELATED TUTORIALS:
+- Toplevel Introduction: /docs/toplevel-introduction
+- Your First OCaml Program: /docs/your-first-program
+- Values and Functions: /docs/values-and-functions
+- Install OCaml: /docs/install
+
+EXTERNAL RESOURCES:
+- OCaml Playground: https://ocaml.org/play
+- OCaml.org homepage: https://ocaml.org/
+-->
+
 Welcome to OCaml's in-browser playground!
 
 The [OCaml Playground](https://ocaml.org/play) is made to make it easier for users, especially beginners, to get started with OCaml without worrying about installing anything. Everything is ready to use once you open it.

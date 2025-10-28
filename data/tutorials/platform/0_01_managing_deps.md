@@ -6,6 +6,17 @@ description: |
 category: "Projects"
 ---
 
+<!--
+## Reference Documentation
+- [Opam Manual](https://opam.ocaml.org/doc/Manual.html) - Complete opam documentation
+- [Opam Usage](https://opam.ocaml.org/doc/Usage.html) - Package management guide
+- [Opam - Package Variables](https://opam.ocaml.org/doc/Manual.html#Package-variables) - Dependency flags reference
+- [Dune - Generating Opam Files](https://dune.readthedocs.io/en/stable/howto/opam-file-generation.html) - Generate .opam from dune-project
+- [Dune - dune-project Reference](https://dune.readthedocs.io/en/stable/reference/dune-project/index.html) - dune-project file format
+- [Opam Pin Documentation](https://opam.ocaml.org/doc/Manual.html#Pinning) - Using git dependencies
+- [Managing Dependencies Tutorial](/docs/managing-dependencies) - Related tutorial
+-->
+
 ## Installing Existing Dependencies
 
 We recommend installing a project's dependencies in a local opam switch to sandbox your development environment.

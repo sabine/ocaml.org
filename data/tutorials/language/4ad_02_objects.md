@@ -6,6 +6,16 @@ description: >
 category: "Advanced Topics"
 ---
 
+<!--
+## Reference Documentation
+- [OCaml Manual - Objects](https://ocaml.org/manual/5.2/objectexamples.html) - Complete object system guide
+- [OCaml Manual - Classes](https://ocaml.org/manual/5.2/objectexamples.html#s%3Aclasses) - Class definitions
+- [OCaml Manual - Object Types](https://ocaml.org/manual/5.2/manual030.html) - Type system for objects
+- [OO module](https://ocaml.org/manual/5.2/api/Oo.html) - Object-oriented programming utilities
+- [About OCaml](https://ocaml.org/about) - Language features overview
+- [Object-Oriented Programming](https://en.wikipedia.org/wiki/Object-oriented_programming) - General OOP concepts
+-->
+
 ## Objects and Classes
 OCaml is an [object-oriented, imperative, functional programming language](https://ocaml.org/about). 
 It mixes all these paradigms and lets you use the most appropriate

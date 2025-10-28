@@ -6,12 +6,18 @@ description: >
 category: "Tutorials"
 ---
 
+<!--
+## Reference Documentation
+- [Stdlib module](https://ocaml.org/manual/5.2/api/Stdlib.html) - Standard library including I/O
+- [In_channel module](https://ocaml.org/manual/5.2/api/In_channel.html) - Input channels
+- [Out_channel module](https://ocaml.org/manual/5.2/api/Out_channel.html) - Output channels  
+- [Unix module](https://ocaml.org/manual/5.2/api/Unix.html) - Unix system calls
+- [Sys module](https://ocaml.org/manual/5.2/api/Sys.html) - System interface
+- [Printf module](https://ocaml.org/manual/5.2/api/Printf.html) - Formatted output
+-->
+
 This is a guide to basic file manipulation in OCaml using only the
 standard library.
-
-<!-- TODO: links to new API locations -->
-Official documentation for the modules of interest:
-the core library including the initially opened module Stdlib and Printf.
 
 ## Buffered Channels
 

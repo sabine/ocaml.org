@@ -8,6 +8,15 @@ prerequisite_tutorials:
   - "values-and-functions"
 ---
 
+<!--
+## Reference Documentation
+- [OCaml Manual - Labeled Arguments](https://ocaml.org/manual/5.2/lablexamples.html) - Complete guide to labels
+- [OCaml Manual - Optional Arguments](https://ocaml.org/manual/5.2/lablexamples.html#s%3Aoptional-arguments) - Optional parameters
+- [Option module](https://ocaml.org/manual/5.2/api/Option.html) - Working with optional values
+- [StdLabels](https://ocaml.org/manual/5.2/api/StdLabels.html) - Labeled versions of standard modules
+- [Values and Functions Tutorial](/docs/values-and-functions) - Prerequisite
+-->
+
 It is possible to give names and default values to function parameters. This is broadly known as labels. In this tutorial, we learn how to use labels.
 
 Throughout this tutorial, the code is written in UTop. In this document parameters that are not labelled are called _positional parameters_.

@@ -15,6 +15,16 @@ external_tutorial:
     description: "You are encouraged to contribute to the original sources of this page at the CS3110 GitHub repository."
 ---
 
+<!--
+## Reference Documentation
+- [CS3110 - Monads](https://cs3110.github.io/textbook/chapters/ds/monads.html) - Original CS3110 chapter
+- [Option module](https://ocaml.org/manual/5.2/api/Option.html) - Option monad
+- [Result module](https://ocaml.org/manual/5.2/api/Result.html) - Result monad
+- [Seq module](https://ocaml.org/manual/5.2/api/Seq.html) - Sequence operations
+- [Monad](https://en.wikipedia.org/wiki/Monad_(functional_programming)) - General concept
+- [Category Theory](https://en.wikipedia.org/wiki/Category_theory) - Mathematical foundations
+-->
+
 This is an excerpt of the page ["Monads"](https://cs3110.github.io/textbook/chapters/ds/monads.html) from the book [OCaml Programming: Correct + Efficient + Beautiful](https://cs3110.github.io/textbook/cover.html), reproduced here with permission.
 
 A *monad* is more of a design pattern than a data structure. That is, there are

@@ -6,6 +6,44 @@ description: >
 category: "Guides"
 ---
 
+<!--
+DOCUMENTATION REFERENCES:
+- OCaml Manual - The debugger (ocamldebug): https://ocaml.org/manual/5.2/debugger.html
+- OCaml Manual - Compiler builtins: https://ocaml.org/manual/5.2/api/Stdlib.html#1_Debugging
+- OCaml Manual - OCAMLRUNPARAM environment variable: https://ocaml.org/manual/5.2/runtime.html#s:ocamlrun-options
+- OCaml Manual - Thread Sanitizer: https://ocaml.org/manual/5.2/tsan.html
+- OCaml Manual - Domain module: https://ocaml.org/manual/5.2/api/Domain.html
+- OCaml Manual - Atomic module: https://ocaml.org/manual/5.2/api/Atomic.html
+- OCaml Manual - Parallel programming: https://ocaml.org/manual/5.2/parallelism.html
+
+STANDARD LIBRARY MODULES:
+- List module: https://ocaml.org/manual/5.2/api/List.html
+- Atomic module: https://ocaml.org/manual/5.2/api/Atomic.html
+- Domain module: https://ocaml.org/manual/5.2/api/Domain.html
+- Unix module: https://ocaml.org/manual/5.2/api/Unix.html
+- Printf module: https://ocaml.org/manual/5.2/api/Printf.html
+
+DEBUGGING TECHNIQUES:
+1. Tracing with #trace directive (toplevel only)
+2. ocamldebug - symbolic debugger for bytecode programs
+3. OCAMLRUNPARAM=b - backtrace on uncaught exceptions
+4. Thread Sanitizer (TSan) - data race detection for OCaml 5+
+
+COMPILER FLAGS:
+- -g : Compile with debug information (required for backtraces and ocamldebug)
+
+RELATED TUTORIALS:
+- Error Handling: /docs/error-handling
+- Profiling: /docs/profiling
+- Multicore Programming: /docs/multicore-ready
+- Using the OCaml Compiler Toolchain: /docs/using-the-ocaml-compiler-toolchain
+
+EXTERNAL TOOLS:
+- Emacs OCaml mode: https://github.com/ocaml/tuareg
+- Thread Sanitizer: https://github.com/google/sanitizers
+- opam variants documentation: https://opam.ocaml.org/doc/Manual.html#Switches
+-->
+
 This tutorial presents four techniques for debugging OCaml programs:
 
 * [Tracing functions calls](#tracing-functions-calls-in-the-toplevel),

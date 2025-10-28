@@ -6,6 +6,42 @@ description: >
 category: "Guides"
 ---
 
+<!--
+DOCUMENTATION REFERENCES:
+- OCaml Manual - Batch compilation (native-code): https://ocaml.org/manual/5.2/native.html
+- OCaml Manual - Batch compilation (bytecode): https://ocaml.org/manual/5.2/comp.html
+- OCaml Manual - The runtime system: https://ocaml.org/manual/5.2/runtime.html
+- OCaml Manual - Separate compilation: https://ocaml.org/manual/5.2/separate.html
+- OCaml Manual - Native-code compilation: https://ocaml.org/manual/5.2/native.html
+- Dune Documentation: https://dune.readthedocs.io/
+- Dune Quick Start: https://dune.readthedocs.io/en/latest/quick-start.html
+- Findlib/ocamlfind User's Guide: https://ocaml.github.io/ocamlfind/
+- Findlib GitHub: https://github.com/ocaml/ocamlfind
+
+FILE EXTENSIONS:
+- .ml - OCaml source code
+- .mli - OCaml interface file
+- .cmi - Compiled Module Interface (both bytecode and native)
+- .cmo - Compiled Module Object (bytecode)
+- .cmx - Compiled Module Object (native code)
+- .cma - Compiled Module Archive (bytecode library)
+- .cmxa - Compiled Module Archive (native code library)
+- .bc - Bytecode executable (dune convention)
+- .exe - Native code executable
+
+RELATED TUTORIALS:
+- Your First OCaml Program: /docs/your-first-program
+- Dune Tutorial: /docs/dune
+- Editor Setup: /docs/editor-setup
+- Install OCaml: /docs/install
+- Bootstrap a Project: /docs/up-and-running
+
+EXTERNAL RESOURCES:
+- Dune Package Index: https://dune.build/
+- opam package repository: https://opam.ocaml.org/packages/
+- OCaml Compiler Distribution: https://github.com/ocaml/ocaml
+-->
+
 This tutorial explains how to compile your OCaml programs into executable form.
 It addresses, in turn:
 

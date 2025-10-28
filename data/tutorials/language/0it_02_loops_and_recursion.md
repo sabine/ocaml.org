@@ -6,6 +6,16 @@ description: >
 category: "Introduction"
 ---
 
+<!--
+## Reference Documentation
+- [OCaml Manual - Control Structures](https://ocaml.org/manual/5.2/expr.html#sss%3Aexpr-control) - for, while, if expressions
+- [OCaml Manual - Recursive Functions](https://ocaml.org/manual/5.2/coreexamples.html#s%3Atut-recfunctions) - Recursion examples
+- [OCaml Manual - Tail Recursion](https://ocaml.org/manual/5.2/coreexamples.html#s%3Atut-tail-recursion) - Tail call optimization
+- [List module](https://ocaml.org/manual/5.2/api/List.html) - List operations
+- [Seq module](https://ocaml.org/manual/5.2/api/Seq.html) - Lazy sequences
+- [Higher-Order Functions Tutorial](/docs/higher-order-functions) - Related concepts
+-->
+
 As in other OCaml.org documentation, the code examples will either be something you can test or
 an example of code. Code snippets that begin with the CLI prompt `#`, end with `;;`, and have a 
 clear output can be tested in the OCaml toplevel (`ocaml` or `utop`) 

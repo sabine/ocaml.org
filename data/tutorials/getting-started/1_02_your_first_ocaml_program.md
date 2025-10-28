@@ -11,6 +11,62 @@ recommended_next_tutorials:
   - "lists"
 ---
 
+<!--
+DOCUMENTATION REFERENCES:
+- Dune Documentation: https://dune.readthedocs.io/
+- Dune Quick Start: https://dune.readthedocs.io/en/latest/quick-start.html
+- opam Documentation: https://opam.ocaml.org/doc/
+- opam Switches: https://opam.ocaml.org/doc/Manual.html#Switches
+- OCaml Manual - Batch compilation: https://ocaml.org/manual/5.2/comp.html
+- OCaml Manual - Native-code compilation: https://ocaml.org/manual/5.2/native.html
+
+BUILD SYSTEM (DUNE):
+- dune init proj <name> - Create new project
+- dune build - Compile project
+- dune exec <name> - Run executable
+- dune clean - Remove build artifacts
+- dune-project - Project metadata file
+- dune files - Per-directory build rules
+
+PROJECT STRUCTURE:
+- bin/ - Executable source code
+- lib/ - Library source code
+- test/ - Test source code
+- _build/ - Build artifacts (auto-generated, don't edit)
+- *.opam - Package metadata
+
+FILE EXTENSIONS:
+- .ml - OCaml source code
+- .mli - OCaml interface file
+- .opam - opam package file
+
+OPAM COMMANDS:
+- opam install <package> - Install package
+- opam exec -- <command> - Run command in opam environment
+- opam switch - Manage OCaml installations
+- eval $(opam env) - Configure shell environment
+
+RELATED TUTORIALS:
+- Install OCaml: /docs/install
+- Editor Setup: /docs/set-up-editor
+- Introduction to opam Switches: /docs/opam-switch-introduction
+- Managing Dependencies: /docs/managing-dependencies
+- Using the OCaml Compiler Toolchain: /docs/using-the-ocaml-compiler-toolchain
+- Bootstrap a Project: /docs/up-and-running
+- Dune Tutorial: /docs/dune
+
+NEXT STEPS:
+- Values and Functions: /docs/values-and-functions
+- Basic Data Types: /docs/basic-data-types
+- Loops and Recursion: /docs/loops-recursion
+- Lists: /docs/lists
+
+EXTERNAL RESOURCES:
+- Tutorial Git repo: https://github.com/ocaml-web/ocamlorg-docs-your-first-program
+- js_of_ocaml: https://ocsigen.org/js_of_ocaml
+- Dune package index: https://dune.build/
+-->
+
 To complete this tutorial, you need to have [installed OCaml](/install). Optionally, we recommend [configuring your editor](/docs/set-up-editor).
 
 We will work with files containing OCaml source code and compile them to produce executable binaries. However, this is not a detailed tutorial on OCaml compilation, project modularisation, or dependencies management; it only gives a glimpse at those topics. The goal is to sketch the bigger picture in order to avoid getting lost in the details. In other words, we do breadth-first learning instead of depth-first learning.

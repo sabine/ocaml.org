@@ -6,6 +6,61 @@ description: >
 category: "Guides"
 ---
 
+<!--
+DOCUMENTATION REFERENCES:
+- OCaml Manual - Exceptions: https://ocaml.org/manual/5.2/coreexamples.html#s:exceptions
+- OCaml Manual - Extensible variant types: https://ocaml.org/manual/5.2/extensiblevariants.html
+- OCaml Manual - Binding operators: https://ocaml.org/manual/5.2/bindingops.html
+- OCaml Manual - Stdlib module: https://ocaml.org/manual/5.2/api/Stdlib.html
+- OCaml Manual - Option module: https://ocaml.org/manual/5.2/api/Option.html
+- OCaml Manual - Result module: https://ocaml.org/manual/5.2/api/Result.html
+- OCaml Manual - Fun module: https://ocaml.org/manual/5.2/api/Fun.html
+- OCaml Manual - Printexc module: https://ocaml.org/manual/5.2/api/Printexc.html
+- OCaml Manual - Either module: https://ocaml.org/manual/5.2/api/Either.html
+
+STANDARD LIBRARY MODULES:
+- Option: https://ocaml.org/manual/5.2/api/Option.html
+- Result: https://ocaml.org/manual/5.2/api/Result.html
+- Fun: https://ocaml.org/manual/5.2/api/Fun.html
+- Printexc: https://ocaml.org/manual/5.2/api/Printexc.html
+- Either: https://ocaml.org/manual/5.2/api/Either.html
+- String: https://ocaml.org/manual/5.2/api/String.html
+- List: https://ocaml.org/manual/5.2/api/List.html
+
+ERROR HANDLING MECHANISMS:
+1. Exceptions - control flow based, not in types, efficient
+2. option type - None for any error, no error information
+3. result type - Error 'e for typed errors with information
+
+PREDEFINED EXCEPTIONS:
+- Division_by_zero
+- Not_found
+- Invalid_argument
+- Failure
+- Exit
+- Stack_overflow
+- Out_of_memory
+- Sys_error
+- End_of_file
+- Assert_failure
+
+ENVIRONMENT VARIABLES:
+- OCAMLRUNPARAM=b - Enable backtrace for exceptions
+
+RELATED TUTORIALS:
+- Debugging: /docs/debugging
+- Options: /docs/options
+- Values and Functions: /docs/values-and-functions
+- Labels: /docs/labels
+- OCaml Programming Guidelines: /docs/guidelines
+
+EXTERNAL RESOURCES:
+- Real World OCaml - Error Handling: https://dev.realworldocaml.org/error-handling.html
+- memprof-limits - Recovering from interrupts: https://gitlab.com/gadmm/memprof-limits/
+- Tacit programming: https://en.wikipedia.org/wiki/Tacit_programming
+- Cross-cutting concern: https://en.wikipedia.org/wiki/Cross-cutting_concern
+-->
+
 In OCaml, errors can be handled in several ways. This document presents most of
 the available means. However, handling errors using the effect handlers
 introduced in OCaml 5 hasn't been addressed yet. This topic is also addressed in the

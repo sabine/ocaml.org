@@ -8,6 +8,14 @@ description: >
 category: "Tutorials"
 ---
 
+<!--
+## Reference Documentation
+- [Format module](https://ocaml.org/manual/5.2/api/Format.html) - Complete Format module reference
+- [OCaml Manual - Format Tutorial](https://ocaml.org/manual/5.2/tutorial.html#s%3Atut-format) - Format tutorial
+- [Printf module](https://ocaml.org/manual/5.2/api/Printf.html) - Printf formatting
+- [Pretty Printing](https://en.wikipedia.org/wiki/Prettyprint) - General concept
+-->
+
 The `Format` module of Caml Light and OCaml's standard libraries
 provides pretty-printing facilities to get a fancy display for printing
 routines. This module implements a “pretty-printing engine” that is

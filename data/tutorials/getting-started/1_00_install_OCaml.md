@@ -7,6 +7,91 @@ description: |
 category: "First Steps"
 ---
 
+<!--
+DOCUMENTATION REFERENCES:
+- opam Installation: https://opam.ocaml.org/doc/Install.html
+- opam Manual: https://opam.ocaml.org/doc/Manual.html
+- OCaml Platform: https://ocaml.org/docs/platform
+- OCaml on Windows: https://ocaml.org/docs/ocaml-on-windows
+
+INSTALLATION COMPONENTS:
+1. opam - Package manager
+2. OCaml compiler - Via opam
+3. Platform tools:
+   - Dune - Build system
+   - ocaml-lsp-server - Editor support
+   - OCamlFormat - Code formatter
+   - odoc - Documentation generator
+   - UTop - Enhanced toplevel
+
+SUPPORTED PLATFORMS:
+- Linux (all major distributions)
+- macOS (Intel and ARM64/M1/M2/M3)
+- Windows (native, WSL2, Cygwin)
+- *BSD (FreeBSD, OpenBSD, NetBSD)
+- Docker containers
+
+OPAM INSTALLATION METHODS:
+1. System package manager (recommended for Linux)
+2. Homebrew/MacPorts (macOS)
+3. WinGet (Windows)
+4. Binary distribution (any platform)
+5. From source (advanced)
+
+PACKAGE MANAGERS:
+- Linux: apt, yum, pacman, etc.
+- macOS: brew, port
+- Windows: winget
+- BSD: pkg, ports
+
+OPAM COMMANDS:
+- opam init - Initialize opam
+- opam update - Update package lists
+- opam upgrade - Upgrade installed packages
+- opam install <pkg> - Install package
+- opam switch - Manage OCaml versions
+
+SYSTEM DEPENDENCIES:
+- gcc or clang (C compiler)
+- make, build-essential
+- curl or wget
+- bubblewrap (Linux sandboxing)
+- git (version control)
+- unzip
+
+PLATFORM TOOLS INSTALLATION:
+- opam install ocaml-lsp-server
+- opam install ocamlformat
+- opam install utop
+- opam install odoc
+- opam install dune
+
+ENVIRONMENT SETUP:
+- eval $(opam env) - Load opam environment
+- Add to shell profile (.bashrc, .zshrc, etc.)
+- Automatic on opam init with -y
+
+TROUBLESHOOTING:
+- ARM64 Mac issues: See /docs/arm64-fix
+- Windows: Multiple installation methods available
+- Docker: Use --disable-sandboxing
+- Permissions: Run as normal user (not root)
+
+RELATED TUTORIALS:
+- ARM64 Fix: /docs/arm64-fix
+- OCaml on Windows: /docs/ocaml-on-windows
+- opam Switches: /docs/opam-switch-introduction
+- Your First OCaml Program: /docs/your-first-program
+- Editor Setup: /docs/set-up-editor
+
+EXTERNAL RESOURCES:
+- opam homepage: https://opam.ocaml.org/
+- opam GitHub: https://github.com/ocaml/opam
+- Homebrew: https://brew.sh/
+- WinGet: https://github.com/microsoft/winget-cli
+- Command line tutorial: https://www.youtube.com/watch?v=0PxTAn4g20U
+-->
+
 This guide will walk you through a minimum installation of OCaml. That includes installing a package manager and [the compiler](#installation-on-unix-and-macos) itself. We'll also install some platform tools like a build system, support for your editor, and a few other important ones.
 
 On this page, you'll find installation instructions for Linux, macOS, Windows, and &ast;BSD for recent OCaml versions. For Docker, Linux instructions apply, except when setting up opam.

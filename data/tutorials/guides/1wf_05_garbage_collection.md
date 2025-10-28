@@ -6,6 +6,64 @@ description: >
 category: "Guides"
 ---
 
+<!--
+DOCUMENTATION REFERENCES:
+- OCaml Manual - Gc module: https://ocaml.org/manual/5.2/api/Gc.html
+- OCaml Manual - Weak module: https://ocaml.org/manual/5.2/api/Weak.html
+- OCaml Manual - Ephemeron module: https://ocaml.org/manual/5.2/api/Ephemeron.html
+- OCaml Manual - The runtime system: https://ocaml.org/manual/5.2/runtime.html
+- OCaml Manual - Interfacing C with OCaml - Memory management: https://ocaml.org/manual/5.2/intfc.html
+
+STANDARD LIBRARY MODULES:
+- Gc: https://ocaml.org/manual/5.2/api/Gc.html
+- Weak: https://ocaml.org/manual/5.2/api/Weak.html
+- Ephemeron: https://ocaml.org/manual/5.2/api/Ephemeron.html
+
+GC CONCEPTS:
+- Minor heap - young generation, fast collection
+- Major heap - old generation, incremental collection
+- Promotion - moving objects from minor to major heap
+- Finalizers - cleanup code run before object collection
+- Weak references - references that don't prevent collection
+- Allocation rates and pressure
+- GC tuning parameters
+
+GC MODULE FUNCTIONS:
+- Gc.stat() - Get GC statistics
+- Gc.print_stat - Print GC statistics
+- Gc.set - Configure GC parameters
+- Gc.get - Get current GC parameters
+- Gc.minor() - Force minor collection
+- Gc.major() - Force major collection
+- Gc.compact() - Compact the heap
+- Gc.finalise - Register finalizer for value
+
+GC PARAMETERS:
+- minor_heap_size - Size of minor heap
+- major_heap_increment - Growth rate of major heap
+- space_overhead - Acceptable waste
+- verbose - Debugging verbosity level
+- max_overhead - Maximum overhead
+- allocation_policy - Best-fit or first-fit
+
+WEAK REFERENCES:
+- Weak.create - Create weak array
+- Weak.set - Set weak reference
+- Weak.get - Get weak reference (may return None)
+- Weak.check - Check if reference is still valid
+- Used for caches and memoization tables
+
+RELATED TUTORIALS:
+- Understanding the Garbage Collector: /docs/garbage-collector
+- Memory Representation: /docs/memory-representation
+- Profiling: /docs/profiling
+- Debugging: /docs/debugging
+
+EXTERNAL RESOURCES:
+- OCaml GC design: https://ocaml.org/manual/5.2/gc.html
+- GC tuning guide: Various blog posts and papers
+-->
+
 In [Understanding the Garbage Collector](/docs/garbage-collector), discussed how Garbage Collection in OCaml works.
 In this tutorial, we look at how to use the `Gc` module and how to write your own finalisers.
 At the end of the tutorial, we give some exercises you might try in order to develop a better understanding.

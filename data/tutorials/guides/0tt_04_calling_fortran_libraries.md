@@ -6,6 +6,15 @@ description: >
 category: "Tutorials"
 ---
 
+<!--
+## Reference Documentation
+- [OCaml Manual - Interfacing C with OCaml](https://ocaml.org/manual/5.2/intfc.html) - FFI guide (applies to Fortran)
+- [OCaml Manual - C Stubs](https://ocaml.org/manual/5.2/intfc.html#s%3Ac-stubs) - Writing stubs
+- [GNU Fortran](https://gcc.gnu.org/fortran/) - gfortran compiler
+- [Dune - Foreign Stubs](https://dune.readthedocs.io/en/stable/reference/foreign-stubs.html) - Building Fortran with Dune
+- [Calling C Libraries Tutorial](/docs/calling-c-libraries) - Related FFI tutorial
+-->
+
 Fortran isn't a language the many people write new code in but it still
 is in extensive use in the scientific communities. Many, many libraries
 exist for doing numerical calculation that will never be written in C or

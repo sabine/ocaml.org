@@ -6,6 +6,17 @@ description: >
 category: "Data Structures"
 ---
 
+<!--
+## Reference Documentation
+- [Map module](https://ocaml.org/manual/5.2/api/Map.html) - Complete Map module reference
+- [Map.Make functor](https://ocaml.org/manual/5.2/api/Map.Make.html) - Creating custom map modules
+- [Associative Array](https://en.wikipedia.org/wiki/Associative_array) - General concept
+- [Hashtbl module](https://ocaml.org/manual/5.2/api/Hashtbl.html) - Alternative mutable implementation
+- [Functors Tutorial](/docs/functors) - Understanding Map.Make
+- [Hash Tables Tutorial](/docs/hash-tables) - Alternative data structure
+- [Data Structures Comparison](/docs/data-structures-comparison) - Performance comparison
+-->
+
 ## Introduction
 
 In the most general sense, the [`Map`](/manual/api/Map.html) module lets you create _immutable_ key-value

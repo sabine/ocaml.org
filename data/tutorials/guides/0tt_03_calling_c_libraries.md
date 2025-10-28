@@ -6,6 +6,16 @@ description: >
 category: "Tutorials"
 ---
 
+<!--
+## Reference Documentation
+- [OCaml Manual - Interfacing C with OCaml](https://ocaml.org/manual/5.2/intfc.html) - Complete FFI guide
+- [OCaml Manual - C Stubs](https://ocaml.org/manual/5.2/intfc.html#s%3Ac-stubs) - Writing C stubs
+- [Ctypes](https://github.com/ocamllabs/ocaml-ctypes) - Modern C FFI library
+- [Dune - Foreign Stubs](https://dune.readthedocs.io/en/stable/reference/foreign-stubs.html) - Building C code with Dune
+- [LablGTK](https://github.com/garrigue/lablgtk) - GTK bindings example
+- [Calling Fortran Tutorial](/docs/calling-fortran-libraries) - Related FFI tutorial
+-->
+
 ## MiniGtk
 
 While the structure of lablgtk outlined in [Introduction to

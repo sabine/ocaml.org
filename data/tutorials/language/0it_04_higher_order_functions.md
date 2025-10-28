@@ -10,6 +10,17 @@ prerequisite_tutorials:
 ---
 
 <!--
+## Reference Documentation
+- [OCaml Manual - Functions](https://ocaml.org/manual/5.2/coreexamples.html#s%3Afunctions) - Function definitions and applications
+- [Fun module](https://ocaml.org/manual/5.2/api/Fun.html) - Function utilities (id, flip, const)
+- [List module](https://ocaml.org/manual/5.2/api/List.html) - Higher-order functions on lists (map, filter, fold)
+- [Seq module](https://ocaml.org/manual/5.2/api/Seq.html) - Lazy sequences with functional operations
+- [OCaml Manual - Pipe Operator](https://ocaml.org/manual/5.2/expr.html#sss%3Aexpr-coerce) - |> operator
+- [Values and Functions Tutorial](/docs/values-and-functions) - Prerequisite
+- [Loops and Recursion Tutorial](/docs/loops-recursion) - Prerequisite
+-->
+
+<!--
 **What you'll learn**:
 * What is a higher-order function
 * What are some common higher-order functions

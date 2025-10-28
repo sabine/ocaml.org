@@ -6,6 +6,56 @@ description: >
 category: "Resources"
 ---
 
+<!--
+DOCUMENTATION REFERENCES:
+- OCaml Manual - Type system: https://ocaml.org/manual/5.2/types.html
+- OCaml Manual - Type inference: https://ocaml.org/manual/5.2/typedecl.html
+- OCaml Manual - Pattern matching: https://ocaml.org/manual/5.2/patterns.html
+- OCaml Manual - Compiler warnings: https://ocaml.org/manual/5.2/comp.html#ss:comp-warnings
+- OCaml Manual - Labels and optional arguments: https://ocaml.org/manual/5.2/lablexamples.html
+
+COMMON ERROR TYPES:
+1. Type errors - type mismatches and incompatibilities
+2. Pattern matching - exhaustiveness and unused patterns
+3. Compilation - interface and module issues
+4. Warnings - optional arguments, backslashes, etc.
+
+TYPE ERROR MESSAGES:
+- "This expression has type ... but is here used with type ..."
+- "The type of this expression contains type variables that cannot be generalized"
+- Type redefinition conflicts
+- Weak polymorphism ('_weak variables)
+
+PATTERN MATCHING MESSAGES:
+- "This pattern is unused"
+- "This pattern-matching is not exhaustive"
+- "Redundant sub-pattern"
+- "Ambiguous or-pattern variables under guard"
+
+COMPILATION MESSAGES:
+- "x.cmi is not a compiled interface"
+- "Warning: Illegal backslash escape in string"
+- Module not found
+- Circular dependencies
+
+COMPILER FLAGS:
+- -w <warnings> : Enable/disable warnings
+- -w x : Disable illegal backslash warning
+- -w A : Enable all warnings
+- -warn-error : Turn warnings into errors
+
+RELATED TUTORIALS:
+- Error Handling: /docs/error-handling
+- Labels: /docs/labels
+- Pattern Matching: Various tutorials on match expressions
+- Debugging: /docs/debugging
+- Values and Functions: /docs/values-and-functions
+
+EXTERNAL RESOURCES:
+- OCaml compiler warnings reference: https://ocaml.org/manual/5.2/comp.html
+- Pattern matching guide: https://ocaml.org/manual/5.2/patterns.html
+-->
+
 This page gives a list of quick explanations for some error or warning
 messages that are emitted by the OCaml compilers. Longer explanations
 are usually given in dedicated sections of this tutorial.

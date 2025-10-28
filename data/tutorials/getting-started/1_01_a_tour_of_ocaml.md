@@ -11,6 +11,84 @@ recommended_next_tutorials:
   - "lists"
 ---
 
+<!--
+DOCUMENTATION REFERENCES:
+- OCaml Manual - The core language: https://ocaml.org/manual/5.2/coreexpr.html
+- OCaml Manual - Values: https://ocaml.org/manual/5.2/values.html
+- OCaml Manual - Pattern matching: https://ocaml.org/manual/5.2/patterns.html
+- OCaml Manual - Standard library: https://ocaml.org/manual/5.2/api/index.html
+- UTop Introduction: /docs/toplevel-introduction
+
+TOPICS COVERED:
+- Expressions and definitions
+- Basic data types (int, float, string, bool)
+- Functions and recursion
+- Lists and pattern matching
+- Tuples and records
+- Variant types
+- Options
+- Exceptions and error handling
+- References and mutable data
+- Modules and standard library
+
+BASIC SYNTAX:
+- let name = value - Value definition
+- let name x = body - Function definition
+- let rec name = ... - Recursive definition
+- if cond then e1 else e2 - Conditionals
+- match expr with | pat -> ... - Pattern matching
+- (* comment *) - Comments (nestable)
+
+DATA TYPES:
+- int: 42, 0x2a, 0o52, 0b101010
+- float: 3.14, 1e-10
+- string: "hello", {|raw string|}
+- bool: true, false
+- char: 'a', '\n'
+- unit: ()
+
+LIST SYNTAX:
+- [] - Empty list
+- [1; 2; 3] - List literal
+- x :: xs - Cons operator
+- [x] @ [y; z] - Append operator
+
+PATTERN MATCHING:
+- Literals: 0, true, "hello"
+- Variables: x, name
+- Wildcards: _
+- Constructors: Some x, None, :: 
+- Tuples: (x, y)
+- Records: {field = value}
+- Or-patterns: pat1 | pat2
+
+VARIANT TYPES:
+- type name = Constructor | Another of type
+- Custom data types
+- Algebraic data types
+- Pattern match on constructors
+
+RECORDS:
+- type name = { field1 : type; field2 : type }
+- Immutable by default
+- Field access: record.field
+- Creation: { field1 = v1; field2 = v2 }
+
+MODULES:
+- Stdlib automatically opened
+- Module.function syntax
+- List, String, Array, etc.
+- Use #show to inspect in UTop
+
+RELATED TUTORIALS:
+- Installing OCaml: /docs/installing-ocaml
+- Toplevel Introduction: /docs/toplevel-introduction
+- Values and Functions: /docs/values-and-functions
+- Basic Data Types: /docs/basic-data-types
+- Loops and Recursion: /docs/loops-recursion
+- Lists: /docs/lists
+-->
+
 This tutorial introduces OCaml's basic features: values, expressions, lists, functions, pattern matching, and more.
 
 No OCaml or any functional programming knowledge is required; however, it is assumed the reader has some basic software development knowledge.

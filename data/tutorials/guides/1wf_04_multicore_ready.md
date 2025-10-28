@@ -7,6 +7,63 @@ description: >
 category: "Guides"
 ---
 
+<!--
+DOCUMENTATION REFERENCES:
+- OCaml Manual - Thread Sanitizer (TSan): https://ocaml.org/manual/5.2/tsan.html
+- OCaml Manual - Domain module: https://ocaml.org/manual/5.2/api/Domain.html
+- OCaml Manual - Atomic module: https://ocaml.org/manual/5.2/api/Atomic.html
+- OCaml Manual - Mutex module: https://ocaml.org/manual/5.2/api/Mutex.html
+- OCaml Manual - Parallel programming: https://ocaml.org/manual/5.2/parallelism.html
+- OCaml Manual - Memory model: https://ocaml.org/manual/5.2/memorymodel.html
+
+STANDARD LIBRARY MODULES:
+- Domain: https://ocaml.org/manual/5.2/api/Domain.html
+- Atomic: https://ocaml.org/manual/5.2/api/Atomic.html
+- Mutex: https://ocaml.org/manual/5.2/api/Mutex.html
+- Semaphore: https://ocaml.org/manual/5.2/api/Semaphore.html
+- Condition: https://ocaml.org/manual/5.2/api/Condition.html
+
+MULTICORE CONCEPTS:
+- Domain-based parallelism
+- Data races and race conditions
+- Thread sanitization
+- Atomic operations
+- Mutual exclusion (Mutex)
+- Memory synchronization
+
+INSTALLING TSAN:
+- opam switch create 5.2.0+tsan ocaml-variants.5.2.0+options ocaml-option-tsan
+- Requires GCC 11+ or Clang 14+
+- Supported on FreeBSD, Linux, macOS (OCaml 5.2.0+)
+- Available on all Tier 1 architectures
+
+TSAN WORKFLOW:
+1. Install TSan switch
+2. Write parallel test runner
+3. Run tests under TSan
+4. Fix reported data races
+5. Repeat steps 3-4 until clean
+
+COMMON DATA RACE FIXES:
+- Replace mutable fields with Atomic.t
+- Use Mutex for critical sections
+- Use Domain.DLS for domain-local storage
+- Ensure proper memory barriers
+- Avoid shared mutable state
+
+RELATED TUTORIALS:
+- Debugging: /docs/debugging
+- Profiling: /docs/profiling
+- Garbage Collection: /docs/garbage-collection
+- Parallel Programming Guide: /docs/parallel-programming
+
+EXTERNAL RESOURCES:
+- Thread Sanitizer: https://github.com/google/sanitizers
+- Jane Street Blog - Oxidizing OCaml Parallelism: https://blog.janestreet.com/oxidizing-ocaml-parallelism/
+- OCaml Multicore Wiki: https://github.com/ocaml-multicore/ocaml-multicore/wiki
+- Known TSan issues: https://github.com/google/sanitizers/issues/1716
+-->
+
 The 5.0 release brought Multicore, `Domain`-based parallelism to the
 OCaml language. Parallel `Domain`s performing uncoordinated operations
 on shared mutable memory locations may however cause data races. Such

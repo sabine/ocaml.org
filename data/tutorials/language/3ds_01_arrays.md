@@ -6,6 +6,16 @@ description: >
 category: "Data Structures"
 ---
 
+<!--
+## Reference Documentation
+- [Array module](https://ocaml.org/manual/5.2/api/Array.html) - Complete Array module reference
+- [OCaml Manual - Arrays](https://ocaml.org/manual/5.2/coreexamples.html#s%3Aarrays) - Array examples
+- [List module](https://ocaml.org/manual/5.2/api/List.html) - Similar operations on lists
+- [Bigarray module](https://ocaml.org/manual/5.2/api/Bigarray.html) - Large, multi-dimensional arrays
+- [Data Structures Comparison](/docs/data-structures-comparison) - Performance comparison
+- [Lists Tutorial](/docs/lists) - Related data structure
+-->
+
 ## Introduction
 
 In OCaml, arrays are collections of elements of one type. Unlike lists, arrays can be mutated by replacing their elements with other values of the same type, but cannot be resized. Arrays also allow efficient access to elements at any position.

@@ -6,6 +6,15 @@ description: >
 category: "Data Structures"
 ---
 
+<!--
+## Reference Documentation
+- [Set module](https://ocaml.org/manual/5.2/api/Set.html) - Complete Set module reference
+- [Set.Make functor](https://ocaml.org/manual/5.2/api/Set.Make.html) - Creating custom set modules
+- [Functors Tutorial](/docs/functors) - Understanding Set.Make
+- [Maps Tutorial](/docs/maps) - Related data structure
+- [Data Structures Comparison](/docs/data-structures-comparison) - Performance comparison
+-->
+
 ## Introduction
 
 `Set` provides the functor `Set.Make`. You must start by passing `Set.Make` a module. It specifies the element type for your set. In return, you get another module with those elements' set operations.

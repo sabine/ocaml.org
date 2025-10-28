@@ -9,6 +9,17 @@ prerequisite_tutorials:
   - "installing-ocaml"
 ---
 
+<!--
+## Reference Documentation
+- [OCaml Manual - Core Language](https://ocaml.org/manual/5.2/coreexamples.html) - Core language examples
+- [OCaml Manual - Values and Expressions](https://ocaml.org/manual/5.2/expr.html) - Expression syntax
+- [OCaml Manual - Names and Bindings](https://ocaml.org/manual/5.2/names.html) - Variable bindings
+- [OCaml Manual - Functions](https://ocaml.org/manual/5.2/coreexamples.html#s%3Afunctions) - Function definitions
+- [Stdlib module](https://ocaml.org/manual/5.2/api/Stdlib.html) - Standard library overview
+- [Subject Reduction](https://en.wikipedia.org/wiki/Subject_reduction) - Type safety property
+- [Expression-Oriented Programming](https://en.wikipedia.org/wiki/Expression-oriented_programming_language) - Programming paradigm
+-->
+
 ## Introduction
 
 In OCaml, functions are treated as values, so you can use functions as arguments to functions and return them from functions. This tutorial introduces the relationship between expressions, values, and names. The first four sections address non-function values. The following sections, starting at [Function as Values](#function-as-values), address functions.

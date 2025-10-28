@@ -12,6 +12,17 @@ prerequisite_tutorials:
 ---
 
 <!--
+## Reference Documentation
+- [OCaml Manual - Imperative Features](https://ocaml.org/manual/5.2/coreexamples.html#s%3Aimperative-features) - Mutable state and control
+- [OCaml Manual - References](https://ocaml.org/manual/5.2/coreexamples.html#s%3Atut-recvariants) - ref type
+- [OCaml Manual - Mutable Records](https://ocaml.org/manual/5.2/coreexamples.html#s%3Aimperative-features) - Mutable fields
+- [OCaml Manual - Control Structures](https://ocaml.org/manual/5.2/expr.html#sss%3Aexpr-control) - for, while, if-then-else
+- [Stdlib module](https://ocaml.org/manual/5.2/api/Stdlib.html) - ref, (!) and (:=) operators
+- [Immutable Object](https://en.wikipedia.org/wiki/Immutable_object) - Immutability concept
+- [Loops and Recursion Tutorial](/docs/loops-recursion) - Related control flow
+-->
+
+<!--
 1. Deal with refs
 1. Mutable record fields
 1. for-loop

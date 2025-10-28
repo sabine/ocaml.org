@@ -16,6 +16,18 @@ external_tutorial:
     description: "You are encouraged to contribute to the original sources of this page at the Real World OCaml GitHub repository."
 ---
 
+<!--
+## Reference Documentation
+- [Real World OCaml - Compiler Frontend](https://dev.realworldocaml.org/compiler-frontend.html) - Original RWO chapter
+- [OCaml Compiler Source](https://github.com/ocaml/ocaml) - OCaml compiler repository
+- [OCamlc Manual](https://ocaml.org/manual/5.2/comp.html) - Compiler reference
+- [Parsetree](https://ocaml.org/manual/5.2/compilerlibref/Parsetree.html) - Abstract Syntax Tree
+- [Typedtree](https://ocaml.org/manual/5.2/compilerlibref/Typedtree.html) - Typed AST
+- [PPX](https://ocaml.org/docs/metaprogramming) - Preprocessor extensions
+- [Compiler Backend Tutorial](/docs/compiler-backend) - Next compilation stages
+- [Dune Documentation](https://dune.readthedocs.io/) - Build system
+-->
+
 This is an adaptation of the chapter [The Compiler Frontend: Parsing and Type Checking](https://dev.realworldocaml.org/compiler-frontend.html) from the book [Real World OCaml](https://dev.realworldocaml.org/), reproduced here with permission.
 
 Compiling source code into executable programs involves a fairly

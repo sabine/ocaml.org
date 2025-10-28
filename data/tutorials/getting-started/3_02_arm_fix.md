@@ -6,6 +6,55 @@ description: |
 category: "Resources"
 ---
 
+<!--
+DOCUMENTATION REFERENCES:
+- OCaml on macOS: https://ocaml.org/install#macOS
+- opam installation guide: https://opam.ocaml.org/doc/Install.html
+- Homebrew documentation: https://docs.brew.sh/
+
+MACOS ARM64 SPECIFIC:
+- Apple M1/M2/M3 processors use ARM64 architecture
+- Homebrew changed install location on ARM64
+- Old location: /usr/local/bin/brew (Intel/Rosetta)
+- New location: /opt/homebrew/bin/brew (ARM64 native)
+
+HOMEBREW LOCATIONS:
+- Intel Macs: /usr/local/bin/brew
+- ARM64 Macs: /opt/homebrew/bin/brew
+- Universal binaries may exist in both locations
+
+ROSETTA 2:
+- Compatibility layer for Intel apps on ARM64 Macs
+- Can interfere with native ARM64 installations
+- Should be disabled for native development when possible
+- Apple Support article: https://support.apple.com/en-us/HT211861
+
+COMMAND LINE TOOLS (CLT):
+- Required for compilation on macOS
+- Can be installed without full Xcode
+- Download from Apple Developer: https://developer.apple.com/download/
+- Location: /Library/Developer/CommandLineTools
+
+TROUBLESHOOTING STEPS:
+1. Check Homebrew location with: where brew
+2. Verify CLT installation
+3. Disable Rosetta if needed
+4. Uninstall/reinstall Homebrew
+5. Verify with: brew doctor
+
+RELATED TUTORIALS:
+- Install OCaml: /docs/installing-ocaml
+- Install on macOS: /docs/install#macOS
+- opam switches: /docs/opam-switch-introduction
+
+EXTERNAL RESOURCES:
+- Homebrew ARM64 discussion: https://github.com/Homebrew/brew/issues/9177
+- Homebrew homepage: https://brew.sh/
+- Homebrew installation: https://docs.brew.sh/Installation
+- Apple Developer downloads: https://developer.apple.com/download/all/
+- Rosetta 2 info: https://support.apple.com/en-us/HT211861
+-->
+
 Since [Homebrew has changed](https://github.com/Homebrew/brew/issues/9177) the way it installs, sometimes the executable files cannot be found on macOS ARM64 M1. This might cause errors as you work through these tutorials. We want Homebrew to install ARM64 by default, so there are a few changes we need to make in order to do this.
 
 Before we get started, let's check where Homebrew is installed. We can do this by running this in the CLI:

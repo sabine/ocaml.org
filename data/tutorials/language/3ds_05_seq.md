@@ -9,6 +9,86 @@ prerequisite_tutorials:
   - "options"
 ---
 
+<!--
+DOCUMENTATION REFERENCES:
+- OCaml Manual - Seq module: https://ocaml.org/manual/5.2/api/Seq.html
+- OCaml Manual - List module: https://ocaml.org/manual/5.2/api/List.html
+- OCaml Manual - Lazy expressions: https://ocaml.org/manual/5.2/lazy.html
+
+SEQUENCE TYPE:
+- type 'a t = unit -> 'a node
+- type 'a node = Nil | Cons of 'a * 'a t
+- Lazy evaluation of elements
+- Elements computed on demand
+- Can represent infinite sequences
+
+KEY CHARACTERISTICS:
+- Memory efficient (constant space vs linear for lists)
+- Lazy evaluation (elements computed when needed)
+- Can be infinite (unlike lists)
+- Elements can be recomputed (unlike iterators)
+- Composable with map, filter, etc.
+
+COMPARISON WITH LISTS:
+Lists:
+- All elements stored in memory
+- Strict evaluation
+- Always finite
+- O(1) access to head
+- Better for small collections
+
+Sequences:
+- Elements computed on demand
+- Lazy evaluation
+- Can be infinite
+- O(1) to get next element
+- Better for large/infinite data
+
+COMMON FUNCTIONS:
+- Seq.empty : 'a t
+- Seq.return : 'a -> 'a t
+- Seq.cons : 'a -> 'a t -> 'a t
+- Seq.map : ('a -> 'b) -> 'a t -> 'b t
+- Seq.filter : ('a -> bool) -> 'a t -> 'a t
+- Seq.fold_left : ('a -> 'b -> 'a) -> 'a -> 'b t -> 'a
+- Seq.iter : ('a -> unit) -> 'a t -> unit
+- Seq.take : int -> 'a t -> 'a t
+- Seq.drop : int -> 'a t -> 'a t
+- Seq.of_list : 'a list -> 'a t
+- Seq.to_list : 'a t -> 'a list
+
+SEQUENCE CONSTRUCTORS:
+- Manual construction with Cons/Nil
+- Recursive functions (e.g., infinite sequences)
+- Conversion from other types
+- Seq.unfold for generators
+- Seq.iterate for iteration
+
+USE CASES:
+1. Processing large files line by line
+2. Infinite streams (numbers, events)
+3. Lazy data pipelines
+4. Memory-efficient transformations
+5. Generators and iterators
+
+THUNKS:
+- Definition: unit -> 'a (function taking unit)
+- Delays computation until called
+- Key to lazy evaluation in sequences
+- Allows infinite sequences
+
+RELATED TUTORIALS:
+- Lists: /docs/lists
+- Options: /docs/options
+- Comparison of Standard Containers: /docs/data-structures-comparison
+- Higher-Order Functions: /docs/higher-order-functions
+
+EXTERNAL RESOURCES:
+- Thunk (Wikipedia): https://en.wikipedia.org/wiki/Thunk
+- Lazy evaluation: https://en.wikipedia.org/wiki/Lazy_evaluation
+- Generator pattern: https://en.wikipedia.org/wiki/Generator_(computer_programming)
+-->
+
 ## Introduction
 
 Sequences are very much like lists. However, from a pragmatic perspective, one
